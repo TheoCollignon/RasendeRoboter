@@ -12,7 +12,6 @@ class Case:
         self.up = 0
 
 
-# TODO: Check if it is working
 def isleft(i, j, gridparam):
     if gridparam[i][j].left == 1:
         return 1
@@ -66,6 +65,14 @@ for i in range(sizeOfGrid):
         if j == sizeOfGrid - 1:
             case.right = 1
         grid[i][j] = case
+grid[int(sizeOfGrid/2)-1][int(sizeOfGrid/2)-1].up = 1
+grid[int(sizeOfGrid/2)-1][int(sizeOfGrid/2)-1].left = 1
+grid[int(sizeOfGrid/2)-1][int(sizeOfGrid/2)].up = 1
+grid[int(sizeOfGrid/2)-1][int(sizeOfGrid/2)].right = 1
+grid[int(sizeOfGrid/2)][int(sizeOfGrid/2)-1].down = 1
+grid[int(sizeOfGrid/2)][int(sizeOfGrid/2)-1].left = 1
+grid[int(sizeOfGrid/2)][int(sizeOfGrid/2)].down = 1
+grid[int(sizeOfGrid/2)][int(sizeOfGrid/2)].right = 1
 
 print("\n")
 print("Checking sizeOfGrid:")
@@ -73,17 +80,17 @@ print(len(grid))
 
 # TODO: Insert walls
 
-'''
+
 # Verifications
 
 # up - down - left - right
 for i in range(sizeOfGrid):
     print()
     for j in range(sizeOfGrid):
-        print(grid[i][j].right,end ='')
+        print(grid[i][j].down,end ='')
  
 
 # isup - isdown - isleft - isright
 print("\n\nisWall?")
 print(isright(sizeOfGrid-1,sizeOfGrid-1,grid))
-'''
+
