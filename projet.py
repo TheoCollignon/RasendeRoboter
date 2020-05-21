@@ -25,7 +25,7 @@ def isleft(i, j, gridparam):
 def isright(i, j, gridparam):
     if gridparam[i][j].right == 1:
         return 1
-    elif j + 1 >= 0:
+    elif j + 1 < sizeOfGrid:
         if gridparam[i][j + 1].left == 1:
             return 1
     return 0
@@ -34,8 +34,8 @@ def isright(i, j, gridparam):
 def isup(i, j, gridparam):
     if gridparam[i][j].up == 1:
         return 1
-    elif j - 1 >= 0:
-        if gridparam[i][j - 1].down == 1:
+    elif i - 1 >= 0:
+        if gridparam[i - 1][j].down == 1:
             return 1
     return 0
 
@@ -43,8 +43,8 @@ def isup(i, j, gridparam):
 def isdown(i, j, gridparam):
     if gridparam[i][j].down == 1:
         return 1
-    elif j + 1 >= 0:
-        if gridparam[i][j + 1].up == 1:
+    elif i + 1 < sizeOfGrid:
+        if gridparam[i - 1][j].up == 1:
             return 1
     return 0
 
@@ -59,12 +59,12 @@ for i in range(sizeOfGrid):
         case = Case()
         if i == 0:
             case.up = 1
-        elif i == sizeOfGrid - 1:
+        if i == sizeOfGrid - 1:
             case.down = 1
-        elif j == 0:
+        if j == 0:
             case.left = 1
-        elif j == sizeOfGrid - 1:
-            case.right = 9
+        if j == sizeOfGrid - 1:
+            case.right = 1
         grid[i][j] = case
 
 print("\n")
@@ -74,9 +74,16 @@ print(len(grid))
 # TODO: Insert walls
 
 '''
-# Verification : up - down - left - right
+# Verifications
+
+# up - down - left - right
 for i in range(sizeOfGrid):
     print()
     for j in range(sizeOfGrid):
-        print(grid[i][j].down,end ='')
+        print(grid[i][j].right,end ='')
+ 
+
+# isup - isdown - isleft - isright
+print("\n\nisWall?")
+print(isright(sizeOfGrid-1,sizeOfGrid-1,grid))
 '''
