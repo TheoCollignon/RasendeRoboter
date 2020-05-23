@@ -79,20 +79,34 @@ def rotCase(case,direction,nbRot):
 
 
 def rotation(panel,direction,nbRot):
+    panelTemp = [[Case() for i in range(int(sizeOfPanel))] for j in range(int(sizeOfPanel))]
     for i in range(0,8):
         for j in range(0,8):
             if panel[i][j].up == 1 or panel[i][j].right == 1 or panel[i][j].left == 1 or panel[i][j].down == 1:
-                panel[i][j] = rotCase(panel[i][j],direction,nbRot)
-    return panel
+                if(direction):
+                    if (nbRot == 1):
+                        panelTemp[j][int(sizeOfPanel) - 1 - i] = rotCase(panel[i][j], direction, nbRot)
+                    if (nbRot == 2):
+                        panelTemp[int(sizeOfPanel)-1-i][int(sizeOfPanel)-1-j] = rotCase(panel[i][j], direction, nbRot)
+                    if (nbRot == 3):
+                        panelTemp[int(sizeOfPanel)-1-j][i] = rotCase(panel[i][j], direction, nbRot)
+                else:
+                    if (nbRot == 1):
+                        panelTemp[int(sizeOfPanel) - 1 - j][i] = rotCase(panel[i][j], direction, nbRot)
+                    if (nbRot == 2):
+                        panelTemp[int(sizeOfPanel) - 1 - i][int(sizeOfPanel) - 1 - j] = rotCase(panel[i][j], direction, nbRot)
+                    if (nbRot == 3):
+                        panelTemp[j][int(sizeOfPanel) - 1 - i] = rotCase(panel[i][j], direction, nbRot)
+    return panelTemp
 
 
 def rotate(pos,panel,panelNb):
     if(pos == panelNb):
         return panel
     elif(pos >panelNb):
-        return rotation(panel,0,pos-panelNb)
+        return rotation(panel,1,pos-panelNb)
     else:
-        return rotation(panel,1,panelNb-pos)
+        return rotation(panel,0,panelNb-pos)
 
 
 def isleft(i, j, gridparam):
@@ -217,8 +231,8 @@ panel1[6][1].up = 1
 panel1[6][1].left = 1
 
 #randomly place the panels on the grid
-gridPosPanels = [0,0,0,0] #stores what panels are placed where
-gridNbPanels = [0,0,0,0]
+gridPosPanels = [0,0,0,0] #stores the panels in the right placement order
+gridNbPanels = [0,0,0,0] #stores what panels are placed where
 gridPanels = [panel1,panel2,panel3,panel4]
 randomP1 = random()
 randomP2 = random()
@@ -238,14 +252,13 @@ for i in range(0,4):
 for i in range(int(sizeOfPanel)):
     print()
     for j in range(int(sizeOfPanel)):
-        print(panel1[i][j].down,end ='')
+        print(gridPosPanels[1][i][j].down,end ='')
 for i in range(0,4):
-    rotate(i,gridPosPanels[i],gridNbPanels[i])
+    gridPosPanels[i] = rotate(i,gridPosPanels[i],gridNbPanels[i])
 
 
 print("\n")
-print("Checking sizeOfGrid:")
-print(len(grid))
+
 
 # TODO: Insert walls
 
@@ -256,7 +269,7 @@ print(len(grid))
 for i in range(int(sizeOfPanel)):
     print()
     for j in range(int(sizeOfPanel)):
-        print(panel1[i][j].down,end ='')
+        print(gridPosPanels[1][i][j].down,end ='')
  
 
 # isup - isdown - isleft - isright
