@@ -15,7 +15,7 @@ class Case:
         self.up = 0
 
 
-def rotCase(case,direction,nbRot):
+def rotCase(case,direction,nbRot):#rotates one case
     caseTemp = Case()
     if(direction):#clock-wise
         if (case.down == 1):
@@ -78,7 +78,7 @@ def rotCase(case,direction,nbRot):
     return caseTemp
 
 
-def rotation(panel,direction,nbRot):
+def rotation(panel,direction,nbRot):#adds the rotated cases on the panel to complete its rotation
     panelTemp = [[Case() for i in range(int(sizeOfPanel))] for j in range(int(sizeOfPanel))]
     for i in range(0,8):
         for j in range(0,8):
@@ -86,27 +86,42 @@ def rotation(panel,direction,nbRot):
                 if(direction):
                     if (nbRot == 1):
                         panelTemp[j][int(sizeOfPanel) - 1 - i] = rotCase(panel[i][j], direction, nbRot)
-                    if (nbRot == 2):
+                    elif (nbRot == 2):
                         panelTemp[int(sizeOfPanel)-1-i][int(sizeOfPanel)-1-j] = rotCase(panel[i][j], direction, nbRot)
-                    if (nbRot == 3):
+                    elif (nbRot == 3):
                         panelTemp[int(sizeOfPanel)-1-j][i] = rotCase(panel[i][j], direction, nbRot)
                 else:
                     if (nbRot == 1):
                         panelTemp[int(sizeOfPanel) - 1 - j][i] = rotCase(panel[i][j], direction, nbRot)
-                    if (nbRot == 2):
+                    elif (nbRot == 2):
                         panelTemp[int(sizeOfPanel) - 1 - i][int(sizeOfPanel) - 1 - j] = rotCase(panel[i][j], direction, nbRot)
-                    if (nbRot == 3):
+                    elif (nbRot == 3):
                         panelTemp[j][int(sizeOfPanel) - 1 - i] = rotCase(panel[i][j], direction, nbRot)
     return panelTemp
 
 
-def rotate(pos,panel,panelNb):
+def rotate(pos,panel,panelNb):#rotation of a panel
     if(pos == panelNb):
         return panel
     elif(pos >panelNb):
         return rotation(panel,1,pos-panelNb)
     else:
         return rotation(panel,0,panelNb-pos)
+
+
+def placePanelWalls(grid,panel,pos):#places the panel's walls on the grid, taking in account its position
+    for i in range (0,8):
+        for j in range(0,8):
+            if panel[i][j].up == 1 or panel[i][j].right == 1 or panel[i][j].left == 1 or panel[i][j].down == 1:
+                if pos == 0:
+                    grid[i][j] = panel[i][j]
+                elif pos == 1:
+                    grid[i][j+8] = panel[i][j]
+                elif pos == 2:
+                    grid[i+8][j] = panel[i][j]
+                else:
+                    grid[i+8][j+8] = panel[i][j]
+    return grid
 
 
 def isleft(i, j, gridparam):
@@ -248,13 +263,19 @@ for i in range(0,4):
             gridNbPanels[i] = j
             print(j)
 
-#generate walls according to the random layout
-for i in range(int(sizeOfPanel)):
-    print()
-    for j in range(int(sizeOfPanel)):
-        print(gridPosPanels[1][i][j].down,end ='')
+#generate walls according to the random layout on each panel
 for i in range(0,4):
     gridPosPanels[i] = rotate(i,gridPosPanels[i],gridNbPanels[i])
+
+for i in range(int(sizeOfGrid)):
+    print()
+    for j in range(int(sizeOfGrid)):
+        print(grid[i][j].down,end ='')
+
+#PLacing every wall on the final grid
+for i in range (0,4):
+    grid = placePanelWalls(grid,gridPosPanels[i],i)
+
 
 
 print("\n")
@@ -266,10 +287,10 @@ print("\n")
 # Verifications
 
 # up - down - left - right
-for i in range(int(sizeOfPanel)):
+for i in range(int(sizeOfGrid)):
     print()
-    for j in range(int(sizeOfPanel)):
-        print(gridPosPanels[1][i][j].down,end ='')
+    for j in range(int(sizeOfGrid)):
+        print(grid[i][j].down,end ='')
  
 
 # isup - isdown - isleft - isright
