@@ -6,6 +6,7 @@ class Case:
     down = 0
     left = 0
     up = 0
+    target = 0
     pawn = -1
 
     def __init__(self):
@@ -13,10 +14,13 @@ class Case:
         self.down = 0
         self.left = 0
         self.up = 0
+        self.target = 0
 
 
 def rotCase(case,direction,nbRot):#rotates one case
     caseTemp = Case()
+    if case.target != 0:
+        caseTemp.target = case.target
     if(direction):#clock-wise
         if (case.down == 1):
             if(nbRot == 1):
@@ -75,6 +79,7 @@ def rotCase(case,direction,nbRot):#rotates one case
                 caseTemp.left = 1
             if (nbRot == 3):
                 caseTemp.down = 1
+
     return caseTemp
 
 
@@ -166,7 +171,10 @@ sizeOfPanel = sizeOfGrid/2
 
 # init grid
 grid = [[Case() for i in range(sizeOfGrid)] for j in range(sizeOfGrid)]
-
+for i in range (0,sizeOfGrid):
+    for j in range(0, sizeOfGrid):
+        case = Case()
+        grid[i][j] = case
 
 print("Initialising the 4 panels\n ")
 #init all 4 panels with their walls
@@ -176,6 +184,10 @@ panel3 = [[Case() for i in range(int(sizeOfPanel))] for j in range(int(sizeOfPan
 panel4 = [[Case() for i in range(int(sizeOfPanel))] for j in range(int(sizeOfPanel))]
 
 #init panel4's walls
+panel4[1][4].target = 9
+panel4[2][6].target = 11
+panel4[5][1].target = 13
+panel4[6][3].target = 15
 panel4[6][3].down = 1
 panel4[6][3].right = 1
 panel4[7][4].right = 1
@@ -191,6 +203,10 @@ panel4[3][7].down = 1
 panel4[4][7].right = 1
 
 #init panel3's walls
+panel3[1][5].target = 10
+panel3[3][1].target = 12
+panel3[5][6].target = 14
+panel3[6][2].target = 16
 panel3[3][1].right = 1
 panel3[3][1].down = 1
 panel3[1][5].down = 1
@@ -203,6 +219,10 @@ panel3[6][2].left = 1
 panel3[7][3].right = 1
 
 #init panel2's walls
+panel2[1][5].target = 1
+panel2[3][1].target = 3
+panel2[4][6].target = 5
+panel2[6][4].target = 8
 panel2[0][1].right = 1
 panel2[1][5].right = 1
 panel2[1][5].down = 1
@@ -215,6 +235,10 @@ panel2[6][4].down = 1
 panel2[6][4].left = 1
 
 #init panel1's walls
+panel1[2][5].target = 2
+panel1[4][2].target = 4
+panel1[5][7].target = 6
+panel1[6][1].target = 7
 panel1[0][3].right = 1
 panel1[2][5].right = 1
 panel1[2][5].down = 1
@@ -248,11 +272,6 @@ for i in range(0,4):
 for i in range(0,4):
     gridPosPanels[i] = rotate(i,gridPosPanels[i],gridNbPanels[i])
 
-for i in range(int(sizeOfGrid)):
-    print()
-    for j in range(int(sizeOfGrid)):
-        print(grid[i][j].down,end ='')
-
 #PLacing every wall on the final grid
 for i in range (0,4):
     grid = placePanelWalls(grid,gridPosPanels[i],i)
@@ -260,16 +279,15 @@ for i in range (0,4):
 #adding the central and the border walls
 for i in range(sizeOfGrid):
     for j in range(sizeOfGrid):
-        case = Case()
         if i == 0:
-            case.up = 1
+            grid[i][j].up = 1
         if i == sizeOfGrid - 1:
-            case.down = 1
+            grid[i][j].down = 1
         if j == 0:
-            case.left = 1
+            grid[i][j].left = 1
         if j == sizeOfGrid - 1:
-            case.right = 1
-        grid[i][j] = case
+            grid[i][j].right = 1
+
 grid[int(sizeOfGrid/2)-1][int(sizeOfGrid/2)-1].up = 1
 grid[int(sizeOfGrid/2)-1][int(sizeOfGrid/2)-1].left = 1
 grid[int(sizeOfGrid/2)-1][int(sizeOfGrid/2)].up = 1
@@ -280,8 +298,6 @@ grid[int(sizeOfGrid/2)][int(sizeOfGrid/2)].down = 1
 grid[int(sizeOfGrid/2)][int(sizeOfGrid/2)].right = 1
 
 print("\n")
-
-
 
 
 # Verifications
