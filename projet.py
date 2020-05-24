@@ -335,8 +335,8 @@ def chest():
         if j == 16:
             y1,y2=y1+50,y2+50
             i,j,x1,x2=i+1,0,0,50
-        print("i%16 =" ,i%16)
-        print("j =", j)
+        #print("i%16 =" ,i%16)
+        #print("j =", j)
         #pour les pions bleu = 0, orange = 1, vert = 2, rouge = 3
         k = i%16 
         if grid[k][j].pawn == -1:
