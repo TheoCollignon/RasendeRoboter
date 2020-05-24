@@ -318,26 +318,18 @@ print("\n")
 for i in range(int(sizeOfGrid)):
     print()
     for j in range(int(sizeOfGrid)):
-        print(grid[i][j].pawn,end ='')
+        print(grid[i][j].right,end ='')
  
 
 # isup - isdown - isleft - isright
 print("\n\nisWall?")
 print(isright(sizeOfGrid-1,sizeOfGrid-1,grid))
 
-#affichage graphique : test
+#affichage graphique
 def chest():
     global x1,x2,y1,y2,couleur #coordonnees
-    j,i=0,1
+    j,i=0,0
     while x1<800 and y1 < 800 : # 800 car 50*16 case
-        can.create_rectangle(x1+1,y1+1,x2,y2,fill=couleur)
-        i,j,x1,x2=i+1,j+1,x1+50,x2+50
-        if j == 16:
-            y1,y2=y1+50,y2+50
-            i,j,x1,x2=i+1,0,0,50
-        #print("i%16 =" ,i%16)
-        #print("j =", j)
-        #pour les pions bleu = 0, orange = 1, vert = 2, rouge = 3
         k = i%16 
         if grid[k][j].pawn == -1:
             couleur = "white"
@@ -349,6 +341,16 @@ def chest():
             couleur = "green"
         if grid[k][j].pawn == 3:
             couleur = "red"
+        if grid[k][j].target > 0:
+        	couleur ="yellow"
+        can.create_rectangle(x1+2,y1+2,x2,y2,fill=couleur) # case
+        i,j,x1,x2=i+1,j+1,x1+50,x2+50
+        if j == 16:
+            y1,y2=y1+50,y2+50
+            i,j,x1,x2=i+1,0,0,50
+    
+     
+       
 
 x1,y1,x2,y2=0,0,50,50 
 couleur ='white'
