@@ -297,6 +297,16 @@ grid[int(sizeOfGrid/2)][int(sizeOfGrid/2)-1].left = 1
 grid[int(sizeOfGrid/2)][int(sizeOfGrid/2)].down = 1
 grid[int(sizeOfGrid/2)][int(sizeOfGrid/2)].right = 1
 
+#placing the pawns randomly on the grid
+for i in range(0,4):
+    isPlaced = False
+    while(not isPlaced):
+        randomNumber = randint(0,15)
+        randomNumber2 = randint(0,15)
+        if grid[randomNumber][randomNumber2].target == 0 and not ((randomNumber2 > 6 and randomNumber < 9) and (randomNumber2 > 6 and randomNumber2 < 9)):
+            isPlaced = True
+            grid[randomNumber][randomNumber2].pawn = i
+
 print("\n")
 
 
@@ -306,7 +316,7 @@ print("\n")
 for i in range(int(sizeOfGrid)):
     print()
     for j in range(int(sizeOfGrid)):
-        print(grid[i][j].down,end ='')
+        print(grid[i][j].pawn,end ='')
  
 
 # isup - isdown - isleft - isright
