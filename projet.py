@@ -164,28 +164,9 @@ print("PROJECT INITIALIZATION\n")
 sizeOfGrid = 16
 sizeOfPanel = sizeOfGrid/2
 
-# init grid with initial border
+# init grid
 grid = [[Case() for i in range(sizeOfGrid)] for j in range(sizeOfGrid)]
-for i in range(sizeOfGrid):
-    for j in range(sizeOfGrid):
-        case = Case()
-        if i == 0:
-            case.up = 1
-        if i == sizeOfGrid - 1:
-            case.down = 1
-        if j == 0:
-            case.left = 1
-        if j == sizeOfGrid - 1:
-            case.right = 1
-        grid[i][j] = case
-grid[int(sizeOfGrid/2)-1][int(sizeOfGrid/2)-1].up = 1
-grid[int(sizeOfGrid/2)-1][int(sizeOfGrid/2)-1].left = 1
-grid[int(sizeOfGrid/2)-1][int(sizeOfGrid/2)].up = 1
-grid[int(sizeOfGrid/2)-1][int(sizeOfGrid/2)].right = 1
-grid[int(sizeOfGrid/2)][int(sizeOfGrid/2)-1].down = 1
-grid[int(sizeOfGrid/2)][int(sizeOfGrid/2)-1].left = 1
-grid[int(sizeOfGrid/2)][int(sizeOfGrid/2)].down = 1
-grid[int(sizeOfGrid/2)][int(sizeOfGrid/2)].right = 1
+
 
 print("Initialising the 4 panels\n ")
 #init all 4 panels with their walls
@@ -276,12 +257,31 @@ for i in range(int(sizeOfGrid)):
 for i in range (0,4):
     grid = placePanelWalls(grid,gridPosPanels[i],i)
 
-
+#adding the central and the border walls
+for i in range(sizeOfGrid):
+    for j in range(sizeOfGrid):
+        case = Case()
+        if i == 0:
+            case.up = 1
+        if i == sizeOfGrid - 1:
+            case.down = 1
+        if j == 0:
+            case.left = 1
+        if j == sizeOfGrid - 1:
+            case.right = 1
+        grid[i][j] = case
+grid[int(sizeOfGrid/2)-1][int(sizeOfGrid/2)-1].up = 1
+grid[int(sizeOfGrid/2)-1][int(sizeOfGrid/2)-1].left = 1
+grid[int(sizeOfGrid/2)-1][int(sizeOfGrid/2)].up = 1
+grid[int(sizeOfGrid/2)-1][int(sizeOfGrid/2)].right = 1
+grid[int(sizeOfGrid/2)][int(sizeOfGrid/2)-1].down = 1
+grid[int(sizeOfGrid/2)][int(sizeOfGrid/2)-1].left = 1
+grid[int(sizeOfGrid/2)][int(sizeOfGrid/2)].down = 1
+grid[int(sizeOfGrid/2)][int(sizeOfGrid/2)].right = 1
 
 print("\n")
 
 
-# TODO: Insert walls
 
 
 # Verifications
