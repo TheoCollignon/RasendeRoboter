@@ -1,5 +1,5 @@
 from random import random, randint
-from tkinter import * 
+from tkinter import *
 
 
 
@@ -341,9 +341,42 @@ def chest():
             couleur = "green"
         if grid[k][j].pawn == 3:
             couleur = "red"
-        if grid[k][j].target > 0:
-        	couleur ="yellow"
         can.create_rectangle(x1+2,y1+2,x2,y2,fill=couleur) # case
+
+        if grid[k][j].target > 0:
+            if grid[k][j].target==1:
+                can.create_image(x1+2, y1+2, image=img1, anchor='nw')
+            if grid[k][j].target==2:
+                can.create_image(x1+2, y1+2, image=img2, anchor='nw')
+            if grid[k][j].target==3:
+                can.create_image(x1+2, y1+2, image=img3, anchor='nw')
+            if grid[k][j].target==4:
+                can.create_image(x1+2, y1+2, image=img4, anchor='nw')
+            if grid[k][j].target==5:
+                can.create_image(x1+2, y1+2, image=img5, anchor='nw')
+            if grid[k][j].target==6:
+                can.create_image(x1+2, y1+2, image=img6, anchor='nw')
+            if grid[k][j].target==7:
+                can.create_image(x1+2, y1+2, image=img7, anchor='nw')
+            if grid[k][j].target==8:
+                can.create_image(x1+2, y1+2, image=img8, anchor='nw')
+            if grid[k][j].target==9:
+                can.create_image(x1+2, y1+2, image=img9, anchor='nw')
+            if grid[k][j].target==10:
+                can.create_image(x1+2, y1+2, image=img10, anchor='nw')
+            if grid[k][j].target==11:
+                can.create_image(x1+2, y1+2, image=img11, anchor='nw')
+            if grid[k][j].target==12:
+                can.create_image(x1+2, y1+2, image=img12, anchor='nw')
+            if grid[k][j].target==13:
+                can.create_image(x1+2, y1+2, image=img13, anchor='nw')
+            if grid[k][j].target==14:
+                can.create_image(x1+2, y1+2, image=img14, anchor='nw')
+            if grid[k][j].target==15:
+                can.create_image(x1+2, y1+2, image=img15, anchor='nw')
+            if grid[k][j].target==16:
+                can.create_image(x1+2, y1+2, image=img16, anchor='nw')
+
         if grid[k][j].down == 1:
             can.create_line(x1+5,y2,x2,y2,fill="black",width=5)
         if grid[k][j].right == 1:
@@ -365,6 +398,27 @@ couleur ='white'
 
 fen = Tk()
 can = Canvas(fen,width=800,heigh=800,bg='ivory')
+
+# Permet d'afficher les images, on a besoin de garder une référence sinon elle ne s'affichent pas
+img1 = PhotoImage(file="img/1.gif")
+img2 = PhotoImage(file="img/2.gif")
+img3 = PhotoImage(file="img/3.gif")
+img4 = PhotoImage(file="img/4.gif")
+img5 = PhotoImage(file="img/5.gif")
+img6 = PhotoImage(file="img/6.gif")
+img7 = PhotoImage(file="img/7.gif")
+img8 = PhotoImage(file="img/8.gif")
+img9 = PhotoImage(file="img/9.gif")
+img10 = PhotoImage(file="img/10.gif")
+img11 = PhotoImage(file="img/11.gif")
+img12 = PhotoImage(file="img/12.gif")
+img13 = PhotoImage(file="img/13.gif")
+img14 = PhotoImage(file="img/14.gif")
+img15 = PhotoImage(file="img/15.gif")
+img16 = PhotoImage(file="img/16.gif")
+label = Label(image=img1)
+label.image = img1 # keep a reference!
+
 b1 = Button(fen, text='Jouer :D', command=chest)
 can.pack(side=TOP,padx=5,pady=5)
 b1.pack(side = LEFT, padx = 3, pady = 3)
