@@ -325,14 +325,22 @@ for i in range(int(sizeOfGrid)):
 print("\n\nisWall?")
 print(isright(sizeOfGrid-1,sizeOfGrid-1,grid))
 
-def callback(event):
-    i = (int)(event.x/50)
-    j = (int)(event.y/50)
-    print("clicked at", event.x, event.y," / case ",i,j)
+def on_click_event(event):
+    j = (int)(event.x/50)
+    i = (int)(event.y/50)
+    print("clicked at", event.x, event.y, " / case ", i, j)
+    if grid[i][j].pawn == 0:
+        print("blue pawn")
+    if grid[i][j].pawn == 1:
+        print("orange pawn")
+    if grid[i][j].pawn == 2:
+        print("green pawn")
+    if grid[i][j].pawn == 3:
+        print("red pawn")
 
 #affichage graphique
 def chest():
-    can.bind("<Button-1>", callback)
+    can.bind("<Button-1>", on_click_event)
     global x1,x2,y1,y2,couleur #coordonnees
     j,i=0,0
     while x1<800 and y1 < 800 : # 800 car 50*16 case
