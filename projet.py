@@ -352,7 +352,7 @@ def chest():
             can.create_line(x1+5, y1, x1+5, y2, fill="black", width=5)
         if grid[k][j].up == 1:
             can.create_line(x1+5,y1+5, x2, y1+5, fill="black", width=5)
-        i,j,x1,x2=i+1,j+1,x1+50,x2+50
+        j,x1,x2=j+1,x1+50,x2+50
         if j == 16:
             y1,y2=y1+50,y2+50
             i,j,x1,x2=i+1,0,0,50
