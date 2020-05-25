@@ -325,8 +325,14 @@ for i in range(int(sizeOfGrid)):
 print("\n\nisWall?")
 print(isright(sizeOfGrid-1,sizeOfGrid-1,grid))
 
+def callback(event):
+    i = (int)(event.x/50)
+    j = (int)(event.y/50)
+    print("clicked at", event.x, event.y," / case ",i,j)
+
 #affichage graphique
 def chest():
+    can.bind("<Button-1>", callback)
     global x1,x2,y1,y2,couleur #coordonnees
     j,i=0,0
     while x1<800 and y1 < 800 : # 800 car 50*16 case
@@ -390,7 +396,7 @@ def chest():
             y1,y2=y1+50,y2+50
             i,j,x1,x2=i+1,0,0,50
 
-     
+
        
 
 x1,y1,x2,y2=0,0,50,50 
