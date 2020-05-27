@@ -1,2 +1,2 @@
 # RasendeRoboter
-[IA41] - Rasende Roboter
+Jeu "Rasende Roboter" et Intelligence Artificielle
