@@ -167,6 +167,8 @@ def isdown(i, j, gridparam):
     return 0
 
 def goLeft(i,j,gridparam):
+    if gridparam[i][j].pawn == -1:
+        return
     iIter = i
     jIter = j
     if(isleft(iIter,jIter,gridparam) == 0):
@@ -177,6 +179,8 @@ def goLeft(i,j,gridparam):
         goLeft(iIter, jIter, gridparam)
 
 def goRight(i,j,gridparam):
+    if gridparam[i][j].pawn == -1:
+        return
     iIter = i
     jIter = j
     if(isleft(iIter,jIter,gridparam) == 0):
@@ -187,6 +191,8 @@ def goRight(i,j,gridparam):
         goRight(iIter, jIter, gridparam)
 
 def goUp(i,j,gridparam):
+    if gridparam[i][j].pawn == -1:
+        return
     iIter = i
     jIter = j
     if(isleft(iIter,jIter,gridparam) == 0):
@@ -197,6 +203,8 @@ def goUp(i,j,gridparam):
         goUp(iIter, jIter, gridparam)
 
 def goDown(i,j,gridparam):
+    if gridparam[i][j].pawn == -1:
+        return
     iIter = i
     jIter = j
     if(isleft(iIter,jIter,gridparam) == 0):
@@ -358,6 +366,12 @@ for i in range(int(sizeOfGrid)):
     print()
     for j in range(int(sizeOfGrid)):
         print(grid[i][j].up,end ='')
+
+# pawn
+for i in range(int(sizeOfGrid)):
+    print()
+    for j in range(int(sizeOfGrid)):
+        print(grid[i][j].pawn,end ='')
  
 
 # isup - isdown - isleft - isright
