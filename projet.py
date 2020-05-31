@@ -166,6 +166,45 @@ def isdown(i, j, gridparam):
             return 1
     return 0
 
+def goLeft(i,j,gridparam):
+    iIter = i
+    jIter = j
+    if(isleft(iIter,jIter,gridparam) == 0):
+        pawnID = gridparam[i][j].pawn
+        gridparam[i][j].pawn = -1
+        jIter = j - 1
+        gridparam[i][jIter].pawn = pawnID
+        goLeft(iIter, jIter, gridparam)
+
+def goRight(i,j,gridparam):
+    iIter = i
+    jIter = j
+    if(isleft(iIter,jIter,gridparam) == 0):
+        pawnID = gridparam[i][j].pawn
+        gridparam[i][j].pawn = -1
+        jIter = j + 1
+        gridparam[i][jIter].pawn = pawnID
+        goRight(iIter, jIter, gridparam)
+
+def goUp(i,j,gridparam):
+    iIter = i
+    jIter = j
+    if(isleft(iIter,jIter,gridparam) == 0):
+        pawnID = gridparam[i][j].pawn
+        gridparam[i][j].pawn = -1
+        iIter = i - 1
+        gridparam[iIter][j].pawn = pawnID
+        goUp(iIter, jIter, gridparam)
+
+def goDown(i,j,gridparam):
+    iIter = i
+    jIter = j
+    if(isleft(iIter,jIter,gridparam) == 0):
+        pawnID = gridparam[i][j].pawn
+        gridparam[i][j].pawn = -1
+        iIter = i + 1
+        gridparam[iIter][j].pawn = pawnID
+        goDown(iIter, jIter, gridparam)
 
 print("PROJECT INITIALIZATION\n")
 sizeOfGrid = 16
