@@ -137,6 +137,8 @@ def isleft(i, j, gridparam):
     elif j - 1 >= 0:
         if gridparam[i][j - 1].right == 1:
             return 1
+        elif gridparam[i][j - 1].pawn != -1:
+            return 1
     return 0
 
 
@@ -145,6 +147,8 @@ def isright(i, j, gridparam):
         return 1
     elif j + 1 < sizeOfGrid:
         if gridparam[i][j + 1].left == 1:
+            return 1
+        elif gridparam[i][j + 1].pawn != -1:
             return 1
     return 0
 
@@ -155,6 +159,8 @@ def isup(i, j, gridparam):
     elif i - 1 >= 0:
         if gridparam[i - 1][j].down == 1:
             return 1
+        elif gridparam[i - 1][j].pawn != -1:
+            return 1
     return 0
 
 
@@ -162,7 +168,9 @@ def isdown(i, j, gridparam):
     if gridparam[i][j].down == 1:
         return 1
     elif i + 1 < sizeOfGrid:
-        if gridparam[i - 1][j].up == 1:
+        if gridparam[i + 1][j].up == 1:
+            return 1
+        elif gridparam[i + 1][j].pawn != -1:
             return 1
     return 0
 
@@ -359,25 +367,6 @@ for i in range(0,4):
 print("\n")
 
 
-# Verifications
-
-# up - down - left - right
-for i in range(int(sizeOfGrid)):
-    print()
-    for j in range(int(sizeOfGrid)):
-        print(grid[i][j].up,end ='')
-
-# pawn
-for i in range(int(sizeOfGrid)):
-    print()
-    for j in range(int(sizeOfGrid)):
-        print(grid[i][j].pawn,end ='')
- 
-
-# isup - isdown - isleft - isright
-print("\n\nisWall?")
-print(isright(sizeOfGrid-1,sizeOfGrid-1,grid))
-
 def on_click_event(event):
     j = (int)(event.x/50)
     i = (int)(event.y/50)
@@ -457,8 +446,24 @@ def chest():
             y1,y2=y1+50,y2+50
             i,j,x1,x2=i+1,0,0,50
 
+# Verifications
 
-       
+# up - down - left - right
+for i in range(int(sizeOfGrid)):
+    print()
+    for j in range(int(sizeOfGrid)):
+        print(isdown(i,j,grid),end ='')
+
+# pawn
+for i in range(int(sizeOfGrid)):
+    print()
+    for j in range(int(sizeOfGrid)):
+        print(grid[i][j].pawn,end ='')
+
+
+# isup - isdown - isleft - isright
+print("\n\nisWall?")
+print(isright(sizeOfGrid-1,sizeOfGrid-1,grid))
 
 x1,y1,x2,y2=0,0,50,50 
 couleur ='white'
@@ -490,5 +495,6 @@ b1 = Button(fen, text='Jouer :D', command=chest)
 can.pack(side=TOP,padx=5,pady=5)
 b1.pack(side = LEFT, padx = 3, pady = 3)
 fen.mainloop()
+
 
 #affichage fin : fin test
