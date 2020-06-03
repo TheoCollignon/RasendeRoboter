@@ -2,7 +2,6 @@ from random import random, randint
 from tkinter import *
 
 
-
 class Case:
     right = 0
     down = 0
@@ -19,17 +18,17 @@ class Case:
         self.target = 0
 
 
-def rotCase(case,direction,nbRot):#rotates one case
+def rotCase(case, direction, nbRot):  # rotates one case
     caseTemp = Case()
     if case.target != 0:
         caseTemp.target = case.target
-    if(direction):#clock-wise
+    if (direction):  # clock-wise
         if (case.down == 1):
-            if(nbRot == 1):
+            if (nbRot == 1):
                 caseTemp.left = 1
-            if(nbRot == 2):
+            if (nbRot == 2):
                 caseTemp.up = 1
-            if(nbRot == 3):
+            if (nbRot == 3):
                 caseTemp.right = 1
         if (case.up == 1):
             if (nbRot == 1):
@@ -52,7 +51,7 @@ def rotCase(case,direction,nbRot):#rotates one case
                 caseTemp.left = 1
             if (nbRot == 3):
                 caseTemp.up = 1
-    else:#anti-clock-wise
+    else:  # anti-clock-wise
         if (case.down == 1):
             if (nbRot == 1):
                 caseTemp.right = 1
@@ -85,49 +84,51 @@ def rotCase(case,direction,nbRot):#rotates one case
     return caseTemp
 
 
-def rotation(panel,direction,nbRot):#adds the rotated cases on the panel to complete its rotation
+def rotation(panel, direction, nbRot):  # adds the rotated cases on the panel to complete its rotation
     panelTemp = [[Case() for i in range(int(sizeOfPanel))] for j in range(int(sizeOfPanel))]
-    for i in range(0,8):
-        for j in range(0,8):
+    for i in range(0, 8):
+        for j in range(0, 8):
             if panel[i][j].up == 1 or panel[i][j].right == 1 or panel[i][j].left == 1 or panel[i][j].down == 1:
-                if(direction):
+                if (direction):
                     if (nbRot == 1):
                         panelTemp[j][int(sizeOfPanel) - 1 - i] = rotCase(panel[i][j], direction, nbRot)
                     elif (nbRot == 2):
-                        panelTemp[int(sizeOfPanel)-1-i][int(sizeOfPanel)-1-j] = rotCase(panel[i][j], direction, nbRot)
+                        panelTemp[int(sizeOfPanel) - 1 - i][int(sizeOfPanel) - 1 - j] = rotCase(panel[i][j], direction,
+                                                                                                nbRot)
                     elif (nbRot == 3):
-                        panelTemp[int(sizeOfPanel)-1-j][i] = rotCase(panel[i][j], direction, nbRot)
+                        panelTemp[int(sizeOfPanel) - 1 - j][i] = rotCase(panel[i][j], direction, nbRot)
                 else:
                     if (nbRot == 1):
                         panelTemp[int(sizeOfPanel) - 1 - j][i] = rotCase(panel[i][j], direction, nbRot)
                     elif (nbRot == 2):
-                        panelTemp[int(sizeOfPanel) - 1 - i][int(sizeOfPanel) - 1 - j] = rotCase(panel[i][j], direction, nbRot)
+                        panelTemp[int(sizeOfPanel) - 1 - i][int(sizeOfPanel) - 1 - j] = rotCase(panel[i][j], direction,
+                                                                                                nbRot)
                     elif (nbRot == 3):
                         panelTemp[j][int(sizeOfPanel) - 1 - i] = rotCase(panel[i][j], direction, nbRot)
     return panelTemp
 
 
-def rotate(pos,panel,panelNb):#rotation of a panel
-    if(pos == panelNb):
+def rotate(pos, panel, panelNb):  # rotation of a panel
+    if (pos == panelNb):
         return panel
-    elif(pos >panelNb):
-        return rotation(panel,1,pos-panelNb)
+    elif (pos > panelNb):
+        return rotation(panel, 1, pos - panelNb)
     else:
-        return rotation(panel,0,panelNb-pos)
+        return rotation(panel, 0, panelNb - pos)
 
 
-def placePanelWalls(grid,panel,pos):#places the panel's walls on the grid, taking in account its position
-    for i in range (0,8):
-        for j in range(0,8):
+def placePanelWalls(grid, panel, pos):  # places the panel's walls on the grid, taking in account its position
+    for i in range(0, 8):
+        for j in range(0, 8):
             if panel[i][j].up == 1 or panel[i][j].right == 1 or panel[i][j].left == 1 or panel[i][j].down == 1:
                 if pos == 0:
                     grid[i][j] = panel[i][j]
                 elif pos == 1:
-                    grid[i][j+8] = panel[i][j]
+                    grid[i][j + 8] = panel[i][j]
                 elif pos == 2:
-                    grid[i+8][j] = panel[i][j]
+                    grid[i + 8][j] = panel[i][j]
                 else:
-                    grid[i+8][j+8] = panel[i][j]
+                    grid[i + 8][j + 8] = panel[i][j]
     return grid
 
 
@@ -174,73 +175,98 @@ def isdown(i, j, gridparam):
             return 1
     return 0
 
-def goLeft(i,j,gridparam):
+def updateGrid(i,j,i2,j2, pawnId):
+    can.create_rectangle(j*50 + 2, i*50 + 2, (j+1)*50, (i+1)*50, fill="white")  # case
+    couleur = "white"
+    if pawnId == 0:
+        couleur = "blue"
+    if pawnId == 1:
+        couleur = "orange"
+    if pawnId == 2:
+        couleur = "green"
+    if pawnId == 3:
+        couleur = "red"
+    can.create_rectangle(j2 * 50 + 2, i2 * 50 + 2, (j2 + 1) * 50, (i2 + 1) * 50, fill=couleur)  # case
+
+def goLeft(i, j, gridparam):
     if gridparam[i][j].pawn == -1:
+        print('return')
         return
     iIter = i
     jIter = j
-    if(isleft(iIter,jIter,gridparam) == 0):
+    if (isleft(iIter, jIter, gridparam) == 0):
         pawnID = gridparam[i][j].pawn
         gridparam[i][j].pawn = -1
         jIter = j - 1
         gridparam[i][jIter].pawn = pawnID
+        updateGrid(i, j, i, jIter, pawnID)
         goLeft(iIter, jIter, gridparam)
 
-def goRight(i,j,gridparam):
+def goRight(i, j, gridparam):
     if gridparam[i][j].pawn == -1:
         return
     iIter = i
     jIter = j
-    if(isleft(iIter,jIter,gridparam) == 0):
+    if (isright(iIter, jIter, gridparam) == 0):
         pawnID = gridparam[i][j].pawn
         gridparam[i][j].pawn = -1
         jIter = j + 1
         gridparam[i][jIter].pawn = pawnID
+        updateGrid(i, j, i, jIter, pawnID)
         goRight(iIter, jIter, gridparam)
 
-def goUp(i,j,gridparam):
+
+def goUp(i, j, gridparam):
     if gridparam[i][j].pawn == -1:
         return
     iIter = i
     jIter = j
-    if(isleft(iIter,jIter,gridparam) == 0):
+    if (isup(iIter, jIter, gridparam) == 0):
         pawnID = gridparam[i][j].pawn
         gridparam[i][j].pawn = -1
         iIter = i - 1
         gridparam[iIter][j].pawn = pawnID
+        updateGrid(i, j, iIter, j, pawnID)
         goUp(iIter, jIter, gridparam)
 
-def goDown(i,j,gridparam):
+
+def goDown(i, j, gridparam):
     if gridparam[i][j].pawn == -1:
         return
     iIter = i
     jIter = j
-    if(isleft(iIter,jIter,gridparam) == 0):
+    if (isdown(iIter, jIter, gridparam) == 0):
         pawnID = gridparam[i][j].pawn
         gridparam[i][j].pawn = -1
         iIter = i + 1
         gridparam[iIter][j].pawn = pawnID
+        updateGrid(i, j, iIter, j, pawnID)
         goDown(iIter, jIter, gridparam)
+
 
 print("PROJECT INITIALIZATION\n")
 sizeOfGrid = 16
-sizeOfPanel = sizeOfGrid/2
+sizeOfPanel = sizeOfGrid / 2
+
+click = 1
+lastX = -1
+lastY = -1
 
 # init grid
 grid = [[Case() for i in range(sizeOfGrid)] for j in range(sizeOfGrid)]
-for i in range (0,sizeOfGrid):
+for i in range(0, sizeOfGrid):
     for j in range(0, sizeOfGrid):
         case = Case()
         grid[i][j] = case
 
 print("Initialising the 4 panels\n ")
-#init all 4 panels with their walls
+# init all 4 panels with their walls
 panel1 = [[Case() for i in range(int(sizeOfPanel))] for j in range(int(sizeOfPanel))]
 panel2 = [[Case() for i in range(int(sizeOfPanel))] for j in range(int(sizeOfPanel))]
 panel3 = [[Case() for i in range(int(sizeOfPanel))] for j in range(int(sizeOfPanel))]
 panel4 = [[Case() for i in range(int(sizeOfPanel))] for j in range(int(sizeOfPanel))]
 
-#init panel4's walls
+# init panel4's walls
 panel4[1][4].target = 9
 panel4[2][6].target = 11
 panel4[5][1].target = 13
@@ -259,7 +285,7 @@ panel4[7][5].left = 1
 panel4[3][7].down = 1
 panel4[4][7].right = 1
 
-#init panel3's walls
+# init panel3's walls
 panel3[1][5].target = 10
 panel3[3][1].target = 12
 panel3[5][6].target = 14
@@ -275,7 +301,7 @@ panel3[6][2].up = 1
 panel3[6][2].left = 1
 panel3[7][3].right = 1
 
-#init panel2's walls
+# init panel2's walls
 panel2[1][5].target = 1
 panel2[3][1].target = 3
 panel2[4][6].target = 5
@@ -291,7 +317,7 @@ panel2[4][6].up = 1
 panel2[6][4].down = 1
 panel2[6][4].left = 1
 
-#init panel1's walls
+# init panel1's walls
 panel1[2][5].target = 2
 panel1[4][2].target = 4
 panel1[5][7].target = 6
@@ -307,10 +333,10 @@ panel1[4][0].down = 1
 panel1[6][1].up = 1
 panel1[6][1].left = 1
 
-#randomly place the panels on the grid
-gridPosPanels = [0,0,0,0] #stores the panels in the right placement order
-gridNbPanels = [0,0,0,0] #stores what panels are placed where
-gridPanels = [panel1,panel2,panel3,panel4]
+# randomly place the panels on the grid
+gridPosPanels = [0, 0, 0, 0]  # stores the panels in the right placement order
+gridNbPanels = [0, 0, 0, 0]  # stores what panels are placed where
+gridPanels = [panel1, panel2, panel3, panel4]
 randomP1 = random()
 randomP2 = random()
 randomP3 = random()
@@ -318,22 +344,22 @@ randomP4 = random()
 listPanelNumbers = [randomP1, randomP2, randomP3, randomP4]
 listRandom = [randomP1, randomP2, randomP3, randomP4]
 listRandom.sort()
-for i in range(0,4):
-    for j in range(0,4):
+for i in range(0, 4):
+    for j in range(0, 4):
         if listPanelNumbers[j] == listRandom[i]:
             gridPosPanels[i] = gridPanels[j]
             gridNbPanels[i] = j
             print(j)
 
-#generate walls according to the random layout on each panel
-for i in range(0,4):
-    gridPosPanels[i] = rotate(i,gridPosPanels[i],gridNbPanels[i])
+# generate walls according to the random layout on each panel
+for i in range(0, 4):
+    gridPosPanels[i] = rotate(i, gridPosPanels[i], gridNbPanels[i])
 
-#PLacing every wall on the final grid
-for i in range (0,4):
-    grid = placePanelWalls(grid,gridPosPanels[i],i)
+# PLacing every wall on the final grid
+for i in range(0, 4):
+    grid = placePanelWalls(grid, gridPosPanels[i], i)
 
-#adding the central and the border walls
+# adding the central and the border walls
 for i in range(sizeOfGrid):
     for j in range(sizeOfGrid):
         if i == 0:
@@ -345,48 +371,72 @@ for i in range(sizeOfGrid):
         if j == sizeOfGrid - 1:
             grid[i][j].right = 1
 
-grid[int(sizeOfGrid/2)-1][int(sizeOfGrid/2)-1].up = 1
-grid[int(sizeOfGrid/2)-1][int(sizeOfGrid/2)-1].left = 1
-grid[int(sizeOfGrid/2)-1][int(sizeOfGrid/2)].up = 1
-grid[int(sizeOfGrid/2)-1][int(sizeOfGrid/2)].right = 1
-grid[int(sizeOfGrid/2)][int(sizeOfGrid/2)-1].down = 1
-grid[int(sizeOfGrid/2)][int(sizeOfGrid/2)-1].left = 1
-grid[int(sizeOfGrid/2)][int(sizeOfGrid/2)].down = 1
-grid[int(sizeOfGrid/2)][int(sizeOfGrid/2)].right = 1
+grid[int(sizeOfGrid / 2) - 1][int(sizeOfGrid / 2) - 1].up = 1
+grid[int(sizeOfGrid / 2) - 1][int(sizeOfGrid / 2) - 1].left = 1
+grid[int(sizeOfGrid / 2) - 1][int(sizeOfGrid / 2)].up = 1
+grid[int(sizeOfGrid / 2) - 1][int(sizeOfGrid / 2)].right = 1
+grid[int(sizeOfGrid / 2)][int(sizeOfGrid / 2) - 1].down = 1
+grid[int(sizeOfGrid / 2)][int(sizeOfGrid / 2) - 1].left = 1
+grid[int(sizeOfGrid / 2)][int(sizeOfGrid / 2)].down = 1
+grid[int(sizeOfGrid / 2)][int(sizeOfGrid / 2)].right = 1
 
-#placing the pawns randomly on the grid
-for i in range(0,4):
+# placing the pawns randomly on the grid
+for i in range(0, 4):
     isPlaced = False
-    while(not isPlaced):
-        randomNumber = randint(0,15)
-        randomNumber2 = randint(0,15)
-        if grid[randomNumber][randomNumber2].target == 0 and not ((randomNumber2 > 6 and randomNumber < 9) and (randomNumber2 > 6 and randomNumber2 < 9)):
+    while (not isPlaced):
+        randomNumber = randint(0, 15)
+        randomNumber2 = randint(0, 15)
+        if grid[randomNumber][randomNumber2].target == 0 and not (
+                (randomNumber2 > 6 and randomNumber < 9) and (randomNumber2 > 6 and randomNumber2 < 9)):
             isPlaced = True
             grid[randomNumber][randomNumber2].pawn = i
 
 print("\n")
 
-
 def on_click_event(event):
-    j = (int)(event.x/50)
-    i = (int)(event.y/50)
+    global click, lastY, lastX
+    i = (int)(event.x / 50)
+    j = (int)(event.y / 50)
     print("clicked at", event.x, event.y, " / case ", i, j)
-    if grid[i][j].pawn == 0:
-        print("blue pawn")
-    if grid[i][j].pawn == 1:
-        print("orange pawn")
-    if grid[i][j].pawn == 2:
-        print("green pawn")
-    if grid[i][j].pawn == 3:
-        print("red pawn")
+    # if grid[i][j].pawn == 0:
+    #    print("blue pawn")
+    # if grid[i][j].pawn == 1:
+    #    print("orange pawn")
+    # if grid[i][j].pawn == 2:
+    #    print("green pawn")
+    # if grid[i][j].pawn == 3:
+    #    print("red pawn")
+    if click == 1:
+        if grid[j][i].pawn > -1:
+            lastX = i
+            lastY = j
+            click = 2
+            print('PAWN')
+    else:
+        if i == lastX:
+            if lastY < j:
+                goDown(lastY, lastX, grid)
+                print('go Down')
+            if lastY > j:
+                goUp(lastY, lastX, grid)
+                print('go Up')
+        if j == lastY:
+            if lastX < i:
+                goRight(lastY, lastX, grid)
+                print('go Right')
+            if lastX > i:
+                goLeft(lastY, lastX, grid)
+                print('go Left')
+        click = 1
 
-#affichage graphique
+
+# affichage graphique
 def chest():
     can.bind("<Button-1>", on_click_event)
-    global x1,x2,y1,y2,couleur #coordonnees
-    j,i=0,0
-    while x1<800 and y1 < 800 : # 800 car 50*16 case
-        k = i%16 
+    global x1, x2, y1, y2, couleur  # coordonnees
+    j, i = 0, 0
+    while x1 < 800 and y1 < 800:  # 800 car 50*16 case
+        k = i % 16
         if grid[k][j].pawn == -1:
             couleur = "white"
         if grid[k][j].pawn == 0:
@@ -397,54 +447,55 @@ def chest():
             couleur = "green"
         if grid[k][j].pawn == 3:
             couleur = "red"
-        can.create_rectangle(x1+2,y1+2,x2,y2,fill=couleur) # case
+        can.create_rectangle(x1 + 2, y1 + 2, x2, y2, fill=couleur)  # case
 
         if grid[k][j].target > 0:
-            if grid[k][j].target==1:
-                can.create_image(x1+2, y1+2, image=img1, anchor='nw')
-            if grid[k][j].target==2:
-                can.create_image(x1+2, y1+2, image=img2, anchor='nw')
-            if grid[k][j].target==3:
-                can.create_image(x1+2, y1+2, image=img3, anchor='nw')
-            if grid[k][j].target==4:
-                can.create_image(x1+2, y1+2, image=img4, anchor='nw')
-            if grid[k][j].target==5:
-                can.create_image(x1+2, y1+2, image=img5, anchor='nw')
-            if grid[k][j].target==6:
-                can.create_image(x1+2, y1+2, image=img6, anchor='nw')
-            if grid[k][j].target==7:
-                can.create_image(x1+2, y1+2, image=img7, anchor='nw')
-            if grid[k][j].target==8:
-                can.create_image(x1+2, y1+2, image=img8, anchor='nw')
-            if grid[k][j].target==9:
-                can.create_image(x1+2, y1+2, image=img9, anchor='nw')
-            if grid[k][j].target==10:
-                can.create_image(x1+2, y1+2, image=img10, anchor='nw')
-            if grid[k][j].target==11:
-                can.create_image(x1+2, y1+2, image=img11, anchor='nw')
-            if grid[k][j].target==12:
-                can.create_image(x1+2, y1+2, image=img12, anchor='nw')
-            if grid[k][j].target==13:
-                can.create_image(x1+2, y1+2, image=img13, anchor='nw')
-            if grid[k][j].target==14:
-                can.create_image(x1+2, y1+2, image=img14, anchor='nw')
-            if grid[k][j].target==15:
-                can.create_image(x1+2, y1+2, image=img15, anchor='nw')
-            if grid[k][j].target==16:
-                can.create_image(x1+2, y1+2, image=img16, anchor='nw')
+            if grid[k][j].target == 1:
+                can.create_image(x1 + 2, y1 + 2, image=img1, anchor='nw')
+            if grid[k][j].target == 2:
+                can.create_image(x1 + 2, y1 + 2, image=img2, anchor='nw')
+            if grid[k][j].target == 3:
+                can.create_image(x1 + 2, y1 + 2, image=img3, anchor='nw')
+            if grid[k][j].target == 4:
+                can.create_image(x1 + 2, y1 + 2, image=img4, anchor='nw')
+            if grid[k][j].target == 5:
+                can.create_image(x1 + 2, y1 + 2, image=img5, anchor='nw')
+            if grid[k][j].target == 6:
+                can.create_image(x1 + 2, y1 + 2, image=img6, anchor='nw')
+            if grid[k][j].target == 7:
+                can.create_image(x1 + 2, y1 + 2, image=img7, anchor='nw')
+            if grid[k][j].target == 8:
+                can.create_image(x1 + 2, y1 + 2, image=img8, anchor='nw')
+            if grid[k][j].target == 9:
+                can.create_image(x1 + 2, y1 + 2, image=img9, anchor='nw')
+            if grid[k][j].target == 10:
+                can.create_image(x1 + 2, y1 + 2, image=img10, anchor='nw')
+            if grid[k][j].target == 11:
+                can.create_image(x1 + 2, y1 + 2, image=img11, anchor='nw')
+            if grid[k][j].target == 12:
+                can.create_image(x1 + 2, y1 + 2, image=img12, anchor='nw')
+            if grid[k][j].target == 13:
+                can.create_image(x1 + 2, y1 + 2, image=img13, anchor='nw')
+            if grid[k][j].target == 14:
+                can.create_image(x1 + 2, y1 + 2, image=img14, anchor='nw')
+            if grid[k][j].target == 15:
+                can.create_image(x1 + 2, y1 + 2, image=img15, anchor='nw')
+            if grid[k][j].target == 16:
+                can.create_image(x1 + 2, y1 + 2, image=img16, anchor='nw')
 
         if grid[k][j].down == 1:
-            can.create_line(x1+5,y2,x2,y2,fill="black",width=5)
+            can.create_line(x1 + 5, y2, x2, y2, fill="black", width=5)
         if grid[k][j].right == 1:
             can.create_line(x2, y1, x2, y2, fill="black", width=5)
         if grid[k][j].left == 1:
-            can.create_line(x1+5, y1, x1+5, y2, fill="black", width=5)
+            can.create_line(x1 + 5, y1, x1 + 5, y2, fill="black", width=5)
         if grid[k][j].up == 1:
-            can.create_line(x1+5,y1+5, x2, y1+5, fill="black", width=5)
-        j,x1,x2=j+1,x1+50,x2+50
+            can.create_line(x1 + 5, y1 + 5, x2, y1 + 5, fill="black", width=5)
+        j, x1, x2 = j + 1, x1 + 50, x2 + 50
         if j == 16:
-            y1,y2=y1+50,y2+50
-            i,j,x1,x2=i+1,0,0,50
+            y1, y2 = y1 + 50, y2 + 50
+            i, j, x1, x2 = i + 1, 0, 0, 50
+
 
 # Verifications
 
@@ -452,24 +503,23 @@ def chest():
 for i in range(int(sizeOfGrid)):
     print()
     for j in range(int(sizeOfGrid)):
-        print(isdown(i,j,grid),end ='')
+        print(isdown(i, j, grid), end='')
 
 # pawn
 for i in range(int(sizeOfGrid)):
     print()
     for j in range(int(sizeOfGrid)):
-        print(grid[i][j].pawn,end ='')
-
+        print(grid[i][j].pawn, end='')
 
 # isup - isdown - isleft - isright
 print("\n\nisWall?")
-print(isright(sizeOfGrid-1,sizeOfGrid-1,grid))
+print(isright(sizeOfGrid - 1, sizeOfGrid - 1, grid))
 
-x1,y1,x2,y2=0,0,50,50 
-couleur ='white'
+x1, y1, x2, y2 = 0, 0, 50, 50
+couleur = 'white'
 
 fen = Tk()
-can = Canvas(fen,width=800,heigh=800,bg='ivory')
+can = Canvas(fen, width=800, heigh=800, bg='ivory')
 
 # Permet d'afficher les images, on a besoin de garder une référence sinon elle ne s'affichent pas
 img1 = PhotoImage(file="img/1.gif")
@@ -489,12 +539,11 @@ img14 = PhotoImage(file="img/14.gif")
 img15 = PhotoImage(file="img/15.gif")
 img16 = PhotoImage(file="img/16.gif")
 label = Label(image=img1)
-label.image = img1 # keep a reference!
+label.image = img1  # keep a reference!
 
 b1 = Button(fen, text='Jouer :D', command=chest)
-can.pack(side=TOP,padx=5,pady=5)
-b1.pack(side = LEFT, padx = 3, pady = 3)
+can.pack(side=TOP, padx=5, pady=5)
+b1.pack(side=LEFT, padx=3, pady=3)
 fen.mainloop()
 
-
-#affichage fin : fin test
+# affichage fin : fin test
