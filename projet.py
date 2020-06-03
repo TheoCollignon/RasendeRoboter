@@ -188,6 +188,54 @@ def updateGrid(i,j,i2,j2, pawnId):
         couleur = "red"
     can.create_rectangle(j2 * 50 + 2, i2 * 50 + 2, (j2 + 1) * 50, (i2 + 1) * 50, fill=couleur)  # case
 
+    x1 = j * 50
+    x2 = (j + 1) * 50
+    y1 = i * 50
+    y2 = (i + 1) * 50
+
+    if grid[i][j].target > 0:
+        if grid[i][j].target == 1:
+            can.create_image(x1 + 2, y1 + 2, image=img1, anchor='nw')
+        if grid[i][j].target == 2:
+            can.create_image(x1 + 2, y1 + 2, image=img2, anchor='nw')
+        if grid[i][j].target == 3:
+            can.create_image(x1 + 2, y1 + 2, image=img3, anchor='nw')
+        if grid[i][j].target == 4:
+            can.create_image(x1 + 2, y1 + 2, image=img4, anchor='nw')
+        if grid[i][j].target == 5:
+            can.create_image(x1 + 2, y1 + 2, image=img5, anchor='nw')
+        if grid[i][j].target == 6:
+            can.create_image(x1 + 2, y1 + 2, image=img6, anchor='nw')
+        if grid[i][j].target == 7:
+            can.create_image(x1 + 2, y1 + 2, image=img7, anchor='nw')
+        if grid[i][j].target == 8:
+            can.create_image(x1 + 2, y1 + 2, image=img8, anchor='nw')
+        if grid[i][j].target == 9:
+            can.create_image(x1 + 2, y1 + 2, image=img9, anchor='nw')
+        if grid[i][j].target == 10:
+            can.create_image(x1 + 2, y1 + 2, image=img10, anchor='nw')
+        if grid[i][j].target == 11:
+            can.create_image(x1 + 2, y1 + 2, image=img11, anchor='nw')
+        if grid[i][j].target == 12:
+            can.create_image(x1 + 2, y1 + 2, image=img12, anchor='nw')
+        if grid[i][j].target == 13:
+            can.create_image(x1 + 2, y1 + 2, image=img13, anchor='nw')
+        if grid[i][j].target == 14:
+            can.create_image(x1 + 2, y1 + 2, image=img14, anchor='nw')
+        if grid[i][j].target == 15:
+            can.create_image(x1 + 2, y1 + 2, image=img15, anchor='nw')
+        if grid[i][j].target == 16:
+            can.create_image(x1 + 2, y1 + 2, image=img16, anchor='nw')
+
+    if grid[i][j].down == 1:
+        can.create_line(x1 + 2, y2, x2, y2, fill="black", width=5)
+    if grid[i][j].right == 1:
+        can.create_line(x2, y1, x2, y2, fill="black", width=5)
+    if grid[i][j].left == 1:
+        can.create_line(x1 + 2, y1, x1 + 2, y2, fill="black", width=5)
+    if grid[i][j].up == 1:
+        can.create_line(x1 + 2, y1 + 2, x2, y1 + 2, fill="black", width=5)
+
 def goLeft(i, j, gridparam):
     if gridparam[i][j].pawn == -1:
         print('return')
@@ -484,13 +532,13 @@ def chest():
                 can.create_image(x1 + 2, y1 + 2, image=img16, anchor='nw')
 
         if grid[k][j].down == 1:
-            can.create_line(x1 + 5, y2, x2, y2, fill="black", width=5)
+            can.create_line(x1 + 2, y2, x2, y2, fill="black", width=5)
         if grid[k][j].right == 1:
             can.create_line(x2, y1, x2, y2, fill="black", width=5)
         if grid[k][j].left == 1:
-            can.create_line(x1 + 5, y1, x1 + 5, y2, fill="black", width=5)
+            can.create_line(x1 + 2, y1, x1 + 2, y2, fill="black", width=5)
         if grid[k][j].up == 1:
-            can.create_line(x1 + 5, y1 + 5, x2, y1 + 5, fill="black", width=5)
+            can.create_line(x1 + 2, y1 + 2, x2, y1 + 2, fill="black", width=5)
         j, x1, x2 = j + 1, x1 + 50, x2 + 50
         if j == 16:
             y1, y2 = y1 + 50, y2 + 50
