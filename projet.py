@@ -499,6 +499,8 @@ def displayEndOfTheGame():
     can.pack()
     endMessage = "Fin de la partie ! Voici votre score : " + str(nbMovePlayedTotal)
     can.create_text(400,400, text=endMessage)
+    b2.config(state ="disabled")  
+    can.config(state ="disabled")
 
 
 
@@ -588,7 +590,7 @@ def on_click_event(event):
             print("score : ")
             print(nbMovePlayedTotal)
             displayEndOfTheGame()
-            can.config(state ="disabled")
+            
     
 
 
