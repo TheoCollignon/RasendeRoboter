@@ -456,7 +456,7 @@ def game():
     while(currentTarget == randomNumber):
         randomNumber= randint(1,16)
     currentTarget = randomNumber
-    can.create_image(400,400, image=listImg[currentTarget], anchor='nw')
+    can.create_image(360,360, image=listImg[currentTarget+16], anchor='nw')
     #on va chercher la couleur
     targetColor = "notDefined"
     if(currentTarget == 1 or currentTarget == 4 or currentTarget == 15 or currentTarget==16 ):
@@ -498,7 +498,10 @@ def displayEndOfTheGame():
     changeText()
     can.pack()
     endMessage = "Fin de la partie ! Voici votre score : " + str(nbMovePlayedTotal)
+    endMessageIa = "Score de l'ia : " + "Ecrire le score de l'ia ici "
+
     can.create_text(400,400, text=endMessage)
+    can.create_text(400,500, text=endMessageIa)
     b2.config(state ="disabled")  
     can.config(state ="disabled")
 
@@ -744,6 +747,22 @@ img13 = PhotoImage(file="img/13.gif")
 img14 = PhotoImage(file="img/14.gif")
 img15 = PhotoImage(file="img/15.gif")
 img16 = PhotoImage(file="img/16.gif")
+img17 = PhotoImage(file="img/17.gif")
+img18 = PhotoImage(file="img/18.gif")
+img19 = PhotoImage(file="img/19.gif")
+img20 = PhotoImage(file="img/20.gif")
+img21 = PhotoImage(file="img/21.gif")
+img22 = PhotoImage(file="img/22.gif")
+img23 = PhotoImage(file="img/23.gif")
+img24 = PhotoImage(file="img/24.gif")
+img25 = PhotoImage(file="img/25.gif")
+img26 = PhotoImage(file="img/26.gif")
+img27 = PhotoImage(file="img/27.gif")
+img28 = PhotoImage(file="img/28.gif")
+img29 = PhotoImage(file="img/29.gif")
+img30 = PhotoImage(file="img/30.gif")
+img31 = PhotoImage(file="img/31.gif")
+img32 = PhotoImage(file="img/32.gif")
 label = Label(image=img1)
 label.image = img1  # keep a reference!
 
@@ -766,6 +785,22 @@ listImg.append(img13)
 listImg.append(img14)
 listImg.append(img15)
 listImg.append(img16)
+listImg.append(img17)
+listImg.append(img18)
+listImg.append(img19)
+listImg.append(img20)
+listImg.append(img21)
+listImg.append(img22)
+listImg.append(img23)
+listImg.append(img24)
+listImg.append(img25)
+listImg.append(img26)
+listImg.append(img27)
+listImg.append(img28)
+listImg.append(img29)
+listImg.append(img30)
+listImg.append(img31)
+listImg.append(img32)
 
 def reset():
     global nbMovePlayed
