@@ -441,8 +441,43 @@ for i in range(0, 4):
 
 print("\n")
 
+
+#Jeu 
+targetColor ="notDefined"
+currentTarget = "-2"
+nbTurn=0
+nbMovePlayed=0
+def game():
+    #initialisation du tour
+    global nbMovePlayed,targetColor,currentTarget
+    nbMovePlayed = 0 # nombre de coup courant
+    currentTarget = randint(1,16)
+    can.create_image(400,400, image=listImg[currentTarget], anchor='nw')
+    #on va chercher la couleur
+    targetColor = "notDefined"
+    if(currentTarget == 1 or currentTarget == 4 or currentTarget == 15 or currentTarget==16 ):
+        targetColor="green"
+    if(currentTarget == 2 or currentTarget == 3 or currentTarget == 10 or currentTarget==11 ):
+        targetColor="blue"
+    if(currentTarget == 5 or currentTarget == 6 or currentTarget == 13 or currentTarget==14 ):
+        targetColor="red"
+    if(currentTarget == 7 or currentTarget == 8 or currentTarget == 9 or currentTarget==12 ):
+        targetColor="orange"
+    #on a couleur + symbole
+
+
+    print(currentTarget)
+    print(targetColor)
+
+
+    #label = Label(image=img1)
+    #label.image = img1  # keep a reference!
+# fin jeu
+
+global nbCoupJouer
+nbCoupJouer=[]
 def on_click_event(event):
-    global click, lastY, lastX
+    global click, lastY, lastX,nbTurn,nbMovePlayed
     i = (int)(event.x / 50)
     j = (int)(event.y / 50)
     print("clicked at", event.x, event.y, " / case ", i, j)
@@ -461,6 +496,7 @@ def on_click_event(event):
             click = 2
             print('PAWN')
     else:
+        nbMovePlayed+=1
         if i == lastX:
             if lastY < j:
                 goDown(lastY, lastX, grid)
@@ -476,22 +512,52 @@ def on_click_event(event):
                 goLeft(lastY, lastX, grid)
                 print('go Left')
         click = 1
+    if(verifIfPawnIsOnTarget()):
+        print("je suis la wesh")
+        nbTurn+=1
+        if(nbTurn < 2):
+            nbCoupJouer.append(nbMovePlayed)
+            #va afficher une nouvelle target
+            game()
+        else:
+            print("fin du jeu")
+            print("score : ")
+            print(nbCoupJouer)
+    
 
 
+def verifIfPawnIsOnTarget():
+    #on doit recuperer l'emplacement de la cible:
+    global currentTarget,targetColor
+    targetX,targetY = 0,0
+    pawnX,pawnY = 0,0
 
+    idColor = -1 
+    if targetColor == "blue":
+        idColor = 0
+    if targetColor == "orange":
+        idColor = 1
+    if targetColor == "green":
+        idColor = 2
+    if targetColor == "red":
+        idColor = 3
 
-
-
-#Jeu 
-def game():
-    nbTurn = 0 # max 5 tours
-    nbMovePlayed = 0 # nombre de coup courant
-    currentTarget = randint(1,16)
-    can.create_image(400,400, image=listImg[currentTarget], anchor='nw')
-    #label = Label(image=img1)
-    #label.image = img1  # keep a reference!
-# fin jeu
-
+    for i in range(16) :
+        for j in range(16) :
+            if(grid[i][j].target == currentTarget) :
+                targetX= i
+                targetY= j
+    #on doit recuperer l'emplacement du bon pion de la bonne couleur:
+            if(grid[i][j].pawn == idColor) :
+                pawnX= i
+                pawnY= j
+    print("targetX " , targetX)
+    print("pawnX " , pawnX)
+    print("targetY " , targetY)
+    print("pawnY " , pawnY)
+    if(targetX == pawnX and targetY == pawnY ):
+        return True
+    return False
 
 
 
@@ -562,6 +628,7 @@ def chest():
         if j == 16:
             y1, y2 = y1 + 50, y2 + 50
             i, j, x1, x2 = i + 1, 0, 0, 50
+
     game()
 
 
@@ -613,6 +680,7 @@ label.image = img1  # keep a reference!
 
 global listImg
 listImg =[]
+listImg.append(img1)#jamais afficher
 listImg.append(img1)
 listImg.append(img2)
 listImg.append(img3)
