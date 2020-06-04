@@ -555,21 +555,24 @@ def on_click_event(event):
             click = 2
             print('PAWN')
     else:
-        nbMovePlayed+=1
         if i == lastX:
             if lastY < j:
                 goDown(lastY, lastX, grid)
                 print('go Down')
+                nbMovePlayed+=1
             if lastY > j:
                 goUp(lastY, lastX, grid)
                 print('go Up')
+                nbMovePlayed+=1
         if j == lastY:
             if lastX < i:
                 goRight(lastY, lastX, grid)
                 print('go Right')
+                nbMovePlayed+=1
             if lastX > i:
                 goLeft(lastY, lastX, grid)
                 print('go Left')
+                nbMovePlayed+=1
         click = 1
     changeText()
     if(verifIfPawnIsOnTarget()):
@@ -585,6 +588,7 @@ def on_click_event(event):
             print("score : ")
             print(nbMovePlayedTotal)
             displayEndOfTheGame()
+            can.config(state ="disabled")
     
 
 
@@ -679,13 +683,13 @@ def chest():
                 can.create_image(x1 + 2, y1 + 2, image=img16, anchor='nw')
 
         if grid[k][j].down == 1:
-            can.create_line(x1 + 2, y2, x2, y2, fill="black", width=5)
+            can.create_line(x1 + 2, y2, x2, y2, fill="purple", width=5)
         if grid[k][j].right == 1:
-            can.create_line(x2, y1, x2, y2, fill="black", width=5)
+            can.create_line(x2, y1, x2, y2, fill="purple", width=5)
         if grid[k][j].left == 1:
-            can.create_line(x1 + 2, y1, x1 + 2, y2, fill="black", width=5)
+            can.create_line(x1 + 2, y1, x1 + 2, y2, fill="purple", width=5)
         if grid[k][j].up == 1:
-            can.create_line(x1 + 2, y1 + 2, x2, y1 + 2, fill="black", width=5)
+            can.create_line(x1 + 2, y1 + 2, x2, y1 + 2, fill="purple", width=5)
         j, x1, x2 = j + 1, x1 + 50, x2 + 50
         if j == 16:
             y1, y2 = y1 + 50, y2 + 50
