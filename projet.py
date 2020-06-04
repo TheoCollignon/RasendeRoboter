@@ -447,11 +447,15 @@ targetColor ="notDefined"
 currentTarget = "-2"
 nbTurn=0
 nbMovePlayed=0
+listPositionPawn = [] #X Y idColor
 def game():
     #initialisation du tour
-    global nbMovePlayed,targetColor,currentTarget
+    global nbMovePlayed,targetColor,currentTarget,listPositionPawn
     nbMovePlayed = 0 # nombre de coup courant
-    currentTarget = randint(1,16)
+    randomNumber = randint(1,16)
+    while(currentTarget == randomNumber):
+        randomNumber= randint(1,16)
+    currentTarget = randomNumber
     can.create_image(400,400, image=listImg[currentTarget], anchor='nw')
     #on va chercher la couleur
     targetColor = "notDefined"
@@ -465,17 +469,49 @@ def game():
         targetColor="orange"
     #on a couleur + symbole
 
+    #On enregistre les positions des pions 
+    for i in range(16):
+        for j in range(16):
+            if(grid[i][j].pawn > -1):
+                listPositionPawn.append([i,j,grid[i][j].pawn])
+    print(listPositionPawn)
+
+
+
 
     print(currentTarget)
     print(targetColor)
+    changeText()
 
 
     #label = Label(image=img1)
     #label.image = img1  # keep a reference!
 # fin jeu
 
-global nbCoupJouer
-nbCoupJouer=[]
+
+
+
+def displayEndOfTheGame():
+    global nbMovePlayedTotal
+    can.delete("all")
+    changeText()
+    can.pack()
+    endMessage = "Fin de la partie ! Voici votre score : " + str(nbMovePlayedTotal)
+    can.create_text(400,400, text=endMessage)
+
+
+
+
+
+
+
+
+
+
+
+
+
+nbMovePlayedTotal=[]
 def on_click_event(event):
     global click, lastY, lastX,nbTurn,nbMovePlayed
     i = (int)(event.x / 50)
@@ -512,17 +548,19 @@ def on_click_event(event):
                 goLeft(lastY, lastX, grid)
                 print('go Left')
         click = 1
+    changeText()
     if(verifIfPawnIsOnTarget()):
         print("je suis la wesh")
         nbTurn+=1
+        nbMovePlayedTotal.append(nbMovePlayed)
         if(nbTurn < 2):
-            nbCoupJouer.append(nbMovePlayed)
             #va afficher une nouvelle target
             game()
         else:
             print("fin du jeu")
             print("score : ")
-            print(nbCoupJouer)
+            print(nbMovePlayedTotal)
+            displayEndOfTheGame()
     
 
 
@@ -698,11 +736,56 @@ listImg.append(img14)
 listImg.append(img15)
 listImg.append(img16)
 
+def reset():
+    global nbMovePlayed
+    if(nbMovePlayed ==0 ):
+        return
+    nbMovePlayed = 0
+    gridbis = []
+    changeText()
+    for i in range(16):
+        for j in range(16):
+            if(grid[i][j].pawn > -1 ):
+                gridbis.append([i,j])
+                grid[i][j].pawn = -1
+
+    for i in range(4):
+        grid[listPositionPawn[i][0]][listPositionPawn[i][1]].pawn = listPositionPawn[i][2]
+        updateGrid(gridbis[i][0],gridbis[i][1],listPositionPawn[i][0],listPositionPawn[i][1],listPositionPawn[i][2])
 
 
-b1 = Button(fen, text='Jouer :D', command=chest)
+
+
+b1 = Button(fen, text='Jouer', command=chest)
+b2 = Button(fen, text='Reset', command=reset)
+
 can.pack(side=TOP, padx=5, pady=5)
 b1.pack(side=LEFT, padx=3, pady=3)
+b2.pack(side=LEFT, padx=3, pady=3)
+  
+# text1= Text(fen, height=1,width=50)
+text_value = "turn : " + str(nbTurn) +"                   move : " + str(nbMovePlayed) + "                total : 0"
+# print(text_value)
+# text1.insert(INSERT,text_value)
+# text1.config(state ="disabled")
+# text1.pack()
+def changeText():
+    total = 0
+    for i in nbMovePlayedTotal:
+        total += i
+    text_value = "turn : " + str(nbTurn) +"                   move : " + str(nbMovePlayed) + "              total : " + str(total)
+    text.set(text_value) 
+
+text = StringVar()
+text.set(text_value)
+label = Label(fen, textvariable=text)
+
+
+label.pack()
+
+
+
+
 fen.mainloop()
 
 # affichage fin : fin test
