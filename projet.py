@@ -503,7 +503,21 @@ def displayEndOfTheGame():
 
 
 
+def replacePawns():
+    for i in range(16):
+        for j in range(16):
+            if grid[i][j].pawn > -1:
+                grid[i][j].pawn = -1
 
+    for i in range(0, 4):
+        isPlaced = False
+        while (not isPlaced):
+            randomNumber = randint(0, 15)
+            randomNumber2 = randint(0, 15)
+            if grid[randomNumber][randomNumber2].target == 0 and not (
+                    (randomNumber2 > 6 and randomNumber < 9) and (randomNumber2 > 6 and randomNumber2 < 9)):
+                isPlaced = True
+                grid[randomNumber][randomNumber2].pawn = i
 
 
 
@@ -555,6 +569,7 @@ def on_click_event(event):
         nbMovePlayedTotal.append(nbMovePlayed)
         if(nbTurn < 2):
             #va afficher une nouvelle target
+            replacePawns()
             game()
         else:
             print("fin du jeu")
