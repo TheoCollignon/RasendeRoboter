@@ -470,6 +470,7 @@ def game():
     #on a couleur + symbole
 
     #On enregistre les positions des pions 
+    listPositionPawn.clear()
     for i in range(16):
         for j in range(16):
             if(grid[i][j].pawn > -1):
@@ -504,9 +505,12 @@ def displayEndOfTheGame():
 
 
 def replacePawns():
+    global listPositionPawn
+    gridbis = []
     for i in range(16):
         for j in range(16):
-            if grid[i][j].pawn > -1:
+            if(grid[i][j].pawn > -1 ):
+                gridbis.append([i,j])
                 grid[i][j].pawn = -1
 
     for i in range(0, 4):
@@ -514,10 +518,15 @@ def replacePawns():
         while (not isPlaced):
             randomNumber = randint(0, 15)
             randomNumber2 = randint(0, 15)
-            if grid[randomNumber][randomNumber2].target == 0 and not (
-                    (randomNumber2 > 6 and randomNumber < 9) and (randomNumber2 > 6 and randomNumber2 < 9)):
+            if grid[randomNumber][randomNumber2].target == 0 and not ((randomNumber2 > 6 and randomNumber < 9) and (randomNumber2 > 6 and randomNumber2 < 9)):
                 isPlaced = True
                 grid[randomNumber][randomNumber2].pawn = i
+                updateGrid(gridbis[i][0],gridbis[i][1],randomNumber,randomNumber2,i)
+    listPositionPawn.clear()
+    for i in range(16):
+        for j in range(16):
+            if(grid[i][j].pawn > -1):
+                listPositionPawn.append([i,j,grid[i][j].pawn])
 
 
 
@@ -618,8 +627,8 @@ def verifIfPawnIsOnTarget():
 
 # affichage graphique
 def chest():
+    global x1, x2, y1, y2, couleur,b1  # coordonnees
     can.bind("<Button-1>", on_click_event)
-    global x1, x2, y1, y2, couleur  # coordonnees
     j, i = 0, 0
     while x1 < 800 and y1 < 800:  # 800 car 50*16 case
         k = i % 16
@@ -681,8 +690,9 @@ def chest():
         if j == 16:
             y1, y2 = y1 + 50, y2 + 50
             i, j, x1, x2 = i + 1, 0, 0, 50
-
+    b1.config(state ="disabled")         
     game()
+
 
 
 # Verifications
