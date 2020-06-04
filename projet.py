@@ -478,6 +478,25 @@ def on_click_event(event):
         click = 1
 
 
+
+
+
+
+#Jeu 
+def game():
+    nbTurn = 0 # max 5 tours
+    nbMovePlayed = 0 # nombre de coup courant
+    currentTarget = randint(1,16)
+    can.create_image(400,400, image=listImg[currentTarget], anchor='nw')
+    #label = Label(image=img1)
+    #label.image = img1  # keep a reference!
+# fin jeu
+
+
+
+
+
+
 # affichage graphique
 def chest():
     can.bind("<Button-1>", on_click_event)
@@ -543,6 +562,7 @@ def chest():
         if j == 16:
             y1, y2 = y1 + 50, y2 + 50
             i, j, x1, x2 = i + 1, 0, 0, 50
+    game()
 
 
 # Verifications
@@ -567,9 +587,11 @@ x1, y1, x2, y2 = 0, 0, 50, 50
 couleur = 'white'
 
 fen = Tk()
+global can
 can = Canvas(fen, width=800, heigh=800, bg='ivory')
 
 # Permet d'afficher les images, on a besoin de garder une référence sinon elle ne s'affichent pas
+
 img1 = PhotoImage(file="img/1.gif")
 img2 = PhotoImage(file="img/2.gif")
 img3 = PhotoImage(file="img/3.gif")
@@ -589,9 +611,31 @@ img16 = PhotoImage(file="img/16.gif")
 label = Label(image=img1)
 label.image = img1  # keep a reference!
 
+global listImg
+listImg =[]
+listImg.append(img1)
+listImg.append(img2)
+listImg.append(img3)
+listImg.append(img4)
+listImg.append(img5)
+listImg.append(img6)
+listImg.append(img7)
+listImg.append(img8)
+listImg.append(img9)
+listImg.append(img10)
+listImg.append(img11)
+listImg.append(img12)
+listImg.append(img13)
+listImg.append(img14)
+listImg.append(img15)
+listImg.append(img16)
+
+
+
 b1 = Button(fen, text='Jouer :D', command=chest)
 can.pack(side=TOP, padx=5, pady=5)
 b1.pack(side=LEFT, padx=3, pady=3)
 fen.mainloop()
 
 # affichage fin : fin test
+
