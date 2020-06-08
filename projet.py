@@ -228,13 +228,13 @@ def updateGrid(i,j,i2,j2, pawnId):
             can.create_image(x1 + 2, y1 + 2, image=img16, anchor='nw')
 
     if grid[i][j].down == 1:
-        can.create_line(x1 + 2, y2, x2, y2, fill="black", width=5)
+        can.create_line(x1 + 2, y2, x2, y2, fill="purple", width=5)
     if grid[i][j].right == 1:
-        can.create_line(x2, y1, x2, y2, fill="black", width=5)
+        can.create_line(x2, y1, x2, y2, fill="purple", width=5)
     if grid[i][j].left == 1:
-        can.create_line(x1 + 2, y1, x1 + 2, y2, fill="black", width=5)
+        can.create_line(x1 + 2, y1, x1 + 2, y2, fill="purple", width=5)
     if grid[i][j].up == 1:
-        can.create_line(x1 + 2, y1 + 2, x2, y1 + 2, fill="black", width=5)
+        can.create_line(x1 + 2, y1 + 2, x2, y1 + 2, fill="purple", width=5)
 
 def goLeft(i, j, gridparam):
     if gridparam[i][j].pawn == -1:
