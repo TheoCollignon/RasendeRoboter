@@ -868,14 +868,14 @@ fen.mainloop()
 
 # affichage fin : fin test
 gridIa = []
-def beforeIaSetup():
+def beforeIaSetup(): # Pour setup l'ia, comme ça on évite des répétitions de boucles inutiles
     global gridIa
     gridIa= grid
+    getCoordTarget()
 
 #Ia 
 def IaBrutForce(limite):
     global currentTarget,targetColor,targetX,targetY,pawnX,pawnY
-    getCoordTarget()
     getCoordPawn()
 
 
