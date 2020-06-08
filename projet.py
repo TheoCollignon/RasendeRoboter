@@ -175,10 +175,7 @@ def isdown(i, j, gridparam):
             return 1
     return 0
 
-pawnX = -1
-pawnY = -1
 def updateGrid(i,j,i2,j2, pawnId):
-    global pawnX,pawnY
     can.create_rectangle(j*50 + 2, i*50 + 2, (j+1)*50, (i+1)*50, fill="white")  # case
     couleur = "white"
     if pawnId == 0:
@@ -238,8 +235,6 @@ def updateGrid(i,j,i2,j2, pawnId):
         can.create_line(x1 + 2, y1, x1 + 2, y2, fill="purple", width=5)
     if grid[i][j].up == 1:
         can.create_line(x1 + 2, y1 + 2, x2, y1 + 2, fill="purple", width=5)
-    pawnX = i2
-    pawnY=j2
 
 def goLeft(i, j, gridparam):
     if gridparam[i][j].pawn == -1:
@@ -505,7 +500,15 @@ def getCoordTarget():
                 targetX= i
                 targetY= j
 
-
+pawnX = -1
+pawnY = -1
+def getCoordPawn(pawnId):
+    global pawnX,pawnY
+    for i in range(16):
+        for j in range(16):
+            if gridIa[i][j].pawn == pawnId:
+                pawnX = i
+                pawnY = j
 
 
 def displayEndOfTheGame():
