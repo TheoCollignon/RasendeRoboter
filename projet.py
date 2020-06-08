@@ -175,7 +175,10 @@ def isdown(i, j, gridparam):
             return 1
     return 0
 
+pawnX = -1
+pawnY = -1
 def updateGrid(i,j,i2,j2, pawnId):
+    global pawnX,pawnY
     can.create_rectangle(j*50 + 2, i*50 + 2, (j+1)*50, (i+1)*50, fill="white")  # case
     couleur = "white"
     if pawnId == 0:
@@ -235,6 +238,8 @@ def updateGrid(i,j,i2,j2, pawnId):
         can.create_line(x1 + 2, y1, x1 + 2, y2, fill="purple", width=5)
     if grid[i][j].up == 1:
         can.create_line(x1 + 2, y1 + 2, x2, y1 + 2, fill="purple", width=5)
+    pawnX = i2
+    pawnY=j2
 
 def goLeft(i, j, gridparam):
     if gridparam[i][j].pawn == -1:
@@ -434,8 +439,7 @@ for i in range(0, 4):
     while (not isPlaced):
         randomNumber = randint(0, 15)
         randomNumber2 = randint(0, 15)
-        if grid[randomNumber][randomNumber2].target == 0 and not (
-                (randomNumber2 > 6 and randomNumber < 9) and (randomNumber2 > 6 and randomNumber2 < 9)):
+        if grid[randomNumber][randomNumber2].target == 0 and not ((randomNumber2 > 6 and randomNumber < 9) and (randomNumber2 > 6 and randomNumber2 < 9)) and grid[randomNumber][randomNumber2].pawn==-1:
             isPlaced = True
             grid[randomNumber][randomNumber2].pawn = i
 
@@ -488,6 +492,18 @@ def game():
     #label = Label(image=img1)
     #label.image = img1  # keep a reference!
 # fin jeu
+
+
+
+targetX= -1
+targetY= -1
+def getCoordTarget():
+    global targetX,targetY
+    for i in range(16) :
+        for j in range(16) :
+            if(grid[i][j].target == currentTarget) :
+                targetX= i
+                targetY= j
 
 
 
@@ -622,10 +638,6 @@ def verifIfPawnIsOnTarget():
             if(grid[i][j].pawn == idColor) :
                 pawnX= i
                 pawnY= j
-    print("targetX " , targetX)
-    print("pawnX " , pawnX)
-    print("targetY " , targetY)
-    print("pawnY " , pawnY)
     if(targetX == pawnX and targetY == pawnY ):
         return True
     return False
@@ -855,4 +867,17 @@ label.pack()
 fen.mainloop()
 
 # affichage fin : fin test
+
+
+#Ia 
+def IaBrutForce(limite):
+    global currentTarget,targetColor,targetX,targetY,pawnX,pawnY
+    getCoordTarget()
+    getCoordPawn()
+
+
+
+
+
+#fin ia
 
