@@ -511,6 +511,7 @@ def getCoordPawn(pawnId):
                 pawnY = j
 
 
+
 def displayEndOfTheGame():
     global nbMovePlayedTotal
     can.delete("all")
