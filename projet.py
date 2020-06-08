@@ -451,7 +451,7 @@ print("\n")
 gridIa = []
 def beforeIaSetup(): # Pour setup l'ia, comme ça on évite des répétitions de boucles inutiles
     global gridIa
-    gridIa = grid
+    gridIa = list(grid)
     getCoordTarget()
 
 
@@ -467,19 +467,19 @@ def IaBrutForce(limite,gridIa):
         getCoordPawn(i) # va récupéré les coords du pions en attribut
         #on regarde si il y'a des murs
         if( not isUp(pawnX,pawnY,gridIa) ) : #si y'a pas de murs,on déplace et on rappel la fonction
-            gridIaBis = gridIa               # On instancie une nouvelle grille, sinon colision d'objet
+            gridIaBis = list(gridIa)               # On instancie une nouvelle grille, sinon colision d'objet
             goUp(pawnX,pawnY,gridIaBis,0)
             IaBrutForce(limite,gridIaBis)
         if( not isDown(pawnX,pawnY,gridIa) ) :
-            gridIaBis = gridIa
+            gridIaBis = list(gridIa)
             goDown(pawnX,pawnY,gridIaBis,0)
             IaBrutForce(limite,gridIaBis)
         if( not isRight(pawnX,pawnY,gridIa) ) :
-            gridIaBis = gridIa
+            gridIaBis = list(gridIa)
             goRight(pawnX,pawnY,gridIaBis,0)
             IaBrutForce(limite,gridIaBis)
         if( not isLeft(pawnX,pawnY,gridIa) ) :
-            gridIaBis = gridIa
+            gridIaBis = list(gridIa)
             goLeft(pawnX,pawnY,gridIaBis,0)
             IaBrutForce(limite,gridIaBis)
 
@@ -535,9 +535,14 @@ def game():
     print(targetColor)
     changeText()
 
+
+
     #On appel l'ia ici
     beforeIaSetup()
-    IaBrutForce(4,gridIa) # on met la limite
+    IaBrutForce(5,gridIa) # on met la limite
+    reset()
+    replacePawns()
+
 
 
     #label = Label(image=img1)
