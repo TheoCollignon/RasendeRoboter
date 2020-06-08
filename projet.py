@@ -1,5 +1,6 @@
 from random import random, randint
 from tkinter import *
+import copy
 
 
 class Case:
@@ -451,36 +452,46 @@ print("\n")
 gridIa = []
 def beforeIaSetup(): # Pour setup l'ia, comme ça on évite des répétitions de boucles inutiles
     global gridIa
-    gridIa = list(grid)
+    gridIa = copy.deepcopy(grid)
     getCoordTarget()
 
-
+iterations = 1
 def IaBrutForce(limite,gridIa):
-    global currentTarget,targetColor,targetX,targetY,pawnX,pawnY
+    global currentTarget,targetColor,targetX,targetY,pawnX,pawnY,iterations
+
     if(targetX == pawnX and targetY == pawnY):
         print("tro b1")
         return True
-    if limite <= 0 : #pas cool
+    if limite < 0 : #pas cool
+        print("mauvais : "+ str(pawnX) + " " + str(pawnY))
         return False
     limite-=1
     for i in range(4): # parcours 4 pions
         getCoordPawn(i) # va récupéré les coords du pions en attribut
         #on regarde si il y'a des murs
         if( not isUp(pawnX,pawnY,gridIa) ) : #si y'a pas de murs,on déplace et on rappel la fonction
-            gridIaBis = list(gridIa)               # On instancie une nouvelle grille, sinon colision d'objet
+            gridIaBis = copy.deepcopy(gridIa)               # On instancie une nouvelle grille, sinon colision d'objet
             goUp(pawnX,pawnY,gridIaBis,0)
+            getCoordPawn(i)
+            iterations +=1
             IaBrutForce(limite,gridIaBis)
         if( not isDown(pawnX,pawnY,gridIa) ) :
-            gridIaBis = list(gridIa)
+            gridIaBis = copy.deepcopy(gridIa)
             goDown(pawnX,pawnY,gridIaBis,0)
+            getCoordPawn(i)
+            iterations +=1  
             IaBrutForce(limite,gridIaBis)
         if( not isRight(pawnX,pawnY,gridIa) ) :
-            gridIaBis = list(gridIa)
+            gridIaBis = copy.deepcopy(gridIa)
             goRight(pawnX,pawnY,gridIaBis,0)
+            getCoordPawn(i)
+            iterations +=1
             IaBrutForce(limite,gridIaBis)
         if( not isLeft(pawnX,pawnY,gridIa) ) :
-            gridIaBis = list(gridIa)
+            gridIaBis = copy.deepcopy(gridIa)
             goLeft(pawnX,pawnY,gridIaBis,0)
+            getCoordPawn(i)
+            iterations +=1
             IaBrutForce(limite,gridIaBis)
 
 #fin ia
@@ -495,7 +506,7 @@ def IaBrutForce(limite,gridIa):
 
 #Jeu 
 targetColor ="notDefined"
-currentTarget = "-2"
+currentTarget = -2
 nbTurn=0
 nbMovePlayed=0
 listPositionPawn = [] #X Y idColor
@@ -535,32 +546,17 @@ def game():
     print(targetColor)
     changeText()
 
-    tab =""
-    print("before")
-    print()
-    for i in range(16):
-        print()
-        for j in range(16):
-            print(grid[i][j].pawn, end='')
-    print()
 
     #On appel l'ia ici
     beforeIaSetup()
-    IaBrutForce(3,gridIa) # on met la limite
+    IaBrutForce(0,gridIa) # on met la limite
+    print('iterati : ', iterations)
+    # print("apres")
+    # for i in range(16):
+    #     print()
+    #     for j in range(16):
+    #         print(grid[i][j].pawn,end='')
 
-
-    print("avant reset + replace")
-    print()
-    for i in range(16):
-        print()
-        for j in range(16):
-            print(grid[i][j].pawn, end='')
-    print("after")
-    print()
-    for i in range(16):
-        print()
-        for j in range(16):
-            print(grid[i][j].pawn, end='')
 
 
 
