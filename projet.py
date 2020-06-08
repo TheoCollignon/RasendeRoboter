@@ -236,7 +236,7 @@ def updateGrid(i,j,i2,j2, pawnId):
     if grid[i][j].up == 1:
         can.create_line(x1 + 2, y1 + 2, x2, y1 + 2, fill="purple", width=5)
 
-def goLeft(i, j, gridparam):
+def goLeft(i, j, gridparam, needVisualUpdate):
     if gridparam[i][j].pawn == -1:
         print('return')
         return
@@ -247,10 +247,11 @@ def goLeft(i, j, gridparam):
         gridparam[i][j].pawn = -1
         jIter = j - 1
         gridparam[i][jIter].pawn = pawnID
-        updateGrid(i, j, i, jIter, pawnID)
-        goLeft(iIter, jIter, gridparam)
+        if (needVisualUpdate == 1) :
+            updateGrid(i, j, i, jIter, pawnID)
+        goLeft(iIter, jIter, gridparam, needVisualUpdate)
 
-def goRight(i, j, gridparam):
+def goRight(i, j, gridparam, needVisualUpdate):
     if gridparam[i][j].pawn == -1:
         return
     iIter = i
@@ -260,11 +261,12 @@ def goRight(i, j, gridparam):
         gridparam[i][j].pawn = -1
         jIter = j + 1
         gridparam[i][jIter].pawn = pawnID
-        updateGrid(i, j, i, jIter, pawnID)
-        goRight(iIter, jIter, gridparam)
+        if (needVisualUpdate == 1):
+            updateGrid(i, j, i, jIter, pawnID)
+        goRight(iIter, jIter, gridparam, needVisualUpdate)
 
 
-def goUp(i, j, gridparam):
+def goUp(i, j, gridparam, needVisualUpdate):
     if gridparam[i][j].pawn == -1:
         return
     iIter = i
@@ -274,11 +276,12 @@ def goUp(i, j, gridparam):
         gridparam[i][j].pawn = -1
         iIter = i - 1
         gridparam[iIter][j].pawn = pawnID
-        updateGrid(i, j, iIter, j, pawnID)
-        goUp(iIter, jIter, gridparam)
+        if (needVisualUpdate == 1):
+            updateGrid(i, j, iIter, j, pawnID)
+        goUp(iIter, jIter, gridparam, needVisualUpdate)
 
 
-def goDown(i, j, gridparam):
+def goDown(i, j, gridparam, needVisualUpdate):
     if gridparam[i][j].pawn == -1:
         return
     iIter = i
@@ -288,8 +291,9 @@ def goDown(i, j, gridparam):
         gridparam[i][j].pawn = -1
         iIter = i + 1
         gridparam[iIter][j].pawn = pawnID
-        updateGrid(i, j, iIter, j, pawnID)
-        goDown(iIter, jIter, gridparam)
+        if (needVisualUpdate == 1):
+            updateGrid(i, j, iIter, j, pawnID)
+        goDown(iIter, jIter, gridparam, needVisualUpdate)
 
 
 print("PROJECT INITIALIZATION\n")
@@ -582,20 +586,20 @@ def on_click_event(event):
     else:
         if i == lastX:
             if lastY < j:
-                goDown(lastY, lastX, grid)
+                goDown(lastY, lastX, grid, 1)
                 print('go Down')
                 nbMovePlayed+=1
             if lastY > j:
-                goUp(lastY, lastX, grid)
+                goUp(lastY, lastX, grid, 1)
                 print('go Up')
                 nbMovePlayed+=1
         if j == lastY:
             if lastX < i:
-                goRight(lastY, lastX, grid)
+                goRight(lastY, lastX, grid, 1)
                 print('go Right')
                 nbMovePlayed+=1
             if lastX > i:
-                goLeft(lastY, lastX, grid)
+                goLeft(lastY, lastX, grid, 1)
                 print('go Left')
                 nbMovePlayed+=1
         click = 1
