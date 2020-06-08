@@ -867,7 +867,10 @@ label.pack()
 fen.mainloop()
 
 # affichage fin : fin test
-
+gridIa = []
+def beforeIaSetup():
+    global gridIa
+    gridIa= grid
 
 #Ia 
 def IaBrutForce(limite):
