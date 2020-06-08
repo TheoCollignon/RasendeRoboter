@@ -880,7 +880,28 @@ def beforeIaSetup(): # Pour setup l'ia, comme ça on évite des répétitions de
 #Ia 
 def IaBrutForce(limite):
     global currentTarget,targetColor,targetX,targetY,pawnX,pawnY
-    getCoordPawn()
+    if(targetX == pawnX and targetY == pawnY):
+        print("tro b1")
+        return True
+    if limite == 0 : #pas cool
+        return False
+    for i in range(4): # parcours 4 pions
+        getCoordPawn(i) # va récupéré les coords du pions en attribut
+        #on regarde si il y'a des murs
+        if( !isUp(pawnX,pawnY,gridIa) ) :
+            
+            IaBrutForce(limite--)
+        if( !isdown(pawnX,pawnY,gridIa) ) :
+
+            IaBrutForce(limite--)
+        if( !isRight(pawnX,pawnY,gridIa) ) :
+
+            IaBrutForce(limite--)
+        if( !isLeft(pawnX,pawnY,gridIa) ) :
+            
+            IaBrutForce(limite--)
+
+
 
 
 
