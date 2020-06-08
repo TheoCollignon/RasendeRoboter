@@ -132,7 +132,7 @@ def placePanelWalls(grid, panel, pos):  # places the panel's walls on the grid, 
     return grid
 
 
-def isleft(i, j, gridparam):
+def isLeft(i, j, gridparam):
     if gridparam[i][j].left == 1:
         return 1
     elif j - 1 >= 0:
@@ -143,7 +143,7 @@ def isleft(i, j, gridparam):
     return 0
 
 
-def isright(i, j, gridparam):
+def isRight(i, j, gridparam):
     if gridparam[i][j].right == 1:
         return 1
     elif j + 1 < sizeOfGrid:
@@ -154,7 +154,7 @@ def isright(i, j, gridparam):
     return 0
 
 
-def isup(i, j, gridparam):
+def isUp(i, j, gridparam):
     if gridparam[i][j].up == 1:
         return 1
     elif i - 1 >= 0:
@@ -165,7 +165,7 @@ def isup(i, j, gridparam):
     return 0
 
 
-def isdown(i, j, gridparam):
+def isDown(i, j, gridparam):
     if gridparam[i][j].down == 1:
         return 1
     elif i + 1 < sizeOfGrid:
@@ -238,11 +238,10 @@ def updateGrid(i,j,i2,j2, pawnId):
 
 def goLeft(i, j, gridparam, needVisualUpdate):
     if gridparam[i][j].pawn == -1:
-        print('return')
         return
     iIter = i
     jIter = j
-    if (isleft(iIter, jIter, gridparam) == 0):
+    if (isLeft(iIter, jIter, gridparam) == 0):
         pawnID = gridparam[i][j].pawn
         gridparam[i][j].pawn = -1
         jIter = j - 1
@@ -256,7 +255,7 @@ def goRight(i, j, gridparam, needVisualUpdate):
         return
     iIter = i
     jIter = j
-    if (isright(iIter, jIter, gridparam) == 0):
+    if (isRight(iIter, jIter, gridparam) == 0):
         pawnID = gridparam[i][j].pawn
         gridparam[i][j].pawn = -1
         jIter = j + 1
@@ -271,7 +270,7 @@ def goUp(i, j, gridparam, needVisualUpdate):
         return
     iIter = i
     jIter = j
-    if (isup(iIter, jIter, gridparam) == 0):
+    if (isUp(iIter, jIter, gridparam) == 0):
         pawnID = gridparam[i][j].pawn
         gridparam[i][j].pawn = -1
         iIter = i - 1
@@ -286,7 +285,7 @@ def goDown(i, j, gridparam, needVisualUpdate):
         return
     iIter = i
     jIter = j
-    if (isdown(iIter, jIter, gridparam) == 0):
+    if (isDown(iIter, jIter, gridparam) == 0):
         pawnID = gridparam[i][j].pawn
         gridparam[i][j].pawn = -1
         iIter = i + 1
@@ -445,6 +444,55 @@ for i in range(0, 4):
 print("\n")
 
 
+
+
+
+#Ia 
+gridIa = []
+def beforeIaSetup(): # Pour setup l'ia, comme ça on évite des répétitions de boucles inutiles
+    global gridIa
+    gridIa = grid
+    getCoordTarget()
+
+
+def IaBrutForce(limite,gridIa):
+    global currentTarget,targetColor,targetX,targetY,pawnX,pawnY
+    if(targetX == pawnX and targetY == pawnY):
+        print("tro b1")
+        return True
+    if limite <= 0 : #pas cool
+        return False
+    limite-=1
+    for i in range(4): # parcours 4 pions
+        getCoordPawn(i) # va récupéré les coords du pions en attribut
+        #on regarde si il y'a des murs
+        if( not isUp(pawnX,pawnY,gridIa) ) : #si y'a pas de murs,on déplace et on rappel la fonction
+            gridIaBis = gridIa               # On instancie une nouvelle grille, sinon colision d'objet
+            goUp(pawnX,pawnY,gridIaBis,0)
+            IaBrutForce(limite,gridIaBis)
+        if( not isDown(pawnX,pawnY,gridIa) ) :
+            gridIaBis = gridIa
+            goDown(pawnX,pawnY,gridIaBis,0)
+            IaBrutForce(limite,gridIaBis)
+        if( not isRight(pawnX,pawnY,gridIa) ) :
+            gridIaBis = gridIa
+            goRight(pawnX,pawnY,gridIaBis,0)
+            IaBrutForce(limite,gridIaBis)
+        if( not isLeft(pawnX,pawnY,gridIa) ) :
+            gridIaBis = gridIa
+            goLeft(pawnX,pawnY,gridIaBis,0)
+            IaBrutForce(limite,gridIaBis)
+
+#fin ia
+
+
+
+
+
+
+
+
+
 #Jeu 
 targetColor ="notDefined"
 currentTarget = "-2"
@@ -486,6 +534,10 @@ def game():
     print(currentTarget)
     print(targetColor)
     changeText()
+
+    #On appel l'ia ici
+    beforeIaSetup()
+    IaBrutForce(4,gridIa) # on met la limite
 
 
     #label = Label(image=img1)
@@ -587,25 +639,25 @@ def on_click_event(event):
         if i == lastX:
             if lastY < j:
                 goDown(lastY, lastX, grid, 1)
-                print('go Down')
+                # print('go Down')
                 nbMovePlayed+=1
             if lastY > j:
                 goUp(lastY, lastX, grid, 1)
-                print('go Up')
+                # print('go Up')
                 nbMovePlayed+=1
         if j == lastY:
             if lastX < i:
                 goRight(lastY, lastX, grid, 1)
-                print('go Right')
+                #print('go Right')
                 nbMovePlayed+=1
             if lastX > i:
                 goLeft(lastY, lastX, grid, 1)
-                print('go Left')
+                #print('go Left')
                 nbMovePlayed+=1
         click = 1
     changeText()
     if(verifIfPawnIsOnTarget()):
-        print("je suis la wesh")
+        #print("je suis la wesh")
         nbTurn+=1
         nbMovePlayedTotal.append(nbMovePlayed)
         if(nbTurn < 2):
@@ -613,7 +665,7 @@ def on_click_event(event):
             replacePawns()
             game()
         else:
-            print("fin du jeu")
+            #print("fin du jeu")
             print("score : ")
             print(nbMovePlayedTotal)
             displayEndOfTheGame()
@@ -730,7 +782,7 @@ def chest():
 for i in range(int(sizeOfGrid)):
     print()
     for j in range(int(sizeOfGrid)):
-        print(isdown(i, j, grid), end='')
+        print(isDown(i, j, grid), end='')
 
 # pawn
 for i in range(int(sizeOfGrid)):
@@ -740,7 +792,7 @@ for i in range(int(sizeOfGrid)):
 
 # isup - isdown - isleft - isright
 print("\n\nisWall?")
-print(isright(sizeOfGrid - 1, sizeOfGrid - 1, grid))
+print(isRight(sizeOfGrid - 1, sizeOfGrid - 1, grid))
 
 x1, y1, x2, y2 = 0, 0, 50, 50
 couleur = 'white'
@@ -875,41 +927,5 @@ label.pack()
 fen.mainloop()
 
 # affichage fin : fin test
-gridIa = []
-def beforeIaSetup(): # Pour setup l'ia, comme ça on évite des répétitions de boucles inutiles
-    global gridIa
-    gridIa= grid
-    getCoordTarget()
 
-#Ia 
-def IaBrutForce(limite):
-    global currentTarget,targetColor,targetX,targetY,pawnX,pawnY
-    if(targetX == pawnX and targetY == pawnY):
-        print("tro b1")
-        return True
-    if limite == 0 : #pas cool
-        return False
-    for i in range(4): # parcours 4 pions
-        getCoordPawn(i) # va récupéré les coords du pions en attribut
-        #on regarde si il y'a des murs
-        if( !isUp(pawnX,pawnY,gridIa) ) :
-
-            IaBrutForce(limite--)
-        if( !isdown(pawnX,pawnY,gridIa) ) :
-
-            IaBrutForce(limite--)
-        if( !isRight(pawnX,pawnY,gridIa) ) :
-
-            IaBrutForce(limite--)
-        if( !isUp(pawnX,pawnY,gridIa) ) :
-            
-            IaBrutForce(limite--)
-
-
-
-
-
-
-
-#fin ia
 
