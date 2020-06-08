@@ -535,13 +535,33 @@ def game():
     print(targetColor)
     changeText()
 
-
+    tab =""
+    print("before")
+    print()
+    for i in range(16):
+        print()
+        for j in range(16):
+            print(grid[i][j].pawn, end='')
+    print()
 
     #On appel l'ia ici
     beforeIaSetup()
-    IaBrutForce(5,gridIa) # on met la limite
-    reset()
-    replacePawns()
+    IaBrutForce(3,gridIa) # on met la limite
+
+
+    print("avant reset + replace")
+    print()
+    for i in range(16):
+        print()
+        for j in range(16):
+            print(grid[i][j].pawn, end='')
+    print("after")
+    print()
+    for i in range(16):
+        print()
+        for j in range(16):
+            print(grid[i][j].pawn, end='')
+
 
 
 
