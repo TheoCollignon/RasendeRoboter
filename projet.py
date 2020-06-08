@@ -889,7 +889,7 @@ def IaBrutForce(limite):
         getCoordPawn(i) # va récupéré les coords du pions en attribut
         #on regarde si il y'a des murs
         if( !isUp(pawnX,pawnY,gridIa) ) :
-            
+
             IaBrutForce(limite--)
         if( !isdown(pawnX,pawnY,gridIa) ) :
 
@@ -897,7 +897,7 @@ def IaBrutForce(limite):
         if( !isRight(pawnX,pawnY,gridIa) ) :
 
             IaBrutForce(limite--)
-        if( !isLeft(pawnX,pawnY,gridIa) ) :
+        if( !isUp(pawnX,pawnY,gridIa) ) :
             
             IaBrutForce(limite--)
 
