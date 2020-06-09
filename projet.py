@@ -453,19 +453,27 @@ gridIa = []
 def beforeIaSetup(): # Pour setup l'ia, comme ça on évite des répétitions de boucles inutiles
     global gridIa
     getCoordTarget()
-    
+    getColorTarget()
     gridIa = copy.deepcopy(grid)
 
     print(id(gridIa[0][0]))
 
 iterations = 1
+nbmoveIa = -1
 def IaBrutForce(limite,gridIa,pawn_color):
-    global currentTarget,targetColor,targetX,targetY,pawnX,pawnY,iterations
+    global currentTarget,targetColorIa,targetX,targetY,pawnX,pawnY,iterations,nbmoveIa
+    nbmoveIa = limite
     #0=bleu,1=orange,2=vert;,3=rouge
     #print(" tX : " + str(targetX))
-    if(targetX == pawnX and targetY == pawnY and pawn_color == grid[targetX][targetY].pawn):
-        print("tro b1")
-        return True
+    # if(targetX == pawnX):
+    #     print("")
+    # if(targetY == pawnY):
+    #print("on target : couleur pion : " + str(pawn_color) + " color target : " + str(targetColorIa))
+    if(targetX == pawnX and targetY == pawnY):
+        if(pawn_color == targetColorIa):
+            print("tro b1")
+            print("nb de coup : " + str(3-nbmoveIa) )
+            return True
     if limite < 0 : #pas cool
         # print(str(pawnX) + " " + str(pawnY))
         # if pawn_color==0:
@@ -516,10 +524,6 @@ def IaBrutForce(limite,gridIa,pawn_color):
             IaBrutForce(limite,gridIaBisLeft,i)
 
 #fin ia
-
-
-
-
 
 
 
@@ -585,6 +589,20 @@ def game():
     #label = Label(image=img1)
     #label.image = img1  # keep a reference!
 # fin jeu
+
+targetColorIa = -2
+def getColorTarget():
+    global targetColorIa
+    if(currentTarget == 1 or currentTarget == 4 or currentTarget == 15 or currentTarget==16 ):
+        targetColorIa = 2
+    if(currentTarget == 2 or currentTarget == 3 or currentTarget == 10 or currentTarget==11 ):
+        targetColorIa = 0
+    if(currentTarget == 5 or currentTarget == 6 or currentTarget == 13 or currentTarget==14 ):
+        targetColorIa = 3
+    if(currentTarget == 7 or currentTarget == 8 or currentTarget == 9 or currentTarget==12 ):
+        targetColorIa = 1
+
+
 
 
 
