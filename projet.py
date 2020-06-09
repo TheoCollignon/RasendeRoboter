@@ -452,8 +452,8 @@ print("\n")
 gridIa = []
 def beforeIaSetup(): # Pour setup l'ia, comme ça on évite des répétitions de boucles inutiles
     global gridIa
-    gridIa = copy.deepcopy(grid)
     getCoordTarget()
+    gridIa = copy.deepcopy(grid)
     print(id(gridIa[0][0]))
 
 iterations = 1
@@ -488,6 +488,7 @@ def IaBrutForce(limite,gridIa,pawn_color):
             print("up ", end='')
             iterations +=1
             IaBrutForce(limite,gridIaBisUp,i)
+        getCoordPawn(i,gridIa)
         if(isDown(pawnX,pawnY,gridIa) == 0 ) :
             gridIaBisDown = copy.deepcopy(gridIa)
             goDown(pawnX,pawnY,gridIaBisDown,0)
@@ -495,6 +496,7 @@ def IaBrutForce(limite,gridIa,pawn_color):
             print("down ", end='')
             iterations +=1
             IaBrutForce(limite,gridIaBisDown,i)
+        getCoordPawn(i,gridIa)
         if(isRight(pawnX,pawnY,gridIa) == 0 ) :
             gridIaBisRight = copy.deepcopy(gridIa)
             goRight(pawnX,pawnY,gridIaBisRight,0)
@@ -502,6 +504,7 @@ def IaBrutForce(limite,gridIa,pawn_color):
             print("right ", end='')
             iterations +=1
             IaBrutForce(limite,gridIaBisRight,i)
+        getCoordPawn(i,gridIa)
         if(isLeft(pawnX,pawnY,gridIa) == 0 ) :
             gridIaBisLeft = copy.deepcopy(gridIa)
             goLeft(pawnX,pawnY,gridIaBisLeft,0)
