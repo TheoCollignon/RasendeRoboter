@@ -401,7 +401,6 @@ for i in range(0, 4):
         if listPanelNumbers[j] == listRandom[i]:
             gridPosPanels[i] = gridPanels[j]
             gridNbPanels[i] = j
-            print(j)
 
 # generate walls according to the random layout on each panel
 for i in range(0, 4):
@@ -441,8 +440,6 @@ for i in range(0, 4):
         if grid[randomNumber][randomNumber2].target == 0 and not ((randomNumber2 > 6 and randomNumber < 9) and (randomNumber2 > 6 and randomNumber2 < 9)) and grid[randomNumber][randomNumber2].pawn==-1:
             isPlaced = True
             grid[randomNumber][randomNumber2].pawn = i
-
-print("\n")
 
 
 def goUpIa(i, j, listPawnIa,pawnID):
@@ -528,8 +525,11 @@ def isDownIa(i, j,listPawnIa):
 
 #Ia 
 listPawnIa = []
+listeChemin = []
 def beforeIaSetup(): # Pour setup l'ia, comme ça on évite des répétitions de boucles inutiles
-    global listPawnIa
+    global listPawnIa, listeChemin
+    listeChemin.clear()
+    listPawnIa.clear()
     getCoordTarget()
     getColorTarget()
     #on doit remplir la liste des pawn
@@ -538,26 +538,34 @@ def beforeIaSetup(): # Pour setup l'ia, comme ça on évite des répétitions de
             for j in range(16):
                 if(grid[i][j].pawn == w):
                     listPawnIa.append([i,j])
-    for i in range(4):
-        print("liste ia init: " + str(listPawnIa[i][0]) + "  " + str(listPawnIa[i][1]))
+    #for i in range(4):
+    #    print("liste ia init: " + str(listPawnIa[i][0]) + "  " + str(listPawnIa[i][1]))
 
-
+def getColor(i):
+    if i == 0:
+        return 'Blue'
+    if i == 1:
+        return 'Orange'
+    if i == 2:
+        return 'Green'
+    if i == 3:
+        return 'Red'
 
 iterations = 1
-
-def IaBrutForce(limite,listPawnIa,pawn_color,limite_max):
+def IaBrutForce(limite,listPawnIa,pawn_color,limite_max, listeChemin):
     global currentTarget,targetColorIa,targetX,targetY,pawnX,pawnY,iterations
-    nbmoveIa = limite
     if limite < 0 : 
         return False
     if(targetX == listPawnIa[pawn_color][0] and targetY == listPawnIa[pawn_color][1]):
         #print("cc : " + str(pawn_color) + " target : " + str(targetColorIa))
         if(pawn_color == targetColorIa):
-            print("cc : " + str(pawn_color) + " target : " + str(targetColorIa))
-            for w in range(4):
-                print("liste ia quand on a trouvé : " + str(listPawnIa[w][0]) + "  " + str(listPawnIa[w][1]) + " id : " +str(pawn_color))
+            #print("cc : " + str(pawn_color) + " target : " + str(targetColorIa))
+            #for w in range(4):
+            #    print("liste ia quand on a trouvé : " + str(listPawnIa[w][0]) + "  " + str(listPawnIa[w][1]) + " id : " +str(pawn_color))
             print("tro b1")
             print("nb de coup : " + str(limite_max - limite) )
+
+            print(listeChemin)
             return True
     limite-=1
 
@@ -566,29 +574,33 @@ def IaBrutForce(limite,listPawnIa,pawn_color,limite_max):
     for i in range(4): # parcours 4 pions
         #on regarde si il y'a des murs
         if(isUpIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIa) == 0) : #si y'a pas de murs,on déplace et on rappel la fonction
-            listPawnIabis = copy.deepcopy(listPawnIa)               # On instancie une nouvelle grille, sinon colision d'objet
+            listPawnIabis = copy.deepcopy(listPawnIa)
+            listeCheminBis = copy.deepcopy(listeChemin)
+            listeCheminBis.append(getColor(i) + " : Up")
             goUpIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIabis,i)
-            # print("up ", end='')
             iterations +=1
-            IaBrutForce(limite,listPawnIabis,i,limite_max)
+            IaBrutForce(limite,listPawnIabis,i,limite_max, listeCheminBis)
         if(isDownIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIa) == 0 ) :
-            listPawnIabis = copy.deepcopy(listPawnIa) 
+            listPawnIabis = copy.deepcopy(listPawnIa)
+            listeCheminBis = copy.deepcopy(listeChemin)
+            listeCheminBis.append(getColor(i) + " : Down")
             goDownIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIabis,i)
-            # print("down ", end='')
             iterations +=1
-            IaBrutForce(limite,listPawnIabis,i,limite_max)
+            IaBrutForce(limite,listPawnIabis,i,limite_max, listeCheminBis)
         if(isRightIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIa) == 0 ) :
-            listPawnIabis = copy.deepcopy(listPawnIa) 
+            listPawnIabis = copy.deepcopy(listPawnIa)
+            listeCheminBis = copy.deepcopy(listeChemin)
+            listeCheminBis.append(getColor(i) + " : Right")
             goRightIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIabis,i)
-            # print("right ", end='')
             iterations +=1
-            IaBrutForce(limite,listPawnIabis,i,limite_max)
+            IaBrutForce(limite,listPawnIabis,i,limite_max, listeCheminBis)
         if(isLeftIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIa) == 0 ) :
-            listPawnIabis = copy.deepcopy(listPawnIa) 
+            listPawnIabis = copy.deepcopy(listPawnIa)
+            listeCheminBis = copy.deepcopy(listeChemin)
+            listeCheminBis.append(getColor(i) + " : Left")
             goLeftIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIabis,i)
-            # print("left ", end='')
             iterations +=1
-            IaBrutForce(limite,listPawnIabis,i,limite_max)
+            IaBrutForce(limite,listPawnIabis,i,limite_max, listeCheminBis)
 
 #fin ia
 
@@ -629,19 +641,17 @@ def game():
         for j in range(16):
             if(grid[i][j].pawn > -1):
                 listPositionPawn.append([i,j,grid[i][j].pawn])
-    print(listPositionPawn)
+    #print(listPositionPawn)
 #
 
-    print(id(grid[0][0]))
-
-    print(currentTarget)
-    print(targetColor)
+    #print(currentTarget)
+    #print(targetColor)
     changeText()
 
 
     #On appel l'ia ici
     beforeIaSetup()
-    IaBrutForce(4,listPawnIa,0,4) # on met la limite
+    IaBrutForce(4,listPawnIa,0,4, listeChemin) # on met la limite
     print('iterati : ', iterations)
     # print("apres")
     # for i in range(16):
@@ -747,39 +757,27 @@ def on_click_event(event):
     global click, lastY, lastX,nbTurn,nbMovePlayed
     i = (int)(event.x / 50)
     j = (int)(event.y / 50)
-    print("clicked at", event.x, event.y, " / case ", i, j)
-    # if grid[i][j].pawn == 0:
-    #    print("blue pawn")
-    # if grid[i][j].pawn == 1:
-    #    print("orange pawn")
-    # if grid[i][j].pawn == 2:
-    #    print("green pawn")
-    # if grid[i][j].pawn == 3:
-    #    print("red pawn")
+    #print("clicked at", event.x, event.y, " / case ", i, j)
     if click == 1:
         if grid[j][i].pawn > -1:
             lastX = i
             lastY = j
             click = 2
-            print('PAWN')
+            #print('PAWN')
     else:
         if i == lastX:
             if lastY < j:
                 goDown(lastY, lastX, grid, 1)
-                # print('go Down')
                 nbMovePlayed+=1
             if lastY > j:
                 goUp(lastY, lastX, grid, 1)
-                # print('go Up')
                 nbMovePlayed+=1
         if j == lastY:
             if lastX < i:
                 goRight(lastY, lastX, grid, 1)
-                #print('go Right')
                 nbMovePlayed+=1
             if lastX > i:
                 goLeft(lastY, lastX, grid, 1)
-                #print('go Left')
                 nbMovePlayed+=1
         click = 1
     changeText()
@@ -906,20 +904,20 @@ def chest():
 # Verifications
 
 # up - down - left - right
-for i in range(int(sizeOfGrid)):
-    print()
-    for j in range(int(sizeOfGrid)):
-        print(isUp(i, j, grid), end='')
+#for i in range(int(sizeOfGrid)):
+    #print()
+    #for j in range(int(sizeOfGrid)):
+        #print(isUp(i, j, grid), end='')
 
 # pawn
-for i in range(int(sizeOfGrid)):
-    print()
-    for j in range(int(sizeOfGrid)):
-        print(grid[i][j].pawn, end='')
+#for i in range(int(sizeOfGrid)):
+    #print()
+    #for j in range(int(sizeOfGrid)):
+        #print(grid[i][j].pawn, end='')
 
 # isup - isdown - isleft - isright
-print("\n\nisWall?")
-print(isRight(sizeOfGrid - 1, sizeOfGrid - 1, grid))
+#print("\n\nisWall?")
+#print(isRight(sizeOfGrid - 1, sizeOfGrid - 1, grid))
 
 x1, y1, x2, y2 = 0, 0, 50, 50
 couleur = 'white'
