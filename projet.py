@@ -627,7 +627,7 @@ def game():
             if(grid[i][j].pawn > -1):
                 listPositionPawn.append([i,j,grid[i][j].pawn])
     print(listPositionPawn)
-
+#
 
     print(id(grid[0][0]))
 
