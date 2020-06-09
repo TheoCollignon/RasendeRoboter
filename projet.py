@@ -548,14 +548,17 @@ iterations = 1
 def IaBrutForce(limite,listPawnIa,pawn_color,limite_max):
     global currentTarget,targetColorIa,targetX,targetY,pawnX,pawnY,iterations
     nbmoveIa = limite
+    if limite < 0 : 
+        return False
     if(targetX == listPawnIa[pawn_color][0] and targetY == listPawnIa[pawn_color][1]):
         #print("cc : " + str(pawn_color) + " target : " + str(targetColorIa))
         if(pawn_color == targetColorIa):
+            print("cc : " + str(pawn_color) + " target : " + str(targetColorIa))
+            for w in range(4):
+                print("liste ia quand on a trouvé : " + str(listPawnIa[w][0]) + "  " + str(listPawnIa[w][1]) + " id : " +str(pawn_color))
             print("tro b1")
             print("nb de coup : " + str(limite_max - limite) )
             return True
-    if limite < 0 : 
-        return False
     limite-=1
 
 
@@ -638,7 +641,7 @@ def game():
 
     #On appel l'ia ici
     beforeIaSetup()
-    IaBrutForce(3,listPawnIa,0,3) # on met la limite
+    IaBrutForce(4,listPawnIa,0,4) # on met la limite
     print('iterati : ', iterations)
     # print("apres")
     # for i in range(16):
