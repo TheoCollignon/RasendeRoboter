@@ -465,7 +465,15 @@ def IaBrutForce(limite,gridIa,pawn_color):
         print("tro b1")
         return True
     if limite < 0 : #pas cool
-        print("mauvais : "+ str(pawnX) + " " + str(pawnY) + "pawncolor : " + str(pawn_color))
+        print(str(pawnX) + " " + str(pawnY))
+        if pawn_color==0:
+            print("blue\n")
+        if pawn_color==1:
+            print("orange\n")
+        if pawn_color==2:
+            print("green\n")
+        if pawn_color==3:
+            print("red\n")
         return False
     limite-=1
     for i in range(4): # parcours 4 pions
@@ -477,28 +485,28 @@ def IaBrutForce(limite,gridIa,pawn_color):
             gridIaBisUp = copy.deepcopy(gridIa)               # On instancie une nouvelle grille, sinon colision d'objet
             goUp(pawnX,pawnY,gridIaBisUp,0)
             getCoordPawn(i,gridIaBisUp)
-            print("up " + str(pawnX) + " " + str(pawnY), end='')
+            print("up ", end='')
             iterations +=1
             IaBrutForce(limite,gridIaBisUp,i)
         if(isDown(pawnX,pawnY,gridIa) == 0 ) :
             gridIaBisDown = copy.deepcopy(gridIa)
             goDown(pawnX,pawnY,gridIaBisDown,0)
             getCoordPawn(i,gridIaBisDown)
-            print("down " + str(pawnX) + " " + str(pawnY), end='')
+            print("down ", end='')
             iterations +=1
             IaBrutForce(limite,gridIaBisDown,i)
         if(isRight(pawnX,pawnY,gridIa) == 0 ) :
             gridIaBisRight = copy.deepcopy(gridIa)
             goRight(pawnX,pawnY,gridIaBisRight,0)
             getCoordPawn(i,gridIaBisRight)
-            print("right " + str(pawnX) + " " + str(pawnY), end='')
+            print("right ", end='')
             iterations +=1
             IaBrutForce(limite,gridIaBisRight,i)
         if(isLeft(pawnX,pawnY,gridIa) == 0 ) :
             gridIaBisLeft = copy.deepcopy(gridIa)
             goLeft(pawnX,pawnY,gridIaBisLeft,0)
             getCoordPawn(i,gridIaBisLeft)
-            print("left " + str(pawnX) + " " + str(pawnY), end='')
+            print("left ", end='')
             iterations +=1
             IaBrutForce(limite,gridIaBisLeft,i)
 
