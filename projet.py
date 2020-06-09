@@ -445,83 +445,147 @@ for i in range(0, 4):
 print("\n")
 
 
+def goUpIa(i, j, listPawnIa,pawnID):
+    iIter = i
+    jIter = j
+    if (isUp(iIter, jIter, grid) == 0):
+        iIter = i - 1
+        listPawnIa[pawnID] = [iIter,j]
+        goUpIa(iIter, jIter, listPawnIa, pawnID)
 
+
+def goLeftIa(i, j, listPawnIa,pawnID):
+    iIter = i
+    jIter = j
+    if (isLeft(iIter, jIter, grid) == 0):
+        jIter = j - 1
+        listPawnIa[pawnID] = [i,jIter]
+        goLeftIa(iIter, jIter, listPawnIa, pawnID)
+
+def goRightIa(i, j, listPawnIa,pawnID):
+    iIter = i
+    jIter = j
+    if (isRight(iIter, jIter, grid) == 0):
+        jIter = j + 1
+        listPawnIa[pawnID] = [i,jIter]
+        goRightIa(iIter, jIter, listPawnIa, pawnID)
+
+def goDownIa(i, j, listPawnIa,pawnID):
+    iIter = i
+    jIter = j
+    if (isDown(iIter, jIter, grid) == 0):
+        iIter += 1
+        listPawnIa[pawnID] = [iIter,j]
+        goDownIa(iIter, jIter, listPawnIa, pawnID)
+
+
+
+def isUpIa(i, j,listPawnIa):
+    if grid[i][j].up == 1:
+        return 1
+    elif i - 1 >= 0:
+        if grid[i - 1][j].down == 1:
+            return 1
+        for w in range(4):
+            if((i-1) == listPawnIa[w][0] and ( j== listPawnIa[w][1])):
+                return 1 
+    return 0
+
+def isLeftIa(i, j,listPawnIa):
+    if grid[i][j].up == 1:
+        return 1
+    elif j - 1 >= 0:
+        if grid[i ][j-1].down == 1:
+            return 1
+        for w in range(4):
+            if((i) == listPawnIa[w][0] and ( (j-1)== listPawnIa[w][1])):
+                return 1 
+    return 0
+
+
+def isRightIa(i, j,listPawnIa):
+    if grid[i][j].up == 1:
+        return 1
+    elif j+1 <= 15:
+        if grid[i][j+1].down == 1:
+            return 1
+        for w in range(4):
+            if(i == listPawnIa[w][0] and ( (j+1)== listPawnIa[w][1])):
+                return 1 
+    return 0
+
+def isDownIa(i, j,listPawnIa):
+    if grid[i][j].up == 1:
+        return 1
+    elif i+1 <= 15:
+        if grid[i+1][j].down == 1:
+            return 1
+        for w in range(4):
+            if((i+1) == listPawnIa[w][0] and ( (j)== listPawnIa[w][1])):
+                return 1 
+    return 0
 
 
 #Ia 
-gridIa = []
+listPawnIa = []
 def beforeIaSetup(): # Pour setup l'ia, comme ça on évite des répétitions de boucles inutiles
-    global gridIa
+    global listPawnIa
     getCoordTarget()
     getColorTarget()
-    gridIa = copy.deepcopy(grid)
+    #on doit remplir la liste des pawn
+    for w in range(4):
+        for i in range(16):
+            for j in range(16):
+                if(grid[i][j].pawn == w):
+                    listPawnIa.append([i,j])
+    for i in range(4):
+        print("liste ia init: " + str(listPawnIa[i][0]) + "  " + str(listPawnIa[i][1]))
 
-    print(id(gridIa[0][0]))
+
 
 iterations = 1
-nbmoveIa = -1
-def IaBrutForce(limite,gridIa,pawn_color):
-    global currentTarget,targetColorIa,targetX,targetY,pawnX,pawnY,iterations,nbmoveIa
+
+def IaBrutForce(limite,listPawnIa,pawn_color,limite_max):
+    global currentTarget,targetColorIa,targetX,targetY,pawnX,pawnY,iterations
     nbmoveIa = limite
-    #0=bleu,1=orange,2=vert;,3=rouge
-    #print(" tX : " + str(targetX))
-    # if(targetX == pawnX):
-    #     print("")
-    # if(targetY == pawnY):
-    #print("on target : couleur pion : " + str(pawn_color) + " color target : " + str(targetColorIa))
-    if(targetX == pawnX and targetY == pawnY):
+    if(targetX == listPawnIa[pawn_color][0] and targetY == listPawnIa[pawn_color][1]):
+        #print("cc : " + str(pawn_color) + " target : " + str(targetColorIa))
         if(pawn_color == targetColorIa):
             print("tro b1")
-            print("nb de coup : " + str(3-nbmoveIa) )
+            print("nb de coup : " + str(limite_max - limite) )
             return True
-    if limite < 0 : #pas cool
-        # print(str(pawnX) + " " + str(pawnY))
-        # if pawn_color==0:
-        #     print("blue\n")
-        # if pawn_color==1:
-        #     print("orange\n")
-        # if pawn_color==2:
-        #     print("green\n")
-        # if pawn_color==3:
-        #     print("red\n")
+    if limite < 0 : 
         return False
     limite-=1
+
+
+
     for i in range(4): # parcours 4 pions
-        getCoordPawn(i, gridIa)
-        #print("PAWN COORD avant: " + str(pawnX) + " " + str(pawnY))
-        getCoordPawn(i,gridIa) # va récupéré les coords du pions en attribut
         #on regarde si il y'a des murs
-        if(isUp(pawnX,pawnY,gridIa) == 0) : #si y'a pas de murs,on déplace et on rappel la fonction
-            gridIaBisUp = copy.deepcopy(gridIa)               # On instancie une nouvelle grille, sinon colision d'objet
-            goUp(pawnX,pawnY,gridIaBisUp,0)
-            getCoordPawn(i,gridIaBisUp)
+        if(isUpIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIa) == 0) : #si y'a pas de murs,on déplace et on rappel la fonction
+            listPawnIabis = copy.deepcopy(listPawnIa)               # On instancie une nouvelle grille, sinon colision d'objet
+            goUpIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIabis,i)
             # print("up ", end='')
             iterations +=1
-            IaBrutForce(limite,gridIaBisUp,i)
-        getCoordPawn(i,gridIa)
-        if(isDown(pawnX,pawnY,gridIa) == 0 ) :
-            gridIaBisDown = copy.deepcopy(gridIa)
-            goDown(pawnX,pawnY,gridIaBisDown,0)
-            getCoordPawn(i,gridIaBisDown)
+            IaBrutForce(limite,listPawnIabis,i,limite_max)
+        if(isDownIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIa) == 0 ) :
+            listPawnIabis = copy.deepcopy(listPawnIa) 
+            goDownIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIabis,i)
             # print("down ", end='')
             iterations +=1
-            IaBrutForce(limite,gridIaBisDown,i)
-        getCoordPawn(i,gridIa)
-        if(isRight(pawnX,pawnY,gridIa) == 0 ) :
-            gridIaBisRight = copy.deepcopy(gridIa)
-            goRight(pawnX,pawnY,gridIaBisRight,0)
-            getCoordPawn(i,gridIaBisRight)
+            IaBrutForce(limite,listPawnIabis,i,limite_max)
+        if(isRightIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIa) == 0 ) :
+            listPawnIabis = copy.deepcopy(listPawnIa) 
+            goRightIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIabis,i)
             # print("right ", end='')
             iterations +=1
-            IaBrutForce(limite,gridIaBisRight,i)
-        getCoordPawn(i,gridIa)
-        if(isLeft(pawnX,pawnY,gridIa) == 0 ) :
-            gridIaBisLeft = copy.deepcopy(gridIa)
-            goLeft(pawnX,pawnY,gridIaBisLeft,0)
-            getCoordPawn(i,gridIaBisLeft)
+            IaBrutForce(limite,listPawnIabis,i,limite_max)
+        if(isLeftIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIa) == 0 ) :
+            listPawnIabis = copy.deepcopy(listPawnIa) 
+            goLeftIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIabis,i)
             # print("left ", end='')
             iterations +=1
-            IaBrutForce(limite,gridIaBisLeft,i)
+            IaBrutForce(limite,listPawnIabis,i,limite_max)
 
 #fin ia
 
@@ -574,7 +638,7 @@ def game():
 
     #On appel l'ia ici
     beforeIaSetup()
-    IaBrutForce(2,gridIa,0) # on met la limite
+    IaBrutForce(3,listPawnIa,0,3) # on met la limite
     print('iterati : ', iterations)
     # print("apres")
     # for i in range(16):
