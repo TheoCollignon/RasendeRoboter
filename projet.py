@@ -453,7 +453,9 @@ gridIa = []
 def beforeIaSetup(): # Pour setup l'ia, comme ça on évite des répétitions de boucles inutiles
     global gridIa
     getCoordTarget()
+    
     gridIa = copy.deepcopy(grid)
+
     print(id(gridIa[0][0]))
 
 iterations = 1
@@ -461,31 +463,31 @@ def IaBrutForce(limite,gridIa,pawn_color):
     global currentTarget,targetColor,targetX,targetY,pawnX,pawnY,iterations
     #0=bleu,1=orange,2=vert;,3=rouge
     #print(" tX : " + str(targetX))
-    if(targetX == pawnX and targetY == pawnY and pawn_color == targetColor):
+    if(targetX == pawnX and targetY == pawnY and pawn_color == grid[targetX][targetY].pawn):
         print("tro b1")
         return True
     if limite < 0 : #pas cool
-        print(str(pawnX) + " " + str(pawnY))
-        if pawn_color==0:
-            print("blue\n")
-        if pawn_color==1:
-            print("orange\n")
-        if pawn_color==2:
-            print("green\n")
-        if pawn_color==3:
-            print("red\n")
+        # print(str(pawnX) + " " + str(pawnY))
+        # if pawn_color==0:
+        #     print("blue\n")
+        # if pawn_color==1:
+        #     print("orange\n")
+        # if pawn_color==2:
+        #     print("green\n")
+        # if pawn_color==3:
+        #     print("red\n")
         return False
     limite-=1
     for i in range(4): # parcours 4 pions
         getCoordPawn(i, gridIa)
-        print("PAWN COORD avant: " + str(pawnX) + " " + str(pawnY))
+        #print("PAWN COORD avant: " + str(pawnX) + " " + str(pawnY))
         getCoordPawn(i,gridIa) # va récupéré les coords du pions en attribut
         #on regarde si il y'a des murs
         if(isUp(pawnX,pawnY,gridIa) == 0) : #si y'a pas de murs,on déplace et on rappel la fonction
             gridIaBisUp = copy.deepcopy(gridIa)               # On instancie une nouvelle grille, sinon colision d'objet
             goUp(pawnX,pawnY,gridIaBisUp,0)
             getCoordPawn(i,gridIaBisUp)
-            print("up ", end='')
+            # print("up ", end='')
             iterations +=1
             IaBrutForce(limite,gridIaBisUp,i)
         getCoordPawn(i,gridIa)
@@ -493,7 +495,7 @@ def IaBrutForce(limite,gridIa,pawn_color):
             gridIaBisDown = copy.deepcopy(gridIa)
             goDown(pawnX,pawnY,gridIaBisDown,0)
             getCoordPawn(i,gridIaBisDown)
-            print("down ", end='')
+            # print("down ", end='')
             iterations +=1
             IaBrutForce(limite,gridIaBisDown,i)
         getCoordPawn(i,gridIa)
@@ -501,7 +503,7 @@ def IaBrutForce(limite,gridIa,pawn_color):
             gridIaBisRight = copy.deepcopy(gridIa)
             goRight(pawnX,pawnY,gridIaBisRight,0)
             getCoordPawn(i,gridIaBisRight)
-            print("right ", end='')
+            # print("right ", end='')
             iterations +=1
             IaBrutForce(limite,gridIaBisRight,i)
         getCoordPawn(i,gridIa)
@@ -509,7 +511,7 @@ def IaBrutForce(limite,gridIa,pawn_color):
             gridIaBisLeft = copy.deepcopy(gridIa)
             goLeft(pawnX,pawnY,gridIaBisLeft,0)
             getCoordPawn(i,gridIaBisLeft)
-            print("left ", end='')
+            # print("left ", end='')
             iterations +=1
             IaBrutForce(limite,gridIaBisLeft,i)
 
@@ -568,7 +570,7 @@ def game():
 
     #On appel l'ia ici
     beforeIaSetup()
-    IaBrutForce(0,gridIa,0) # on met la limite
+    IaBrutForce(2,gridIa,0) # on met la limite
     print('iterati : ', iterations)
     # print("apres")
     # for i in range(16):
