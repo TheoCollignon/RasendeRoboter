@@ -289,7 +289,7 @@ def goDown(i, j, gridparam, needVisualUpdate):
     if (isDown(iIter, jIter, gridparam) == 0):
         pawnID = gridparam[i][j].pawn
         gridparam[i][j].pawn = -1
-        iIter = i + 1
+        iIter += 1
         gridparam[iIter][j].pawn = pawnID
         if (needVisualUpdate == 1):
             updateGrid(i, j, iIter, j, pawnID)
@@ -454,6 +454,7 @@ def beforeIaSetup(): # Pour setup l'ia, comme ça on évite des répétitions de
     global gridIa
     gridIa = copy.deepcopy(grid)
     getCoordTarget()
+    print(id(gridIa[0][0]))
 
 iterations = 1
 def IaBrutForce(limite,gridIa,pawn_color):
@@ -468,32 +469,38 @@ def IaBrutForce(limite,gridIa,pawn_color):
         return False
     limite-=1
     for i in range(4): # parcours 4 pions
+        getCoordPawn(i, gridIa)
+        print("PAWN COORD avant: " + str(pawnX) + " " + str(pawnY))
         getCoordPawn(i,gridIa) # va récupéré les coords du pions en attribut
         #on regarde si il y'a des murs
-        if( not isUp(pawnX,pawnY,gridIa) ) : #si y'a pas de murs,on déplace et on rappel la fonction
-            gridIaBis = copy.deepcopy(gridIa)               # On instancie une nouvelle grille, sinon colision d'objet
-            goUp(pawnX,pawnY,gridIaBis,0)
-            getCoordPawn(i,gridIaBis)
+        if(isUp(pawnX,pawnY,gridIa) == 0) : #si y'a pas de murs,on déplace et on rappel la fonction
+            gridIaBisUp = copy.deepcopy(gridIa)               # On instancie une nouvelle grille, sinon colision d'objet
+            goUp(pawnX,pawnY,gridIaBisUp,0)
+            getCoordPawn(i,gridIaBisUp)
+            print("up " + str(pawnX) + " " + str(pawnY), end='')
             iterations +=1
-            IaBrutForce(limite,gridIaBis,i)
-        if( not isDown(pawnX,pawnY,gridIa) ) :
-            gridIaBis = copy.deepcopy(gridIa)
-            goDown(pawnX,pawnY,gridIaBis,0)
-            getCoordPawn(i,gridIaBis)
-            iterations +=1  
-            IaBrutForce(limite,gridIaBis,i)
-        if( not isRight(pawnX,pawnY,gridIa) ) :
-            gridIaBis = copy.deepcopy(gridIa)
-            goRight(pawnX,pawnY,gridIaBis,0)
-            getCoordPawn(i,gridIaBis)
+            IaBrutForce(limite,gridIaBisUp,i)
+        if(isDown(pawnX,pawnY,gridIa) == 0 ) :
+            gridIaBisDown = copy.deepcopy(gridIa)
+            goDown(pawnX,pawnY,gridIaBisDown,0)
+            getCoordPawn(i,gridIaBisDown)
+            print("down " + str(pawnX) + " " + str(pawnY), end='')
             iterations +=1
-            IaBrutForce(limite,gridIaBis,i)
-        if( not isLeft(pawnX,pawnY,gridIa) ) :
-            gridIaBis = copy.deepcopy(gridIa)
-            goLeft(pawnX,pawnY,gridIaBis,0)
-            getCoordPawn(i,gridIaBis)
+            IaBrutForce(limite,gridIaBisDown,i)
+        if(isRight(pawnX,pawnY,gridIa) == 0 ) :
+            gridIaBisRight = copy.deepcopy(gridIa)
+            goRight(pawnX,pawnY,gridIaBisRight,0)
+            getCoordPawn(i,gridIaBisRight)
+            print("right " + str(pawnX) + " " + str(pawnY), end='')
             iterations +=1
-            IaBrutForce(limite,gridIaBis,i)
+            IaBrutForce(limite,gridIaBisRight,i)
+        if(isLeft(pawnX,pawnY,gridIa) == 0 ) :
+            gridIaBisLeft = copy.deepcopy(gridIa)
+            goLeft(pawnX,pawnY,gridIaBisLeft,0)
+            getCoordPawn(i,gridIaBisLeft)
+            print("left " + str(pawnX) + " " + str(pawnY), end='')
+            iterations +=1
+            IaBrutForce(limite,gridIaBisLeft,i)
 
 #fin ia
 
@@ -541,7 +548,7 @@ def game():
     print(listPositionPawn)
 
 
-
+    print(id(grid[0][0]))
 
     print(currentTarget)
     print(targetColor)
@@ -550,7 +557,7 @@ def game():
 
     #On appel l'ia ici
     beforeIaSetup()
-    IaBrutForce(1,gridIa,0) # on met la limite
+    IaBrutForce(0,gridIa,0) # on met la limite
     print('iterati : ', iterations)
     # print("apres")
     # for i in range(16):
@@ -804,7 +811,7 @@ def chest():
 for i in range(int(sizeOfGrid)):
     print()
     for j in range(int(sizeOfGrid)):
-        print(isDown(i, j, grid), end='')
+        print(isUp(i, j, grid), end='')
 
 # pawn
 for i in range(int(sizeOfGrid)):
