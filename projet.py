@@ -445,34 +445,34 @@ for i in range(0, 4):
 def goUpIa(i, j, listPawnIa,pawnID):
     iIter = i
     jIter = j
-    if (isUp(iIter, jIter, grid) == 0):
+    if (isUpIa(iIter, jIter, listPawnIa) == 0):
         iIter = i - 1
-        listPawnIa[pawnID] = [iIter,j]
+        listPawnIa[pawnID] = [iIter,j,pawnID]
         goUpIa(iIter, jIter, listPawnIa, pawnID)
 
 
 def goLeftIa(i, j, listPawnIa,pawnID):
     iIter = i
     jIter = j
-    if (isLeft(iIter, jIter, grid) == 0):
+    if (isLeftIa(iIter, jIter, listPawnIa) == 0):
         jIter = j - 1
-        listPawnIa[pawnID] = [i,jIter]
+        listPawnIa[pawnID] = [i,jIter,pawnID]
         goLeftIa(iIter, jIter, listPawnIa, pawnID)
 
 def goRightIa(i, j, listPawnIa,pawnID):
     iIter = i
     jIter = j
-    if (isRight(iIter, jIter, grid) == 0):
+    if (isRightIa(iIter, jIter, listPawnIa) == 0):
         jIter = j + 1
-        listPawnIa[pawnID] = [i,jIter]
+        listPawnIa[pawnID] = [i,jIter,pawnID]
         goRightIa(iIter, jIter, listPawnIa, pawnID)
 
 def goDownIa(i, j, listPawnIa,pawnID):
     iIter = i
     jIter = j
-    if (isDown(iIter, jIter, grid) == 0):
+    if (isDownIa(iIter, jIter, listPawnIa) == 0):
         iIter += 1
-        listPawnIa[pawnID] = [iIter,j]
+        listPawnIa[pawnID] = [iIter,j,pawnID]
         goDownIa(iIter, jIter, listPawnIa, pawnID)
 
 
@@ -489,10 +489,10 @@ def isUpIa(i, j,listPawnIa):
     return 0
 
 def isLeftIa(i, j,listPawnIa):
-    if grid[i][j].up == 1:
+    if grid[i][j].left == 1:
         return 1
     elif j - 1 >= 0:
-        if grid[i ][j-1].down == 1:
+        if grid[i ][j-1].right == 1:
             return 1
         for w in range(4):
             if((i) == listPawnIa[w][0] and ( (j-1)== listPawnIa[w][1])):
@@ -501,10 +501,10 @@ def isLeftIa(i, j,listPawnIa):
 
 
 def isRightIa(i, j,listPawnIa):
-    if grid[i][j].up == 1:
+    if grid[i][j].right == 1:
         return 1
     elif j+1 <= 15:
-        if grid[i][j+1].down == 1:
+        if grid[i][j+1].left == 1:
             return 1
         for w in range(4):
             if(i == listPawnIa[w][0] and ( (j+1)== listPawnIa[w][1])):
@@ -512,10 +512,10 @@ def isRightIa(i, j,listPawnIa):
     return 0
 
 def isDownIa(i, j,listPawnIa):
-    if grid[i][j].up == 1:
+    if grid[i][j].down == 1:
         return 1
     elif i+1 <= 15:
-        if grid[i+1][j].down == 1:
+        if grid[i+1][j].up == 1:
             return 1
         for w in range(4):
             if((i+1) == listPawnIa[w][0] and ( (j)== listPawnIa[w][1])):
@@ -537,7 +537,7 @@ def beforeIaSetup(): # Pour setup l'ia, comme ça on évite des répétitions de
         for i in range(16):
             for j in range(16):
                 if(grid[i][j].pawn == w):
-                    listPawnIa.append([i,j])
+                    listPawnIa.append([i,j,w])
     #for i in range(4):
     #    print("liste ia init: " + str(listPawnIa[i][0]) + "  " + str(listPawnIa[i][1]))
 
@@ -560,8 +560,8 @@ def IaBrutForce(limite,listPawnIa,pawn_color,limite_max, listeChemin):
         #print("cc : " + str(pawn_color) + " target : " + str(targetColorIa))
         if(pawn_color == targetColorIa):
             #print("cc : " + str(pawn_color) + " target : " + str(targetColorIa))
-            #for w in range(4):
-            #    print("liste ia quand on a trouvé : " + str(listPawnIa[w][0]) + "  " + str(listPawnIa[w][1]) + " id : " +str(pawn_color))
+            for w in range(4):
+                print("liste ia quand on a trouvé : " + str(listPawnIa[w][0]) + "  " + str(listPawnIa[w][1]) + " id : " +str(listPawnIa[w][2]))
             print("tro b1")
             print("nb de coup : " + str(limite_max - limite) )
 
