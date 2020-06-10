@@ -559,7 +559,8 @@ listLongestWay = []
 longestWay = -10
 def IaBrutForce(limite,listPawnIa,pawn_color,limite_max, listeChemin):
     global currentTarget,targetColorIa,targetX,targetY,pawnX,pawnY,iterations,listeCheminGagnant,shortestWay,longestWay,listLongestWay,listShortestWay
-    if limite < 0 : 
+    nbCoup = limite_max - limite
+    if limite < 0 :
         return False
     if(targetX == listPawnIa[pawn_color][0] and targetY == listPawnIa[pawn_color][1]):
         #print("cc : " + str(pawn_color) + " target : " + str(targetColorIa))
@@ -568,7 +569,7 @@ def IaBrutForce(limite,listPawnIa,pawn_color,limite_max, listeChemin):
             for w in range(4):
                 print("liste ia quand on a trouvé : " + str(listPawnIa[w][0]) + "  " + str(listPawnIa[w][1]) + " id : " +str(listPawnIa[w][2]))
             print("tro b1")
-            print("nb de coup : " + str(limite_max - limite) )
+            print("nb de coup : " + str(limite_max - limite))
 
             print(listeChemin)
             listeCheminGagnant.append(listeChemin)
@@ -579,9 +580,9 @@ def IaBrutForce(limite,listPawnIa,pawn_color,limite_max, listeChemin):
                 if longestWay < len(i):
                     longestWay = len(i)
                     listLongestWay = i
-            print("shortestWay : " ,end='')
+            print("shortestWay : ",end='')
             print(listShortestWay) 
-            print(" longestWay : " ,end='')
+            print(" longestWay : ",end='')
             print(listLongestWay )
             return True
     limite-=1
@@ -591,30 +592,39 @@ def IaBrutForce(limite,listPawnIa,pawn_color,limite_max, listeChemin):
     for i in range(4): # parcours 4 pions
         #on regarde si il y'a des murs
         if(isUpIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIa) == 0) : #si y'a pas de murs,on déplace et on rappel la fonction
+            if not nbCoup == -1:
+                if (not (listeChemin[nbCoup][1]==0)):
+                    listPawnIabis = copy.deepcopy(listPawnIa)
+                    listeCheminBis = copy.deepcopy(listeChemin)
+                    listeCheminBis.append([i,0])
+                    goUpIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIabis,i)
+                    iterations +=1
+                    IaBrutForce(limite,listPawnIabis,i,limite_max, listeCheminBis)
+            else :
+                listPawnIabis = copy.deepcopy(listPawnIa)
+                listeCheminBis = copy.deepcopy(listeChemin)
+                listeCheminBis.append([i, 0])
+                goUpIa(listPawnIa[i][0], listPawnIa[i][1], listPawnIabis, i)
+                iterations += 1
+                IaBrutForce(limite, listPawnIabis, i, limite_max, listeCheminBis)
+        if(isDownIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIa) == 0) :
             listPawnIabis = copy.deepcopy(listPawnIa)
             listeCheminBis = copy.deepcopy(listeChemin)
-            listeCheminBis.append(getColor(i) + " : Up")
-            goUpIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIabis,i)
-            iterations +=1
-            IaBrutForce(limite,listPawnIabis,i,limite_max, listeCheminBis)
-        if(isDownIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIa) == 0 ) :
-            listPawnIabis = copy.deepcopy(listPawnIa)
-            listeCheminBis = copy.deepcopy(listeChemin)
-            listeCheminBis.append(getColor(i) + " : Down")
+            listeCheminBis.append([i,1])
             goDownIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIabis,i)
             iterations +=1
             IaBrutForce(limite,listPawnIabis,i,limite_max, listeCheminBis)
-        if(isRightIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIa) == 0 ) :
+        if(isRightIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIa) == 0) :
             listPawnIabis = copy.deepcopy(listPawnIa)
             listeCheminBis = copy.deepcopy(listeChemin)
-            listeCheminBis.append(getColor(i) + " : Right")
+            listeCheminBis.append([i,2])
             goRightIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIabis,i)
             iterations +=1
             IaBrutForce(limite,listPawnIabis,i,limite_max, listeCheminBis)
-        if(isLeftIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIa) == 0 ) :
+        if(isLeftIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIa) == 0) :
             listPawnIabis = copy.deepcopy(listPawnIa)
             listeCheminBis = copy.deepcopy(listeChemin)
-            listeCheminBis.append(getColor(i) + " : Left")
+            listeCheminBis.append([i,3])
             goLeftIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIabis,i)
             iterations +=1
             IaBrutForce(limite,listPawnIabis,i,limite_max, listeCheminBis)
