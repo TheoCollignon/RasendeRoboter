@@ -552,8 +552,11 @@ def getColor(i):
         return 'Red'
 
 iterations = 1
+listeCheminGagnant = []
+shortestWay = 1000
+longestWay = -10
 def IaBrutForce(limite,listPawnIa,pawn_color,limite_max, listeChemin):
-    global currentTarget,targetColorIa,targetX,targetY,pawnX,pawnY,iterations
+    global currentTarget,targetColorIa,targetX,targetY,pawnX,pawnY,iterations,listeCheminGagnant,shortestWay,longestWay
     if limite < 0 : 
         return False
     if(targetX == listPawnIa[pawn_color][0] and targetY == listPawnIa[pawn_color][1]):
@@ -566,6 +569,13 @@ def IaBrutForce(limite,listPawnIa,pawn_color,limite_max, listeChemin):
             print("nb de coup : " + str(limite_max - limite) )
 
             print(listeChemin)
+            listeCheminGagnant.append(listeChemin)
+            for i in listeCheminGagnant:
+                if shortestWay > len(i) :
+                    shortestWay = len(i)
+                if longestWay < len(i):
+                    longestWay = len(i)
+            print("shortestWay : " + str(shortestWay) + " longestWay : " + str(longestWay))    
             return True
     limite-=1
 
