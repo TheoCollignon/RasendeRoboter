@@ -572,10 +572,10 @@ def IaBrutForce(limite,listPawnIa,pawn_color,limite_max, listeChemin):
             listeCheminGagnant.append(listeChemin)
             for i in listeCheminGagnant:
                 if shortestWay > len(i) :
-                    shortestWay = len(i)
+                    shortestWay = i
                 if longestWay < len(i):
-                    longestWay = len(i)
-            print("shortestWay : " + str(shortestWay) + " longestWay : " + str(longestWay))    
+                    longestWay = i
+            print("shortestWay : " + shortestWay + " longestWay : " + longestWay    )
             return True
     limite-=1
 
