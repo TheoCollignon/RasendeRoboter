@@ -554,9 +554,11 @@ def getColor(i):
 iterations = 1
 listeCheminGagnant = []
 shortestWay = 1000
+listShortestWay = []
+listLongestWay = []
 longestWay = -10
 def IaBrutForce(limite,listPawnIa,pawn_color,limite_max, listeChemin):
-    global currentTarget,targetColorIa,targetX,targetY,pawnX,pawnY,iterations,listeCheminGagnant,shortestWay,longestWay
+    global currentTarget,targetColorIa,targetX,targetY,pawnX,pawnY,iterations,listeCheminGagnant,shortestWay,longestWay,listLongestWay,listShortestWay
     if limite < 0 : 
         return False
     if(targetX == listPawnIa[pawn_color][0] and targetY == listPawnIa[pawn_color][1]):
@@ -572,10 +574,15 @@ def IaBrutForce(limite,listPawnIa,pawn_color,limite_max, listeChemin):
             listeCheminGagnant.append(listeChemin)
             for i in listeCheminGagnant:
                 if shortestWay > len(i) :
-                    shortestWay = i
+                    shortestWay = len(i)
+                    listShortestWay = i
                 if longestWay < len(i):
-                    longestWay = i
-            print("shortestWay : " + shortestWay + " longestWay : " + longestWay    )
+                    longestWay = len(i)
+                    listLongestWay = i
+            print("shortestWay : " ,end='')
+            print(listShortestWay) 
+            print(" longestWay : " ,end='')
+            print(listLongestWay )
             return True
     limite-=1
 
