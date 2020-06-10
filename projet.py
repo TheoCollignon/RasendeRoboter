@@ -107,7 +107,7 @@ def rotation(panel, direction, nbRot):  # adds the rotated cases on the panel to
                         panelTemp[j][int(sizeOfPanel) - 1 - i] = rotCase(panel[i][j], direction, nbRot)
     return panelTemp
 
-
+# TODO: Nathan, les plaques peuvent rotationner, mais le coin doit etre au centre
 def rotate(pos, panel, panelNb):  # rotation of a panel
     if (pos == panelNb):
         return panel
@@ -310,6 +310,27 @@ for i in range(0, sizeOfGrid):
         case = Case()
         grid[i][j] = case
 
+
+grid[int(sizeOfGrid / 2) - 1][int(sizeOfGrid / 2) - 1].up = 1
+grid[int(sizeOfGrid / 2) - 1][int(sizeOfGrid / 2) - 1].down = 1
+grid[int(sizeOfGrid / 2) - 1][int(sizeOfGrid / 2) - 1].left = 1
+grid[int(sizeOfGrid / 2) - 1][int(sizeOfGrid / 2) - 1].right = 1
+
+grid[int(sizeOfGrid / 2) - 1][int(sizeOfGrid / 2)].up = 1
+grid[int(sizeOfGrid / 2) - 1][int(sizeOfGrid / 2)].down = 1
+grid[int(sizeOfGrid / 2) - 1][int(sizeOfGrid / 2)].left = 1
+grid[int(sizeOfGrid / 2) - 1][int(sizeOfGrid / 2)].right = 1
+
+grid[int(sizeOfGrid / 2)][int(sizeOfGrid / 2) - 1].up = 1
+grid[int(sizeOfGrid / 2)][int(sizeOfGrid / 2) - 1].down = 1
+grid[int(sizeOfGrid / 2)][int(sizeOfGrid / 2) - 1].left = 1
+grid[int(sizeOfGrid / 2)][int(sizeOfGrid / 2) - 1].right = 1
+
+grid[int(sizeOfGrid / 2)][int(sizeOfGrid / 2)].up = 1
+grid[int(sizeOfGrid / 2)][int(sizeOfGrid / 2)].down = 1
+grid[int(sizeOfGrid / 2)][int(sizeOfGrid / 2)].left = 1
+grid[int(sizeOfGrid / 2)][int(sizeOfGrid / 2)].right = 1
+
 print("Initialising the 4 panels\n ")
 # init all 4 panels with their walls
 panel1 = [[Case() for i in range(int(sizeOfPanel))] for j in range(int(sizeOfPanel))]
@@ -420,15 +441,6 @@ for i in range(sizeOfGrid):
             grid[i][j].left = 1
         if j == sizeOfGrid - 1:
             grid[i][j].right = 1
-
-grid[int(sizeOfGrid / 2) - 1][int(sizeOfGrid / 2) - 1].up = 1
-grid[int(sizeOfGrid / 2) - 1][int(sizeOfGrid / 2) - 1].left = 1
-grid[int(sizeOfGrid / 2) - 1][int(sizeOfGrid / 2)].up = 1
-grid[int(sizeOfGrid / 2) - 1][int(sizeOfGrid / 2)].right = 1
-grid[int(sizeOfGrid / 2)][int(sizeOfGrid / 2) - 1].down = 1
-grid[int(sizeOfGrid / 2)][int(sizeOfGrid / 2) - 1].left = 1
-grid[int(sizeOfGrid / 2)][int(sizeOfGrid / 2)].down = 1
-grid[int(sizeOfGrid / 2)][int(sizeOfGrid / 2)].right = 1
 
 # placing the pawns randomly on the grid
 for i in range(0, 4):
@@ -692,7 +704,6 @@ def IaBrutForce(limite,listPawnIa,pawn_color,limite_max, listeChemin):
 #fin ia
 
 
-
 def testPionUnique(pion, limite, listPawnIa,limite_max, listeChemin):
     global currentTarget, targetColorIa, targetX, targetY, pawnX, pawnY, iterations, listeCheminGagnant, shortestWay, longestWay, listLongestWay, listShortestWay
     nbCoup = limite_max - limite
@@ -700,7 +711,7 @@ def testPionUnique(pion, limite, listPawnIa,limite_max, listeChemin):
     if limite < 0:
         return False
 
-    if (targetX == listPawnIa[i][0] and targetY == listPawnIa[i][1]):
+    if (targetX == listPawnIa[i][0] and targetY == listPawnIa[i][1]): # getPawnbyId
         # print("cc : " + str(pawn_color) + " target : " + str(targetColorIa))
         if (i == targetColorIa):
             # print("cc : " + str(pawn_color) + " target : " + str(targetColorIa))
@@ -766,7 +777,7 @@ nbMovePlayed=0
 listPositionPawn = [] #X Y idColor
 def game():
     #initialisation du tour
-    global nbMovePlayed,targetColor,currentTarget,listPositionPawn
+    global nbMovePlayed,targetColor,currentTarget,listPositionPawn, listeCheminGagnant
     nbMovePlayed = 0 # nombre de coup courant
     randomNumber = randint(1,16)
     while(currentTarget == randomNumber):
@@ -802,8 +813,19 @@ def game():
     #On appel l'ia ici
     beforeIaSetup()
     # IaBrutForce(4,listPawnIa,0,4, listeChemin) # on met la limite
-    testPionUnique(targetColorIa,15,listPawnIa,15,listeChemin)
+    testPionUnique(targetColorIa,10,listPawnIa,10,listeChemin)
     print('iterati : ', iterations)
+
+    if (len(listeCheminGagnant) == 0):
+        print("pas en 1 pion")
+        
+        # pion couleur principal + 3 autres
+        pawnColor = targetColorIa
+        for i in range(4):
+            if( i != pawnColor):
+                testDeuxPions(pawnColor, i, 10, listPawnIa, 10, listeChemin)
+        # 4 couleurs if. La meme marche pas, et de 1 en 1
+
     # print("apres")
     # for i in range(16):
     #     print()
@@ -817,6 +839,149 @@ def game():
     #label = Label(image=img1)
     #label.image = img1  # keep a reference!
 # fin jeu
+
+
+def testDeuxPions(pion, pion2, limite, listPawnIa,limite_max, listeChemin):
+    global currentTarget, targetColorIa, targetX, targetY, pawnX, pawnY, iterations, listeCheminGagnant, shortestWay, longestWay, listLongestWay, listShortestWay
+    nbCoup = limite_max - limite
+
+    p = pion
+    p2 = pion2
+    if limite < 0:
+        return False
+
+    # verification
+    if (targetX == listPawnIa[p][0] and targetY == listPawnIa[p][1] ):  # getPawnbyId
+        # print("cc : " + str(pawn_color) + " target : " + str(targetColorIa))
+        if (p == targetColorIa):
+            # print("cc : " + str(pawn_color) + " target : " + str(targetColorIa))
+
+            for w in range(4):
+                print("liste ia quand on a trouvé : " + str(listPawnIa[w][0]) + "  " + str(
+                    listPawnIa[w][1]) + " id : " + str(listPawnIa[w][2]))
+            print("tro b1")
+            print("nb de coup : " + str(limite_max - limite))
+
+            print(listeChemin)
+            listeCheminGagnant.append(listeChemin)
+            for y in listeCheminGagnant:
+                if shortestWay > len(y):
+                    shortestWay = len(y)
+                    listShortestWay = y
+                if longestWay < len(y):
+                    longestWay = len(y)
+                    listLongestWay = y
+            print("shortestWay : ", end='')
+            print(listShortestWay)
+            print(" longestWay : ", end='')
+            print(listLongestWay)
+            return True
+    limite -= 1
+
+    if ((nbCoup+1) < shortestWay):
+        for i in range(4):
+            if i==p or i==p2:
+                #on regarde si il y'a des murs #0 = up // 1 = bas // 2 = droite // 3 = gauche
+                if(isUpIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIa) == 0) : #si y'a pas de murs,on déplace et on rappel la fonction
+                    if nbCoup > 0:
+                        if (listeChemin[nbCoup-1][0] == i):
+                            if not (listeChemin[nbCoup-1][1] == 1):
+                                listPawnIabis = copy.deepcopy(listPawnIa)
+                                listeCheminBis = copy.deepcopy(listeChemin)
+                                listeCheminBis.append([i,0])
+                                goUpIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIabis,i)
+                                iterations +=1
+                                testDeuxPions(p, p2, limite, listPawnIabis, limite_max, listeCheminBis)
+                        else :
+                            listPawnIabis = copy.deepcopy(listPawnIa)
+                            listeCheminBis = copy.deepcopy(listeChemin)
+                            listeCheminBis.append([i, 0])
+                            goUpIa(listPawnIa[i][0], listPawnIa[i][1], listPawnIabis, i)
+                            iterations += 1
+                            testDeuxPions(p, p2, limite, listPawnIabis, limite_max, listeCheminBis)
+                    else :
+                        listPawnIabis = copy.deepcopy(listPawnIa)
+                        listeCheminBis = copy.deepcopy(listeChemin)
+                        listeCheminBis.append([i, 0])
+                        goUpIa(listPawnIa[i][0], listPawnIa[i][1], listPawnIabis, i)
+                        iterations += 1
+                        testDeuxPions(p, p2, limite, listPawnIabis, limite_max, listeCheminBis)
+
+                if(isDownIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIa) == 0) :
+                    if nbCoup > 0:
+                        if (listeChemin[nbCoup - 1][0] == i):
+                            if not (listeChemin[nbCoup - 1][1] == 0):
+                                listPawnIabis = copy.deepcopy(listPawnIa)
+                                listeCheminBis = copy.deepcopy(listeChemin)
+                                listeCheminBis.append([i,1])
+                                goDownIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIabis,i)
+                                iterations +=1
+                                testDeuxPions(p, p2, limite, listPawnIabis, limite_max, listeCheminBis)
+                        else:
+                            listPawnIabis = copy.deepcopy(listPawnIa)
+                            listeCheminBis = copy.deepcopy(listeChemin)
+                            listeCheminBis.append([i, 1])
+                            goDownIa(listPawnIa[i][0], listPawnIa[i][1], listPawnIabis, i)
+                            iterations += 1
+                            testDeuxPions(p, p2, limite, listPawnIabis, limite_max, listeCheminBis)
+                    else:
+                        listPawnIabis = copy.deepcopy(listPawnIa)
+                        listeCheminBis = copy.deepcopy(listeChemin)
+                        listeCheminBis.append([i, 1])
+                        goDownIa(listPawnIa[i][0], listPawnIa[i][1], listPawnIabis, i)
+                        iterations += 1
+                        testDeuxPions(p, p2, limite, listPawnIabis, limite_max, listeCheminBis)
+
+                if(isRightIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIa) == 0) :
+                    if nbCoup > 0:
+                        if (listeChemin[nbCoup - 1][0] == i):
+                            if not (listeChemin[nbCoup - 1][1] == 3):
+                                listPawnIabis = copy.deepcopy(listPawnIa)
+                                listeCheminBis = copy.deepcopy(listeChemin)
+                                listeCheminBis.append([i,2])
+                                goRightIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIabis,i)
+                                iterations +=1
+                                testDeuxPions(p, p2, limite, listPawnIabis, limite_max, listeCheminBis)
+                        else:
+                            listPawnIabis = copy.deepcopy(listPawnIa)
+                            listeCheminBis = copy.deepcopy(listeChemin)
+                            listeCheminBis.append([i, 2])
+                            goRightIa(listPawnIa[i][0], listPawnIa[i][1], listPawnIabis, i)
+                            iterations += 1
+                            testDeuxPions(p, p2, limite, listPawnIabis, limite_max, listeCheminBis)
+                    else:
+                        listPawnIabis = copy.deepcopy(listPawnIa)
+                        listeCheminBis = copy.deepcopy(listeChemin)
+                        listeCheminBis.append([i, 2])
+                        goRightIa(listPawnIa[i][0], listPawnIa[i][1], listPawnIabis, i)
+                        iterations += 1
+                        testDeuxPions(p, p2, limite, listPawnIabis, limite_max, listeCheminBis)
+
+                if(isLeftIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIa) == 0) :
+                    if nbCoup > 0:
+                        if (listeChemin[nbCoup - 1][0] == i):
+                            if not (listeChemin[nbCoup - 1][1] == 2):
+                                listPawnIabis = copy.deepcopy(listPawnIa)
+                                listeCheminBis = copy.deepcopy(listeChemin)
+                                listeCheminBis.append([i,3])
+                                goLeftIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIabis,i)
+                                iterations +=1
+                                testDeuxPions(p, p2, limite, listPawnIabis, limite_max, listeCheminBis)
+                        else:
+                            listPawnIabis = copy.deepcopy(listPawnIa)
+                            listeCheminBis = copy.deepcopy(listeChemin)
+                            listeCheminBis.append([i, 3])
+                            goLeftIa(listPawnIa[i][0], listPawnIa[i][1], listPawnIabis, i)
+                            iterations += 1
+                            testDeuxPions(p, p2, limite, listPawnIabis, limite_max, listeCheminBis)
+                    else :
+                        listPawnIabis = copy.deepcopy(listPawnIa)
+                        listeCheminBis = copy.deepcopy(listeChemin)
+                        listeCheminBis.append([i, 3])
+                        goLeftIa(listPawnIa[i][0], listPawnIa[i][1], listPawnIabis, i)
+                        iterations += 1
+                        testDeuxPions(p, p2, limite, listPawnIabis, limite_max, listeCheminBis)
+
 
 targetColorIa = -2
 def getColorTarget():
@@ -1075,6 +1240,7 @@ couleur = 'white'
 
 fen = Tk()
 global can
+# TODO: remettre en 800 800
 can = Canvas(fen, width=800, heigh=800, bg='ivory')
 
 # Permet d'afficher les images, on a besoin de garder une référence sinon elle ne s'affichent pas
