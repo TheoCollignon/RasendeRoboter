@@ -815,7 +815,7 @@ def game():
     #On appel l'ia ici
     beforeIaSetup()
     # IaBrutForce(4,listPawnIa,0,4, listeChemin) # on met la limite
-    testPionUnique(targetColorIa, 5,listPawnIa,5,listeChemin)
+    testPionUnique(targetColorIa, 15,listPawnIa, 15,listeChemin)
     print('iterati : ', iterations)
 
     if (len(listeCheminGagnant) == 0):
@@ -825,7 +825,7 @@ def game():
         pawnColor = targetColorIa
         for i in range(4):
             if( i != pawnColor):
-                testDeuxPions(pawnColor, i, 5, listPawnIa, 5, listeChemin)
+                testDeuxPions(pawnColor, i, 10, listPawnIa, 10, listeChemin)
         # 4 couleurs if. La meme marche pas, et de 1 en 1
 
     # print("apres")
@@ -882,7 +882,7 @@ def testDeuxPions(pion, pion2, limite, listPawnIa,limite_max, listeChemin):
 
     if ((nbCoup+1) < shortestWay):
         for i in range(4):
-            if i==p or i==p2:
+            if i==p or (nbCoup+2 < shortestWay and i==p2):
                 #on regarde si il y'a des murs #0 = up // 1 = bas // 2 = droite // 3 = gauche
                 if(isUpIa(listPawnIa[i][0],listPawnIa[i][1],listPawnIa) == 0) : #si y'a pas de murs,on déplace et on rappel la fonction
                     if nbCoup > 0:
@@ -1243,7 +1243,7 @@ couleur = 'white'
 fen = Tk()
 global can
 # TODO: remettre en 800 800
-can = Canvas(fen, width=775, heigh=775, bg='ivory')
+can = Canvas(fen, width=800, heigh=800, bg='ivory')
 
 # Permet d'afficher les images, on a besoin de garder une référence sinon elle ne s'affichent pas
 
