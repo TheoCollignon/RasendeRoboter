@@ -427,8 +427,10 @@ for i in range(0, 4):
     gridPosPanels[i] = rotate(i, gridPosPanels[i], gridNbPanels[i])
 
 # PLacing every wall on the final grid
-for i in range(0, 4):
-    grid = placePanelWalls(grid, gridPosPanels[i], i)
+grid = placePanelWalls(grid, gridPosPanels[0], 0)
+grid = placePanelWalls(grid, gridPosPanels[1], 1)
+grid = placePanelWalls(grid, gridPosPanels[2], 3)
+grid = placePanelWalls(grid, gridPosPanels[3], 2)
 
 # adding the central and the border walls
 for i in range(sizeOfGrid):
@@ -813,7 +815,7 @@ def game():
     #On appel l'ia ici
     beforeIaSetup()
     # IaBrutForce(4,listPawnIa,0,4, listeChemin) # on met la limite
-    testPionUnique(targetColorIa,10,listPawnIa,10,listeChemin)
+    testPionUnique(targetColorIa, 5,listPawnIa,5,listeChemin)
     print('iterati : ', iterations)
 
     if (len(listeCheminGagnant) == 0):
@@ -823,7 +825,7 @@ def game():
         pawnColor = targetColorIa
         for i in range(4):
             if( i != pawnColor):
-                testDeuxPions(pawnColor, i, 10, listPawnIa, 10, listeChemin)
+                testDeuxPions(pawnColor, i, 5, listPawnIa, 5, listeChemin)
         # 4 couleurs if. La meme marche pas, et de 1 en 1
 
     # print("apres")
@@ -1241,7 +1243,7 @@ couleur = 'white'
 fen = Tk()
 global can
 # TODO: remettre en 800 800
-can = Canvas(fen, width=800, heigh=800, bg='ivory')
+can = Canvas(fen, width=775, heigh=775, bg='ivory')
 
 # Permet d'afficher les images, on a besoin de garder une référence sinon elle ne s'affichent pas
 
