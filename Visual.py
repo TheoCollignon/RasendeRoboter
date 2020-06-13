@@ -143,8 +143,7 @@ class Visual:
         globals.scoreJoueurTotal = 0
         for i in globals.nbMovePlayedTotal:
             globals.scoreJoueurTotal += i
-        self.text_value = "turn : " + str(globals.nbTurn) + "/"+ str(globals.nbTurnTotalToFinishTheGame) +"                   move : " + str(globals.nbMovePlayed) + "              total : " + str(globals.scoreJoueurTotal)
-
+        self.text_value = "turn : " + str(globals.nbTurn) + "/"+ str(globals.nbTurnTotalToFinishTheGame) +"                   move : " + str(globals.nbMovePlayed) + "              total : " + str(globals.scoreJoueurTotal) + "           Score IA : " + str(globals.scoreIA)
         globals.text1.set(self.text_value)
 
         globals.label.pack()
