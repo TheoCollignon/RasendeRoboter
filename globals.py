@@ -22,9 +22,11 @@ global longestWay
 global nbMovePlayed
 global nbMovePlayedTotal
 global nbTurn
+global nbTurnTotalToFinishTheGame
 global pawnX
 global pawnY
 global scoreIA
+global scoreJoueurTotal
 global sizeOfGrid
 global sizeOfPanel
 global shortestWay
@@ -63,9 +65,11 @@ def initialize():
     global nbMovePlayed
     global nbMovePlayedTotal
     global nbTurn
+    global nbTurnTotalToFinishTheGame
     global pawnX
     global pawnY
     global scoreIA
+    global scoreJoueurTotal
     global sizeOfGrid
     global sizeOfPanel
     global shortestWay
@@ -97,10 +101,12 @@ def initialize():
     nbMovePlayed = 0
     nbMovePlayedTotal = []
     nbTurn = 0
+    nbTurnTotalToFinishTheGame = 2
     pawnX = -1
     pawnY = -1
     shortestWay = 1000000
     scoreIA = 0
+    scoreJoueurTotal = 0
     sizeOfGrid = 16
     sizeOfPanel = 8
     targetColor = "notDefined"

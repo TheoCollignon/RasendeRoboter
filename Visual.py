@@ -252,7 +252,7 @@ class Visual:
                     globals.scoreIA += 25
                 else :
                     globals.scoreIA += len(globals.listeCheminGagnant[nbCheminGagnant-1])
-            if globals.nbTurn < 2: # nombre de tours totaux
+            if globals.nbTurn < globals.nbTurnTotalToFinishTheGame: # nombre de tours totaux
                 # va afficher une nouvelle target
                 self.grid.replacePawns()
                 self.game()
@@ -392,7 +392,6 @@ class Visual:
         globals.nbMovePlayedTotal.append(25) # ajout d'une pénalité, donc on imagine que la pénalité fait 25 mouvements
         self.changeText()
         globals.nbTurn += 1
-        globals.nbMovePlayedTotal.append(globals.nbMovePlayed)
         if globals.nbTurn > 0 : 
             nbCheminGagnant = len(globals.listeCheminGagnant)
 
@@ -507,13 +506,12 @@ class Visual:
 
     # TODO: A COMPLETER
     def changeText(self):
-        print("nbmove : " + str(globals.nbMovePlayed))
-        scoreJoueurTotal = 0
+        globals.scoreJoueurTotal = 0
         for i in globals.nbMovePlayedTotal:
-            scoreJoueurTotal += i 
+            print("ué + " + str(i))
+            globals.scoreJoueurTotal += i 
 
-        self.text_value = "turn : " + str(globals.nbTurn) + "                   move : " + str(globals.nbMovePlayed) + "              total : " + str(scoreJoueurTotal)
-        print(self.text_value)
+        self.text_value = "turn : " + str(globals.nbTurn) + "                   move : " + str(globals.nbMovePlayed) + "              total : " + str(globals.scoreJoueurTotal)
         globals.text1.set(self.text_value)
         
         globals.label.pack()
@@ -536,7 +534,6 @@ class Visual:
         endMessageIa = "Score de l'ia : " + str(globals.scoreIA)
 
         globals.listeCheminGagnant = []
-        globals.nbMovePlayedTotal = []
 
         globals.can.create_text(400, 400, text=endMessage)
         globals.can.create_text(400, 500, text=endMessageIa)
