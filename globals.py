@@ -31,6 +31,7 @@ global targetColor
 global targetColorIa
 global targetX
 global targetY
+global text1
 global x1
 global x2
 global y1
@@ -70,6 +71,7 @@ def initialize():
     global targetColorIa
     global targetX
     global targetY
+    global text1
     global x1
     global x2
     global y1
