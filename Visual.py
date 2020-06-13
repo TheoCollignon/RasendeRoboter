@@ -54,12 +54,9 @@ class Visual:
         else:
             self.grid = grid
             Visual.__instance = self
-            print("avant game")
             self.beforeLaunchGame()
             self.setImg()
-            print("bite")
             self.chooseDifficulty()
-            print("bit2e")
             self.launchGame()
 
     def setDifficultyEasy(self):
@@ -248,7 +245,8 @@ class Visual:
             # print("je suis la wesh")
             globals.nbTurn += 1
             globals.nbMovePlayedTotal.append(globals.nbMovePlayed)
-            if globals.nbTurn < 2:
+            print("je suis passé ici " + str(globals.nbTurn))
+            if globals.nbTurn < 1: # nombre de tours totaux
                 # va afficher une nouvelle target
                 self.grid.replacePawns()
                 self.game()
