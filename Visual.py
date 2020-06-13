@@ -246,7 +246,14 @@ class Visual:
             globals.nbTurn += 1
             globals.nbMovePlayedTotal.append(globals.nbMovePlayed)
             print("je suis passé ici " + str(globals.nbTurn))
-            if globals.nbTurn < 1: # nombre de tours totaux
+            if globals.nbTurn > 0 : 
+                nbCheminGagnant = len(globals.listeCheminGagnant)
+
+                if nbCheminGagnant==0:
+                    globals.scoreIA += 25
+                else :
+                    globals.scoreIA += len(globals.listeCheminGagnant[nbCheminGagnant-1])
+            if globals.nbTurn < 2: # nombre de tours totaux
                 # va afficher une nouvelle target
                 self.grid.replacePawns()
                 self.game()
@@ -492,8 +499,12 @@ class Visual:
         globals.can.delete("all")
         self.changeText()
         globals.can.pack()
-        endMessage = "Fin de la partie ! Voici votre score : " + str(globals.nbMovePlayedTotal)
-        endMessageIa = "Score de l'ia : " + "Ecrire le score de l'ia ici "
+        scoreJoueur = 0
+        for i in globals.nbMovePlayedTotal:
+            scoreJoueur += i 
+        endMessage = "Fin de la partie ! Voici votre score : " + str(scoreJoueur)
+
+        endMessageIa = "Score de l'ia : " + str(globals.scoreIA)
 
         globals.can.create_text(400, 400, text=endMessage)
         globals.can.create_text(400, 500, text=endMessageIa)
