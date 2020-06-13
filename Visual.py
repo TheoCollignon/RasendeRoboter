@@ -60,6 +60,20 @@ class Visual:
 
     # affichage graphique
     def chest(self):
+        #Choisir la difficulté : 
+        while(True):
+            bFacile = Button(self.fen, text="Blue", command=lambda: globals.can.config(bg="blue"))
+            bFacile_w = globals.can.create_window(40, 20, window=bFacile)
+
+            bMoyen = Button(self.fen, text="Blue", command=lambda: globals.can.config(bg="blue"))
+            bMoyen_w = globals.can.create_window(40, 200, window=bMoyen)
+
+            bDifficile = Button(self.fen, text="Blue", command=lambda: globals.can.config(bg="blue"))
+            bDifficile_w = globals.can.create_window(400, 400)
+            self.fen.mainloop()
+
+
+        #fin difficulté
         globals.can.bind("<Button-1>", self.on_click_event)
         j, i = 0, 0
         while globals.x1 < 800 and globals.y1 < 800:  # 800 car 50*16 case
@@ -340,7 +354,7 @@ class Visual:
 
         self.fen = Tk()
         # TODO: remettre en 800 800
-        globals.can = Canvas(self.fen, width=800, heigh=800, bg='ivory')
+        globals.can = Canvas(self.fen, width=800, heigh=750, bg='ivory')
 
     def setImg(self):
 
@@ -421,6 +435,9 @@ class Visual:
         globals.can.pack(side=TOP, padx=5, pady=5)
         globals.b1.pack(side=LEFT, padx=3, pady=3)
         globals.b2.pack(side=LEFT, padx=3, pady=3)
+   
+
+
 
         # text1= Text(self.fen, height=1,width=50)
         self.text_value = "turn : " + str(globals.nbTurn) + "                   move : " + str(
