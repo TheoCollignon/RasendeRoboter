@@ -223,7 +223,7 @@ class Visual:
             globals.nbMovePlayedTotal.append(globals.nbMovePlayed)
             if globals.nbTurn < 2:
                 # va afficher une nouvelle target
-                self.replacePawns()
+                self.grid.replacePawns()
                 self.game()
             else:
                 # print("fin du jeu")
