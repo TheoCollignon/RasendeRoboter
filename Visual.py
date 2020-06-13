@@ -54,8 +54,12 @@ class Visual:
         else:
             self.grid = grid
             Visual.__instance = self
+            print("avant game")
             self.beforeLaunchGame()
             self.setImg()
+            print("bite")
+            self.chooseDifficulty()
+            print("bit2e")
             self.launchGame()
 
     def setDifficultyEasy(self):
@@ -74,14 +78,14 @@ class Visual:
     def chooseDifficulty(self):
         #Choisir la difficulté : 
         globals.bFacile = Button(self.fen, text="Facile", command=self.setDifficultyEasy)
-        bFacile_w = globals.can.create_window(400, 200, window=globals.bFacile)
+        globals.bFacile_w = globals.can.create_window(400, 200, window=globals.bFacile)
 
         globals.bMoyen = Button(self.fen, text="Moyen", command=self.setDifficultyMedium)
-        bMoyen_w = globals.can.create_window(400, 400, window=globals.bMoyen)
+        globals.bMoyen_w = globals.can.create_window(400, 400, window=globals.bMoyen)
 
         globals.bDifficile = Button(self.fen, text="Difficile", command=self.setDifficultyHard)
-        bDifficile_w = globals.can.create_window(400, 600, window=globals.bDifficile)
-        self.fen.mainloop()
+        globals.bDifficile_w = globals.can.create_window(400, 600, window=globals.bDifficile)
+        
 
 
         #fin difficulté
@@ -162,7 +166,7 @@ class Visual:
             if j == 16:
                 globals.y1, globals.y2 = globals.y1 + 50, globals.y2 + 50
                 i, j, globals.x1, globals.x2 = i + 1, 0, 0, 50
-        globals.b1.config(state="disabled")
+        #globals.b1.config(state="disabled")
         self.game()
 
     def reset(self):
@@ -452,7 +456,7 @@ class Visual:
         globals.listImg.append(self.img31)
         globals.listImg.append(self.img32)
 
-        globals.b1 = Button(self.fen, text='Jouer', command=self.chooseDifficulty)
+        #globals.b1 = Button(self.fen, text='Jouer', command=self.chooseDifficulty)
         globals.b2 = Button(self.fen, text='Reset', command=self.reset)
 
         self.imgBackground = PhotoImage(file="img/imgMenu.gif")
@@ -460,7 +464,7 @@ class Visual:
 
 
         globals.can.pack(side=TOP, padx=5, pady=5)
-        globals.b1.pack(side=LEFT, padx=3, pady=3)
+        #globals.b1.pack(side=LEFT, padx=3, pady=3)
         globals.b2.pack(side=LEFT, padx=3, pady=3)
    
 

@@ -1,6 +1,6 @@
 global b1
 global b2
-global bFacile,bMoyen,bDifficile
+global bFacile_w,bMoyen_w,bDifficile_w
 global difficulty
 global can
 global click
@@ -38,6 +38,7 @@ def initialize():
     global b1
     global b2
     global bFacile,bMoyen,bDifficile
+    global bFacile_w,bMoyen_w,bDifficile_w
     global difficulty
     global can
     global click
