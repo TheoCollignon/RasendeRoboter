@@ -1,5 +1,5 @@
 global b1
-global b2
+global b2,b3
 global bFacile,bMoyen,bDifficile
 global bFacile_w,bMoyen_w,bDifficile_w
 global difficulty
@@ -44,7 +44,7 @@ global y2
 
 def initialize():
     global b1
-    global b2
+    global b2,b3
     global bFacile,bMoyen,bDifficile
     global bFacile_w,bMoyen_w,bDifficile_w
     global difficulty

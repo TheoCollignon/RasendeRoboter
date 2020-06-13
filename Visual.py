@@ -152,6 +152,7 @@ class Visual:
         # affichage graphique
         globals.b2.config(state="active")
         globals.b1.config(state="active")
+        globals.b3.config(state="active")
         globals.can.delete("all")
         globals.bFacile.destroy()
         globals.bMoyen.destroy()
@@ -244,9 +245,9 @@ class Visual:
         scoreJoueur = 0
         for i in globals.nbMovePlayedTotal:
             scoreJoueur += i
-        endMessage = "Fin de la partie ! Voici votre score : " + str(scoreJoueur)
+        endMessage = "End of the game ! Here is your score : " + str(scoreJoueur)
 
-        endMessageIa = "Score de l'ia : " + str(globals.scoreIA)
+        endMessageIa = "IA's score :  " + str(globals.scoreIA)
 
         globals.listeCheminGagnant = []
 
@@ -411,6 +412,26 @@ class Visual:
             print(globals.nbMovePlayedTotal)
             self.displayEndOfTheGame()
 
+    def restart(self):
+        globals.x1, globals.y1, globals.x2, globals.y2 = 0, 0, 50, 50
+        globals.couleur = 'white'
+        globals.nbMovePlayedTotal = []
+        globals.nbTurn = 0
+        globals.scoreIA = 0
+        globals.scoreJoueurTotal = 0
+        globals.scoreJoueur = 0
+        globals.total = 0
+        globals.listeCheminGagnant = []
+        globals.b3.config(state="disabled")
+        globals.b2.config(state="disabled")
+        globals.b1.config(state="disabled")
+        self.imgBackground = PhotoImage(file="img/imgMenu.gif")
+        globals.can.create_image(0, 0, image=self.imgBackground, anchor='nw')
+        self.changeText()
+        self.chooseDifficulty()
+        self.launchGame()
+
+
     def setImg(self):
 
         # Permet d'afficher les images, on a besoin de garder une référence sinon elle ne s'affichent pas
@@ -487,6 +508,8 @@ class Visual:
         #globals.b1 = Button(self.fen, text='Jouer', command=self.chooseDifficulty)
         globals.b2 = Button(self.fen, text='Reset', command=self.reset)
         globals.b1 = Button(self.fen, text='Skip', command=self.skip)
+        globals.b3 = Button(self.fen, text='Restart a new game', command=self.restart)
+        globals.b3.config(state="disabled")
         globals.b2.config(state="disabled")
         globals.b1.config(state="disabled")
 
@@ -497,6 +520,7 @@ class Visual:
         globals.can.pack(side=TOP, padx=5, pady=5)
         globals.b2.pack(side=LEFT, padx=3, pady=3)
         globals.b1.pack(side=LEFT, padx=3, pady=3)
+        globals.b3.pack(side=LEFT, padx=3, pady=3)
 
    
 
