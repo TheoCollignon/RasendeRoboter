@@ -11,7 +11,7 @@ class IA:
 
     def __init__(self, grid):
         self.grid = copy.deepcopy(grid)
-        self.beforeIaSetup()
+        self.beforeIaSetup(1)
 
     def getColorTarget(self):
         if globals.currentTarget == 1 or globals.currentTarget == 4 or globals.currentTarget == 15 or globals.currentTarget == 16:
@@ -23,7 +23,7 @@ class IA:
         if globals.currentTarget == 7 or globals.currentTarget == 8 or globals.currentTarget == 9 or globals.currentTarget == 12:
             globals.targetColorIa = 1
 
-    def beforeIaSetup(self):  # Pour setup l'ia, comme ça on évite des répétitions de boucles inutiles
+    def beforeIaSetup(self, difficulty):  # Pour setup l'ia, comme ça on évite des répétitions de boucles inutiles
         globals.shortestWay = 100000
         globals.longestWay = -100
         listeChemin = []
@@ -39,22 +39,30 @@ class IA:
                     if self.grid.tabCase[i][j].pawn == w:
                         listPawnIa.append([i, j, w])
 
-        # self.IaBrutForce(4, listPawnIa, 0, 4, listeChemin)
-        self.testPionUnique(globals.targetColorIa, 10, listPawnIa, 10, listeChemin)
-
-        if len(globals.listeCheminGagnant) == 0:
-            print("pas en 1 pion")
-
-        # pion couleur principal + 3 autres
-            pawnColor = globals.targetColorIa
+        if difficulty == 1:
+            print("Difficulté 1 : Première solution")
             for i in range(4):
-                if i != pawnColor:
-                    self.testDeuxPions(pawnColor, i, 8, listPawnIa, 8, listeChemin)
+                if i != globals.targetColorIa:
+                    if self.testFirstSolution(globals.targetColorIa, i, 8, listPawnIa, 8, listeChemin):
+                        break
+        elif difficulty == 2:
+            print("Difficulté 2 : Utilisation d'un seul pion")
+            self.testPionUnique(globals.targetColorIa, 10, listPawnIa, 10, listeChemin)
+        else :
+            print("Difficulté 3 : Utilisation de deux pions")
+            self.testPionUnique(globals.targetColorIa, 10, listPawnIa, 10, listeChemin)
 
-        #for i in range(4):
-        #    if i != globals.targetColorIa:
-        #        if self.testFirstSolution(globals.targetColorIa, i, 8, listPawnIa, 8, listeChemin):
-        #            break
+            if len(globals.listeCheminGagnant) == 0:
+                print("pas en 1 pion")
+
+                # pion couleur principal + 3 autres
+                pawnColor = globals.targetColorIa
+                for i in range(4):
+                    if i != pawnColor:
+                        self.testDeuxPions(pawnColor, i, 7, listPawnIa, 7, listeChemin)
+
+        # self.IaBrutForce(4, listPawnIa, 0, 4, listeChemin)
+
 
     def goUpIa(self, i, j, listPawnIabis, pawnID):
         iIter = i
@@ -171,7 +179,7 @@ class IA:
                 print("nb de coup : " + str(limite_max - limite))
 
                 print("first solution : ", end='')
-                print(listeChemin)
+                self.displayChemin(listeChemin)
                 return True
         limite -= 1
 
