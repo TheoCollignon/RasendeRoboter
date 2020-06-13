@@ -505,6 +505,9 @@ class Visual:
 
         endMessageIa = "Score de l'ia : " + str(globals.scoreIA)
 
+        globals.listeCheminGagnant = []
+        globals.nbMovePlayedTotal = []
+
         globals.can.create_text(400, 400, text=endMessage)
         globals.can.create_text(400, 500, text=endMessageIa)
         globals.b2.config(state="disabled")
