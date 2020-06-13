@@ -141,7 +141,7 @@ class Visual:
         self.fen = Tk()
         self.fen.title("Rasende Roboter")
         # TODO: remettre en 800 800
-        globals.can = Canvas(self.fen, width=800, heigh=750, bg='ivory')
+        globals.can = Canvas(self.fen, width=800, heigh=800, bg='ivory')
 
     def changeText(self):
         globals.scoreJoueurTotal = 0
