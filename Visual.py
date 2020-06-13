@@ -209,7 +209,7 @@ class Visual:
             globals.nbMovePlayedTotal.append(globals.nbMovePlayed)
             if globals.nbTurn < 2:
                 # va afficher une nouvelle target
-                self.replacePawns()
+                self.grid.replacePawns()
                 self.game()
             else:
                 # print("fin du jeu")
@@ -340,7 +340,7 @@ class Visual:
 
         self.fen = Tk()
         # TODO: remettre en 800 800
-        globals.can = Canvas(self.fen, width=775, heigh=775, bg='ivory')
+        globals.can = Canvas(self.fen, width=800, heigh=800, bg='ivory')
 
     def setImg(self):
 
