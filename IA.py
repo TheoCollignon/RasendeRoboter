@@ -40,16 +40,22 @@ class IA:
                         listPawnIa.append([i, j, w])
 
         # self.IaBrutForce(4, listPawnIa, 0, 4, listeChemin)
-        self.testPionUnique(globals.targetColorIa, 10, listPawnIa, 10, listeChemin)
+        #self.testPionUnique(globals.targetColorIa, 10, listPawnIa, 10, listeChemin)
 
-        if len(globals.listeCheminGagnant) == 0:
-            print("pas en 1 pion")
+        #if len(globals.listeCheminGagnant) == 0:
+        #    print("pas en 1 pion")
 
             # pion couleur principal + 3 autres
-            pawnColor = globals.targetColorIa
-            for i in range(4):
-                if i != pawnColor:
-                    self.testDeuxPions(pawnColor, i, 10, listPawnIa, 10, listeChemin)
+        #    pawnColor = globals.targetColorIa
+        #    for i in range(4):
+        #        if i != pawnColor:
+        #            self.testDeuxPions(pawnColor, i, 10, listPawnIa, 10, listeChemin)
+
+
+        for i in range(4):
+            if i != globals.targetColorIa:
+                if self.testFirstSolution(globals.targetColorIa, i, 8, listPawnIa, 8, listeChemin):
+                    break
 
     def goUpIa(self, i, j, listPawnIabis, pawnID):
         iIter = i
@@ -126,6 +132,141 @@ class IA:
                 if (i + 1) == listPawnIa[w][0] and (j == listPawnIa[w][1]):
                     return 1
         return 0
+
+    def testFirstSolution(self, pion, pion2, limite, listPawnIa, limite_max, listeChemin):
+        nbCoup = limite_max - limite
+        p = pion
+        p2 = pion2
+        if limite < 0:
+            return False
+
+        # verification
+        if globals.targetX == listPawnIa[p][0] and globals.targetY == listPawnIa[p][1]:  # getPawnbyId
+            # print("cc : " + str(pawn_color) + " target : " + str(targetColorIa))
+            if p == globals.targetColorIa:
+                # print("cc : " + str(pawn_color) + " target : " + str(targetColorIa))
+                print("tro b1")
+                print("nb de coup : " + str(limite_max - limite))
+
+                print("first solution : ", end='')
+                print(listeChemin)
+                return True
+        limite -= 1
+
+        for i in range(4):
+            if i == p or i == p2:
+                # on regarde si il y'a des murs #0 = up // 1 = bas // 2 = droite // 3 = gauche
+                if self.isUpIa(listPawnIa[i][0], listPawnIa[i][1], listPawnIa) == 0:  # si y'a pas de murs,on déplace et on rappel la fonction
+                    if nbCoup > 0:
+                        if listeChemin[nbCoup - 1][0] == i:
+                            if not (listeChemin[nbCoup - 1][1] == 1):
+                                listPawnIabis = copy.deepcopy(listPawnIa)
+                                listeCheminBis = copy.deepcopy(listeChemin)
+                                listeCheminBis.append([i, 0])
+                                self.goUpIa(listPawnIa[i][0], listPawnIa[i][1], listPawnIabis, i)
+                                globals.iterations += 1
+                                if self.testFirstSolution(p, p2, limite, listPawnIabis, limite_max, listeCheminBis):
+                                    return True
+                        else:
+                            listPawnIabis = copy.deepcopy(listPawnIa)
+                            listeCheminBis = copy.deepcopy(listeChemin)
+                            listeCheminBis.append([i, 0])
+                            self.goUpIa(listPawnIa[i][0], listPawnIa[i][1], listPawnIabis, i)
+                            globals.iterations += 1
+                            if self.testFirstSolution(p, p2, limite, listPawnIabis, limite_max, listeCheminBis):
+                                return True
+                    else:
+                        listPawnIabis = copy.deepcopy(listPawnIa)
+                        listeCheminBis = copy.deepcopy(listeChemin)
+                        listeCheminBis.append([i, 0])
+                        self.goUpIa(listPawnIa[i][0], listPawnIa[i][1], listPawnIabis, i)
+                        globals.iterations += 1
+                        if self.testFirstSolution(p, p2, limite, listPawnIabis, limite_max, listeCheminBis):
+                            return True
+
+                if self.isDownIa(listPawnIa[i][0], listPawnIa[i][1], listPawnIa) == 0:
+                    if nbCoup > 0:
+                        if listeChemin[nbCoup - 1][0] == i:
+                            if not (listeChemin[nbCoup - 1][1] == 0):
+                                listPawnIabis = copy.deepcopy(listPawnIa)
+                                listeCheminBis = copy.deepcopy(listeChemin)
+                                listeCheminBis.append([i, 1])
+                                self.goDownIa(listPawnIa[i][0], listPawnIa[i][1], listPawnIabis, i)
+                                globals.iterations += 1
+                                if self.testFirstSolution(p, p2, limite, listPawnIabis, limite_max, listeCheminBis):
+                                    return True
+                        else:
+                            listPawnIabis = copy.deepcopy(listPawnIa)
+                            listeCheminBis = copy.deepcopy(listeChemin)
+                            listeCheminBis.append([i, 1])
+                            self.goDownIa(listPawnIa[i][0], listPawnIa[i][1], listPawnIabis, i)
+                            globals.iterations += 1
+                            if self.testFirstSolution(p, p2, limite, listPawnIabis, limite_max, listeCheminBis):
+                                return True
+                    else:
+                        listPawnIabis = copy.deepcopy(listPawnIa)
+                        listeCheminBis = copy.deepcopy(listeChemin)
+                        listeCheminBis.append([i, 1])
+                        self.goDownIa(listPawnIa[i][0], listPawnIa[i][1], listPawnIabis, i)
+                        globals.iterations += 1
+                        if self.testFirstSolution(p, p2, limite, listPawnIabis, limite_max, listeCheminBis):
+                            return True
+
+                if self.isRightIa(listPawnIa[i][0], listPawnIa[i][1], listPawnIa) == 0:
+                    if nbCoup > 0:
+                        if listeChemin[nbCoup - 1][0] == i:
+                            if not (listeChemin[nbCoup - 1][1] == 3):
+                                listPawnIabis = copy.deepcopy(listPawnIa)
+                                listeCheminBis = copy.deepcopy(listeChemin)
+                                listeCheminBis.append([i, 2])
+                                self.goRightIa(listPawnIa[i][0], listPawnIa[i][1], listPawnIabis, i)
+                                globals.iterations += 1
+                                if self.testFirstSolution(p, p2, limite, listPawnIabis, limite_max, listeCheminBis):
+                                    return True
+                        else:
+                            listPawnIabis = copy.deepcopy(listPawnIa)
+                            listeCheminBis = copy.deepcopy(listeChemin)
+                            listeCheminBis.append([i, 2])
+                            self.goRightIa(listPawnIa[i][0], listPawnIa[i][1], listPawnIabis, i)
+                            globals.iterations += 1
+                            if self.testFirstSolution(p, p2, limite, listPawnIabis, limite_max, listeCheminBis):
+                                return True
+                    else:
+                        listPawnIabis = copy.deepcopy(listPawnIa)
+                        listeCheminBis = copy.deepcopy(listeChemin)
+                        listeCheminBis.append([i, 2])
+                        self.goRightIa(listPawnIa[i][0], listPawnIa[i][1], listPawnIabis, i)
+                        globals.iterations += 1
+                        if self.testFirstSolution(p, p2, limite, listPawnIabis, limite_max, listeCheminBis):
+                            return True
+
+                if self.isLeftIa(listPawnIa[i][0], listPawnIa[i][1], listPawnIa) == 0:
+                    if nbCoup > 0:
+                        if listeChemin[nbCoup - 1][0] == i:
+                            if not (listeChemin[nbCoup - 1][1] == 2):
+                                listPawnIabis = copy.deepcopy(listPawnIa)
+                                listeCheminBis = copy.deepcopy(listeChemin)
+                                listeCheminBis.append([i, 3])
+                                self.goLeftIa(listPawnIa[i][0], listPawnIa[i][1], listPawnIabis, i)
+                                globals.iterations += 1
+                                if self.testFirstSolution(p, p2, limite, listPawnIabis, limite_max, listeCheminBis):
+                                    return True
+                        else:
+                            listPawnIabis = copy.deepcopy(listPawnIa)
+                            listeCheminBis = copy.deepcopy(listeChemin)
+                            listeCheminBis.append([i, 3])
+                            self.goLeftIa(listPawnIa[i][0], listPawnIa[i][1], listPawnIabis, i)
+                            globals.iterations += 1
+                            if self.testFirstSolution(p, p2, limite, listPawnIabis, limite_max, listeCheminBis):
+                                return True
+                    else:
+                        listPawnIabis = copy.deepcopy(listPawnIa)
+                        listeCheminBis = copy.deepcopy(listeChemin)
+                        listeCheminBis.append([i, 3])
+                        self.goLeftIa(listPawnIa[i][0], listPawnIa[i][1], listPawnIabis, i)
+                        globals.iterations += 1
+                        if self.testFirstSolution(p, p2, limite, listPawnIabis, limite_max, listeCheminBis):
+                            return True
 
     def IaBrutForce(self, limite, listPawnIa, pawn_color, limite_max, listeChemin):
         nbCoup = limite_max - limite
