@@ -54,6 +54,9 @@ class Visual:
     reset()
         Reset the pawns and the level variables to default
 
+    restart()
+        Create a new game and reinitialize everything
+
     setDifficultyEasy()
         Set the difficulty to easy, first found solution
 
@@ -110,6 +113,7 @@ class Visual:
     img30 = 0
     img31 = 0
     img32 = 0
+    imgBackground = 0
     text_value = ""
     fen = 0
 
@@ -143,7 +147,10 @@ class Visual:
         globals.scoreJoueurTotal = 0
         for i in globals.nbMovePlayedTotal:
             globals.scoreJoueurTotal += i
-        self.text_value = "turn : " + str(globals.nbTurn) + "/"+ str(globals.nbTurnTotalToFinishTheGame) +"                   move : " + str(globals.nbMovePlayed) + "              total : " + str(globals.scoreJoueurTotal) + "           Score IA : " + str(globals.scoreIA)
+        self.text_value = "turn : " + str(globals.nbTurn) + "/" + str(
+            globals.nbTurnTotalToFinishTheGame) + "                   move : " + str(
+            globals.nbMovePlayed) + "              total : " + str(
+            globals.scoreJoueurTotal) + "           Score IA : " + str(globals.scoreIA)
         globals.text1.set(self.text_value)
 
         globals.label.pack()
@@ -222,7 +229,7 @@ class Visual:
             if j == 16:
                 globals.y1, globals.y2 = globals.y1 + 50, globals.y2 + 50
                 i, j, globals.x1, globals.x2 = i + 1, 0, 0, 50
-        #globals.b1.config(state="disabled")
+        # globals.b1.config(state="disabled")
         self.game()
 
     def chooseDifficulty(self):
@@ -343,14 +350,14 @@ class Visual:
         if self.verifIfPawnIsOnTarget():
             globals.nbTurn += 1
             globals.nbMovePlayedTotal.append(globals.nbMovePlayed)
-            if globals.nbTurn > 0 :
+            if globals.nbTurn > 0:
                 nbCheminGagnant = len(globals.listeCheminGagnant)
 
-                if nbCheminGagnant==0:
+                if nbCheminGagnant == 0:
                     globals.scoreIA += 25
-                else :
-                    globals.scoreIA += len(globals.listeCheminGagnant[nbCheminGagnant-1])
-            if globals.nbTurn < globals.nbTurnTotalToFinishTheGame: # nombre de tours totaux
+                else:
+                    globals.scoreIA += len(globals.listeCheminGagnant[nbCheminGagnant - 1])
+            if globals.nbTurn < globals.nbTurnTotalToFinishTheGame:  # nombre de tours totaux
                 # va afficher une nouvelle target
                 self.grid.replacePawns()
                 self.game()
@@ -379,39 +386,6 @@ class Visual:
                             globals.listPositionPawn[i][1],
                             globals.listPositionPawn[i][2])
 
-    def setDifficultyEasy(self):
-        globals.difficulty = 1
-        self.chest()
-
-    def setDifficultyMedium(self):
-        globals.difficulty = 2
-        self.chest()
-
-    def setDifficultyHard(self):
-        globals.difficulty = 3
-        self.chest()
-
-    def skip(self):
-        globals.nbMovePlayedTotal.append(25) # ajout d'une pénalité, donc on imagine que la pénalité fait 25 mouvements
-        self.changeText()
-        globals.nbTurn += 1
-        if globals.nbTurn > 0 : 
-            nbCheminGagnant = len(globals.listeCheminGagnant)
-
-            if nbCheminGagnant==0:
-                globals.scoreIA += 25
-            else :
-                globals.scoreIA += len(globals.listeCheminGagnant[nbCheminGagnant-1])
-        if globals.nbTurn < 2: # nombre de tours totaux
-            # va afficher une nouvelle target
-            self.grid.replacePawns()
-            self.game()
-        else:
-            # print("fin du jeu")
-            print("score : ")
-            print(globals.nbMovePlayedTotal)
-            self.displayEndOfTheGame()
-
     def restart(self):
         globals.x1, globals.y1, globals.x2, globals.y2 = 0, 0, 50, 50
         globals.couleur = 'white'
@@ -431,6 +405,38 @@ class Visual:
         self.chooseDifficulty()
         self.launchGame()
 
+    def setDifficultyEasy(self):
+        globals.difficulty = 1
+        self.chest()
+
+    def setDifficultyMedium(self):
+        globals.difficulty = 2
+        self.chest()
+
+    def setDifficultyHard(self):
+        globals.difficulty = 3
+        self.chest()
+
+    def skip(self):
+        globals.nbMovePlayedTotal.append(25)  # ajout d'une pénalité, donc on imagine que la pénalité fait 25 mouvements
+        self.changeText()
+        globals.nbTurn += 1
+        if globals.nbTurn > 0:
+            nbCheminGagnant = len(globals.listeCheminGagnant)
+
+            if nbCheminGagnant == 0:
+                globals.scoreIA += 25
+            else:
+                globals.scoreIA += len(globals.listeCheminGagnant[nbCheminGagnant - 1])
+        if globals.nbTurn < 2:  # nombre de tours totaux
+            # va afficher une nouvelle target
+            self.grid.replacePawns()
+            self.game()
+        else:
+            # print("fin du jeu")
+            print("score : ")
+            print(globals.nbMovePlayedTotal)
+            self.displayEndOfTheGame()
 
     def setImg(self):
 
@@ -505,7 +511,7 @@ class Visual:
         globals.listImg.append(self.img31)
         globals.listImg.append(self.img32)
 
-        #globals.b1 = Button(self.fen, text='Jouer', command=self.chooseDifficulty)
+        # globals.b1 = Button(self.fen, text='Jouer', command=self.chooseDifficulty)
         globals.b2 = Button(self.fen, text='Reset', command=self.reset)
         globals.b1 = Button(self.fen, text='Skip', command=self.skip)
         globals.b3 = Button(self.fen, text='Restart a new game', command=self.restart)
@@ -516,13 +522,10 @@ class Visual:
         self.imgBackground = PhotoImage(file="img/imgMenu.gif")
         globals.can.create_image(0, 0, image=self.imgBackground, anchor='nw')
 
-
         globals.can.pack(side=TOP, padx=5, pady=5)
         globals.b2.pack(side=LEFT, padx=3, pady=3)
         globals.b1.pack(side=LEFT, padx=3, pady=3)
         globals.b3.pack(side=LEFT, padx=3, pady=3)
-
-   
 
         globals.text1 = StringVar()
         globals.text1.set(self.text_value)
