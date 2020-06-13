@@ -387,6 +387,9 @@ class Visual:
         # TODO: remettre en 800 800
         globals.can = Canvas(self.fen, width=800, heigh=750, bg='ivory')
 
+    def skip(self):
+        print("cc")
+
     def setImg(self):
 
         # Permet d'afficher les images, on a besoin de garder une référence sinon elle ne s'affichent pas
@@ -462,6 +465,7 @@ class Visual:
 
         #globals.b1 = Button(self.fen, text='Jouer', command=self.chooseDifficulty)
         globals.b2 = Button(self.fen, text='Reset', command=self.reset)
+        globals.b1 = Button(self.fen, text='Skip', command=self.skip)
 
         self.imgBackground = PhotoImage(file="img/imgMenu.gif")
         globals.can.create_image(0, 0, image=self.imgBackground, anchor='nw')
@@ -469,6 +473,8 @@ class Visual:
 
         globals.can.pack(side=TOP, padx=5, pady=5)
         globals.b2.pack(side=LEFT, padx=3, pady=3)
+        globals.b1.pack(side=LEFT, padx=3, pady=3)
+
    
 
         globals.text1 = StringVar()
