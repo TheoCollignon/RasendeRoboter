@@ -1,27 +1,28 @@
 class Case:
+
     """
-        A class used to represent a Case in a Grid
+    A class used to represent a Case in a Grid
 
-        ...
+    ...
 
-        Attributes
-        ----------
-        up : bool
-            the existence of a wall in the up of the Case
-        right : bool
-            the existence of a wall in the right of the Case
-        down : bool
-            the existence of a wall in the down of the Case
-        left : bool
-            the existence of a wall in the right of the Case
-        pawn : int
-            the id of the pawn in the case, (default -1 if no pawn)
+    Attributes
+    ----------
+    up : bool
+        the existence of a wall in the up of the Case
+    right : bool
+        the existence of a wall in the right of the Case
+    down : bool
+        the existence of a wall in the down of the Case
+    left : bool
+        the existence of a wall in the right of the Case
+    pawn : int
+        the id of the pawn in the case, (default -1 if no pawn)
 
-        Methods
-        -------
-        rotCase(direction, nbRot)
-            Rotate one case by the direction given
-        """
+    Methods
+    -------
+    rotCase(direction, nbRot)
+        Rotate one case by the direction given
+    """
 
     up = 0
     right = 0

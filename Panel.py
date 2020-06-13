@@ -1,15 +1,43 @@
 import globals
 from Case import Case
-import copy
 
 
 class Panel:
+
+    """
+    A class used to represent a Panel in a Grid
+
+    ...
+
+    Attributes
+    ----------
+    tabCase : bytearray
+        tabCase[i][j] is a 2D array of Case
+
+    Methods
+    -------
+    rotate(pos, panelNb)
+        It rotate the panel
+    rotation(direction, nbRot)
+        Add the rotated cases on the panel to complete its rotation
+    """
+
     tabCase = 0
 
     def __init__(self, tabCaseArg):
         self.tabCase = tabCaseArg
 
-    def rotation(self, direction, nbRot):  # adds the rotated cases on the panel to complete its rotation
+    def rotate(self, pos, panelNb):
+        if pos == panelNb:
+            return self
+        elif pos > panelNb:
+            var = pos - panelNb
+            return self.rotation(1, var)
+        else:
+            var = panelNb - pos
+            return self.rotation(0, var)
+
+    def rotation(self, direction, nbRot):
         tabCase2 = [[Case() for i in range(globals.sizeOfPanel)] for j in range(globals.sizeOfPanel)]
         panelTemp = Panel(tabCase2)
         for i in range(0, 8):
@@ -37,13 +65,3 @@ class Panel:
                             panelTemp.tabCase[j][int(globals.sizeOfPanel) - 1 - i] = self.tabCase[i][j].rotCase(
                                 direction, nbRot)
         return panelTemp
-
-    def rotate(self, pos, panelNb):  # rotation of a panel
-        if pos == panelNb:
-            return self
-        elif pos > panelNb:
-            var = pos - panelNb
-            return self.rotation(1, var)
-        else:
-            var = panelNb - pos
-            return self.rotation(0, var)
