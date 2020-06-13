@@ -1,4 +1,5 @@
 import globals
+
 from Case import Case
 
 
@@ -11,13 +12,14 @@ class Panel:
 
     Attributes
     ----------
-    tabCase : bytearray
+    tabCase : list
         tabCase[i][j] is a 2D array of Case
 
     Methods
     -------
     rotate(pos, panelNb)
         It rotate the panel
+
     rotation(direction, nbRot)
         Add the rotated cases on the panel to complete its rotation
     """
