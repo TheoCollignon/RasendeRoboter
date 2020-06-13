@@ -10,6 +10,7 @@ global currentTarget
 global iterations
 global lastX
 global lastY
+global label
 global listeChemin
 global listeCheminGagnant
 global listImg
@@ -50,6 +51,7 @@ def initialize():
     global iterations
     global lastX
     global lastY
+    global label
     global listeChemin
     global listeCheminGagnant
     global listImg

@@ -471,32 +471,26 @@ class Visual:
         globals.b2.pack(side=LEFT, padx=3, pady=3)
    
 
-
-
-        globals.text1= Text(self.fen, height=1,width=50)
-        self.text_value = "turn : " + str(globals.nbTurn) + "                   move : " + str(
-            globals.nbMovePlayed) + "                total : 0"
-
-        print(self.text_value)
-        globals.text1.insert(INSERT,self.text_value)
-        globals.text1.config(state ="disabled")
-        globals.text1.pack()
+        globals.text1 = StringVar()
+        globals.text1.set(self.text_value)
+        globals.label = Label(self.fen, textvariable=globals.text1)
+        globals.label.pack()
 
     # TODO: A COMPLETER
     def changeText(self):
-        #total = 0
-        # print("t : " + str(nbMovePlayed))
-        # for i in globals.nbMovePlayedTotal:
-        #     nbMovePlayed
-        #     total += i
-        #     print(i)
         print("nbmove : " + str(globals.nbMovePlayed))
-        self.text_value = "turn : " + str(globals.nbTurn) + "                   move : " + str(
-            globals.nbMovePlayed) + "              total : " + str(globals.nbMovePlayed)
+        scoreJoueurTotal = 0
+        for i in globals.nbMovePlayedTotal:
+            scoreJoueurTotal += i 
+
+        self.text_value = "turn : " + str(globals.nbTurn) + "                   move : " + str(globals.nbMovePlayed) + "              total : " + str(scoreJoueurTotal)
         print(self.text_value)
-        # globals.text1.insert(INSERT,self.text_value)
-        # ICI
-        # globals.text1.pack()
+        globals.text1.set(self.text_value)
+        
+        globals.label.pack()
+
+
+
 
     def launchGame(self):
         self.fen.mainloop()
