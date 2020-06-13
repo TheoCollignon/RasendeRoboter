@@ -7,6 +7,8 @@ global can
 global click
 global couleur
 global currentTarget
+global endMessageIa
+global gameOver
 global iterations
 global lastX
 global lastY
@@ -50,6 +52,8 @@ def initialize():
     global click
     global couleur
     global currentTarget
+    global endMessageIa
+    global gameOver
     global iterations
     global lastX
     global lastY
@@ -87,6 +91,8 @@ def initialize():
     click = 1
     difficulty = -1
     currentTarget = -2
+    gameOver = False
+    endMessageIa = ""
     iterations = 1
     lastX = -1
     lastY = -1

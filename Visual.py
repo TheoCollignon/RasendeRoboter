@@ -244,7 +244,9 @@ class Visual:
         self.changeText()
         if self.verifIfPawnIsOnTarget():
             globals.nbTurn += 1
-            globals.nbMovePlayedTotal.append(globals.nbMovePlayed)
+            if(not globals.gameOver):
+                globals.nbMovePlayedTotal.append(globals.nbMovePlayed)
+            globals.nbMovePlayed = 0
             if globals.nbTurn > 0 : 
                 nbCheminGagnant = len(globals.listeCheminGagnant)
 
@@ -507,6 +509,11 @@ class Visual:
     # TODO: A COMPLETER
     def changeText(self):
         globals.scoreJoueurTotal = 0
+        if globals.nbTurn > globals.nbTurnTotalToFinishTheGame: # pour que l'affichage ne fasse pas n'importe quoi
+            globals.nbTurn -= 1
+
+
+
         for i in globals.nbMovePlayedTotal:
             globals.scoreJoueurTotal += i 
 
@@ -529,13 +536,14 @@ class Visual:
         for i in globals.nbMovePlayedTotal:
             scoreJoueur += i 
         endMessage = "Fin de la partie ! Voici votre score : " + str(scoreJoueur)
-
-        endMessageIa = "Score de l'ia : " + str(globals.scoreIA)
+        if (not globals.gameOver):
+            globals.endMessageIa = "Score de l'ia : " + str(globals.scoreIA)
+        globals.gameOver = True
 
         globals.listeCheminGagnant = []
 
         globals.can.create_text(400, 400, text=endMessage)
-        globals.can.create_text(400, 500, text=endMessageIa)
+        globals.can.create_text(400, 500, text=globals.endMessageIa)
         globals.b2.config(state="disabled")
         globals.b1.config(state="disabled")
         globals.can.config(state="disabled")
