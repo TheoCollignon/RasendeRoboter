@@ -58,22 +58,44 @@ class Visual:
             self.setImg()
             self.launchGame()
 
-    # affichage graphique
-    def chest(self):
+    def setDifficultyEasy(self):
+        globals.difficulty = 1
+        self.chest()
+
+    def setDifficultyMedium(self):
+        globals.difficulty = 2
+        self.chest()
+
+    def setDifficultyHard(self):
+        globals.difficulty = 3
+        self.chest()
+
+   
+    def chooseDifficulty(self):
         #Choisir la difficulté : 
-        while(True):
-            bFacile = Button(self.fen, text="Blue", command=lambda: globals.can.config(bg="blue"))
-            bFacile_w = globals.can.create_window(40, 20, window=bFacile)
+        globals.bFacile = Button(self.fen, text="Facile", command=self.setDifficultyEasy)
+        bFacile_w = globals.can.create_window(400, 200, window=globals.bFacile)
 
-            bMoyen = Button(self.fen, text="Blue", command=lambda: globals.can.config(bg="blue"))
-            bMoyen_w = globals.can.create_window(40, 200, window=bMoyen)
+        globals.bMoyen = Button(self.fen, text="Moyen", command=self.setDifficultyMedium)
+        bMoyen_w = globals.can.create_window(400, 400, window=globals.bMoyen)
 
-            bDifficile = Button(self.fen, text="Blue", command=lambda: globals.can.config(bg="blue"))
-            bDifficile_w = globals.can.create_window(400, 400)
-            self.fen.mainloop()
+        globals.bDifficile = Button(self.fen, text="Difficile", command=self.setDifficultyHard)
+        bDifficile_w = globals.can.create_window(400, 600, window=globals.bDifficile)
+        self.fen.mainloop()
 
 
         #fin difficulté
+
+
+
+
+
+
+    # affichage graphique
+    def chest(self):
+        globals.bFacile.destroy()
+        globals.bMoyen.destroy()
+        globals.bDifficile.destroy()
         globals.can.bind("<Button-1>", self.on_click_event)
         j, i = 0, 0
         while globals.x1 < 800 and globals.y1 < 800:  # 800 car 50*16 case
@@ -429,7 +451,7 @@ class Visual:
         globals.listImg.append(self.img31)
         globals.listImg.append(self.img32)
 
-        globals.b1 = Button(self.fen, text='Jouer', command=self.chest)
+        globals.b1 = Button(self.fen, text='Jouer', command=self.chooseDifficulty)
         globals.b2 = Button(self.fen, text='Reset', command=self.reset)
 
         globals.can.pack(side=TOP, padx=5, pady=5)

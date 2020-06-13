@@ -11,7 +11,7 @@ class IA:
 
     def __init__(self, grid):
         self.grid = copy.deepcopy(grid)
-        self.beforeIaSetup(2)
+        self.beforeIaSetup(globals.difficulty)
 
     def getColorTarget(self):
         if globals.currentTarget == 1 or globals.currentTarget == 4 or globals.currentTarget == 15 or globals.currentTarget == 16:

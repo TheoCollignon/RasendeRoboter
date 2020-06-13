@@ -1,5 +1,7 @@
 global b1
 global b2
+global bFacile,bMoyen,bDifficile
+global difficulty
 global can
 global click
 global couleur
@@ -35,6 +37,8 @@ global y2
 def initialize():
     global b1
     global b2
+    global bFacile,bMoyen,bDifficile
+    global difficulty
     global can
     global click
     global couleur
@@ -67,7 +71,9 @@ def initialize():
     global y1
     global y2
 
+    
     click = 1
+    difficulty = -1
     currentTarget = -2
     iterations = 1
     lastX = -1
