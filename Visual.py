@@ -241,10 +241,8 @@ class Visual:
             globals.click = 1
         self.changeText()
         if self.verifIfPawnIsOnTarget():
-            # print("je suis la wesh")
             globals.nbTurn += 1
             globals.nbMovePlayedTotal.append(globals.nbMovePlayed)
-            print("je suis passé ici " + str(globals.nbTurn))
             if globals.nbTurn > 0 : 
                 nbCheminGagnant = len(globals.listeCheminGagnant)
 
@@ -390,8 +388,26 @@ class Visual:
 
     def skip(self):
         globals.nbMovePlayedTotal.append(25) # ajout d'une pénalité, donc on imagine que la pénalité fait 25 mouvements
+        self.changeText()
+        globals.nbTurn += 1
+        globals.nbMovePlayedTotal.append(globals.nbMovePlayed)
+        if globals.nbTurn > 0 : 
+            nbCheminGagnant = len(globals.listeCheminGagnant)
 
-        print("cc")
+            if nbCheminGagnant==0:
+                globals.scoreIA += 25
+            else :
+                globals.scoreIA += len(globals.listeCheminGagnant[nbCheminGagnant-1])
+        if globals.nbTurn < 2: # nombre de tours totaux
+            # va afficher une nouvelle target
+            self.grid.replacePawns()
+            self.game()
+        else:
+            # print("fin du jeu")
+            print("score : ")
+            print(globals.nbMovePlayedTotal)
+            self.displayEndOfTheGame()
+
 
     def setImg(self):
 
@@ -521,4 +537,5 @@ class Visual:
         globals.can.create_text(400, 400, text=endMessage)
         globals.can.create_text(400, 500, text=endMessageIa)
         globals.b2.config(state="disabled")
+        globals.b1.config(state="disabled")
         globals.can.config(state="disabled")
