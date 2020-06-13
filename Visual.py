@@ -330,7 +330,6 @@ class Visual:
         # Jeu
         globals.targetColor = "notDefined"
         globals.currentTarget = -2
-        globals.nbTurn = 0
         globals.nbMovePlayed = 0
         globals.listPositionPawn = []  # X Y idColor
 
