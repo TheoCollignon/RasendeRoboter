@@ -166,7 +166,8 @@ class Visual:
         globals.bDifficile.destroy()
         globals.can.bind("<Button-1>", self.on_click_event)
         j, i = 0, 0
-        while globals.x1 < 800 and globals.y1 < 800:  # 800 car 50*16 case
+        # 800 car 50*16 case
+        while globals.x1 < 800 and globals.y1 < 800:
             k = i % 16
             if self.grid.tabCase[k][j].pawn == -1:
                 globals.couleur = "white"
@@ -418,7 +419,8 @@ class Visual:
         self.chest()
 
     def skip(self):
-        globals.nbMovePlayedTotal.append(25)  # ajout d'une pénalité, donc on imagine que la pénalité fait 25 mouvements
+        # ajout d'une pénalité, donc on imagine que la pénalité fait 25 mouvements
+        globals.nbMovePlayedTotal.append(25)
         self.changeText()
         globals.nbTurn += 1
         if globals.nbTurn > 0:
@@ -428,7 +430,8 @@ class Visual:
                 globals.scoreIA += 25
             else:
                 globals.scoreIA += len(globals.listeCheminGagnant[nbCheminGagnant - 1])
-        if globals.nbTurn < 2:  # nombre de tours totaux
+        # nombre de tours totaux
+        if globals.nbTurn < 2:
             # va afficher une nouvelle target
             self.grid.replacePawns()
             self.game()

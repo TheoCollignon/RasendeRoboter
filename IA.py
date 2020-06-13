@@ -4,7 +4,6 @@ import copy
 
 
 class IA:
-
     """
     A class used to assemble the AI functions
 
@@ -111,13 +110,17 @@ class IA:
         # self.IaBrutForce(4, listPawnIa, 0, 4, listeChemin)
 
     def getColorTarget(self):
-        if globals.currentTarget == 1 or globals.currentTarget == 4 or globals.currentTarget == 15 or globals.currentTarget == 16:
+        if globals.currentTarget == 1 or globals.currentTarget == 4 \
+                or globals.currentTarget == 15 or globals.currentTarget == 16:
             globals.targetColorIa = 2
-        if globals.currentTarget == 2 or globals.currentTarget == 3 or globals.currentTarget == 10 or globals.currentTarget == 11:
+        if globals.currentTarget == 2 or globals.currentTarget == 3 \
+                or globals.currentTarget == 10 or globals.currentTarget == 11:
             globals.targetColorIa = 0
-        if globals.currentTarget == 5 or globals.currentTarget == 6 or globals.currentTarget == 13 or globals.currentTarget == 14:
+        if globals.currentTarget == 5 or globals.currentTarget == 6 \
+                or globals.currentTarget == 13 or globals.currentTarget == 14:
             globals.targetColorIa = 3
-        if globals.currentTarget == 7 or globals.currentTarget == 8 or globals.currentTarget == 9 or globals.currentTarget == 12:
+        if globals.currentTarget == 7 or globals.currentTarget == 8 \
+                or globals.currentTarget == 9 or globals.currentTarget == 12:
             globals.targetColorIa = 1
 
     def displayChemin(self, listeChemin):
@@ -399,7 +402,8 @@ class IA:
                 if i == p or (nbCoup + 2 < globals.shortestWay and i == p2):
                     # on regarde si il y'a des murs #0 = up // 1 = bas // 2 = droite // 3 = gauche
                     if (self.isUpIa(listPawnIa[i][0], listPawnIa[i][1],
-                                    listPawnIa) == 0):  # si y'a pas de murs,on déplace et on rappel la fonction
+                                    listPawnIa) == 0):
+                        # si y'a pas de murs,on déplace et on rappel la fonction
                         if nbCoup > 0:
                             if listeChemin[nbCoup - 1][0] == i:
                                 if not (listeChemin[nbCoup - 1][1] == 1):
@@ -507,7 +511,7 @@ class IA:
             return False
 
         # verification
-        if globals.targetX == listPawnIa[p][0] and globals.targetY == listPawnIa[p][1]:  # getPawnbyId
+        if globals.targetX == listPawnIa[p][0] and globals.targetY == listPawnIa[p][1]:
             # print("cc : " + str(pawn_color) + " target : " + str(targetColorIa))
             if p == globals.targetColorIa:
                 # print("cc : " + str(pawn_color) + " target : " + str(targetColorIa))
@@ -523,7 +527,7 @@ class IA:
             if i == p or i == p2:
                 # on regarde si il y'a des murs #0 = up // 1 = bas // 2 = droite // 3 = gauche
                 if self.isUpIa(listPawnIa[i][0], listPawnIa[i][1],
-                               listPawnIa) == 0:  # si y'a pas de murs,on déplace et on rappel la fonction
+                               listPawnIa) == 0:
                     if nbCoup > 0:
                         if listeChemin[nbCoup - 1][0] == i:
                             if not (listeChemin[nbCoup - 1][1] == 1):
@@ -641,12 +645,12 @@ class IA:
         if limite < 0:
             return False
 
-        if globals.targetX == listPawnIa[i][0] and globals.targetY == listPawnIa[i][1]:  # getPawnbyId
+        if globals.targetX == listPawnIa[i][0] and globals.targetY == listPawnIa[i][1]:
             # print("cc : " + str(pawn_color) + " target : " + str(targetColorIa))
             if i == globals.targetColorIa:
-                # print("cc : " + str(pawn_color) + " target : " + str(targetColorIa))
-                # for w in range(4):
-                #    print("liste ia quand on a trouvé : " + str(listPawnIa[w][0]) + "  " + str(listPawnIa[w][1]) + " id : " + str(listPawnIa[w][2]))
+                # print("cc : " + str(pawn_color) + " target : " + str(targetColorIa)) for w in range(4): print(
+                # "liste ia quand on a trouvé : " + str(listPawnIa[w][0]) + "  " + str(listPawnIa[w][1]) + " id : " +
+                # str(listPawnIa[w][2]))
                 print("tro b1")
                 print("nb de coup : " + str(limite_max - limite))
 
@@ -697,4 +701,3 @@ class IA:
                 self.goLeftIa(listPawnIa[i][0], listPawnIa[i][1], listPawnIabis, i)
                 globals.iterations += 1
                 self.testPionUnique(i, limite, listPawnIabis, limite_max, listeCheminBis)
-
