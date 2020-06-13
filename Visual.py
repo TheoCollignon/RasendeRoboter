@@ -93,6 +93,7 @@ class Visual:
 
     # affichage graphique
     def chest(self):
+        globals.can.delete("all")
         globals.bFacile.destroy()
         globals.bMoyen.destroy()
         globals.bDifficile.destroy()
@@ -453,6 +454,10 @@ class Visual:
 
         globals.b1 = Button(self.fen, text='Jouer', command=self.chooseDifficulty)
         globals.b2 = Button(self.fen, text='Reset', command=self.reset)
+
+        self.imgBackground = PhotoImage(file="img/imgMenu.gif")
+        globals.can.create_image(0, 0, image=self.imgBackground, anchor='nw')
+
 
         globals.can.pack(side=TOP, padx=5, pady=5)
         globals.b1.pack(side=LEFT, padx=3, pady=3)
