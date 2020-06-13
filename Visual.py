@@ -94,6 +94,8 @@ class Visual:
 
     # affichage graphique
     def chest(self):
+        globals.b2.config(state="active")
+        globals.b1.config(state="active")
         globals.can.delete("all")
         globals.bFacile.destroy()
         globals.bMoyen.destroy()
@@ -485,6 +487,8 @@ class Visual:
         #globals.b1 = Button(self.fen, text='Jouer', command=self.chooseDifficulty)
         globals.b2 = Button(self.fen, text='Reset', command=self.reset)
         globals.b1 = Button(self.fen, text='Skip', command=self.skip)
+        globals.b2.config(state="disabled")
+        globals.b1.config(state="disabled")
 
         self.imgBackground = PhotoImage(file="img/imgMenu.gif")
         globals.can.create_image(0, 0, image=self.imgBackground, anchor='nw')
