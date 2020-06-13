@@ -384,10 +384,13 @@ class Visual:
         globals.couleur = 'white'
 
         self.fen = Tk()
+        self.fen.title("Rasende Roboter")
         # TODO: remettre en 800 800
         globals.can = Canvas(self.fen, width=800, heigh=750, bg='ivory')
 
     def skip(self):
+        globals.nbMovePlayedTotal.append(25) # ajout d'une pénalité, donc on imagine que la pénalité fait 25 mouvements
+
         print("cc")
 
     def setImg(self):
