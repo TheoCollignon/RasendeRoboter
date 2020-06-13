@@ -214,7 +214,6 @@ class Visual:
         return False
 
     def on_click_event(self, event):
-        globals.nbMovePlayedTotal = []
         i = int(event.x / 50)
         j = int(event.y / 50)
         # print("clicked at", event.x, event.y, " / case ", i, j)
@@ -328,6 +327,7 @@ class Visual:
 
     def game(self):
         # Jeu
+        globals.nbCheminGagnant = []
         globals.targetColor = "notDefined"
         globals.currentTarget = -2
         globals.nbMovePlayed = 0
