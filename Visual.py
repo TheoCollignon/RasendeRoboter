@@ -142,11 +142,9 @@ class Visual:
     def changeText(self):
         globals.scoreJoueurTotal = 0
         for i in globals.nbMovePlayedTotal:
-            print("ué + " + str(i))
             globals.scoreJoueurTotal += i
+        self.text_value = "turn : " + str(globals.nbTurn) + "/"+ str(globals.nbTurnTotalToFinishTheGame) +"                   move : " + str(globals.nbMovePlayed) + "              total : " + str(globals.scoreJoueurTotal)
 
-        self.text_value = "turn : " + str(globals.nbTurn) + "                   move : " + str(
-            globals.nbMovePlayed) + "              total : " + str(globals.scoreJoueurTotal)
         globals.text1.set(self.text_value)
 
         globals.label.pack()
