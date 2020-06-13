@@ -6,6 +6,76 @@ from random import randint
 
 
 class Visual:
+
+    """
+    A class used for the graphic interface and the components / actions
+
+    ...
+
+    Attributes
+    ----------
+    __instance : Visual
+        The instance of the class, used in the Singleton
+    grid : Grid
+        The initial Grid
+    img : file
+        The initialization of the project images
+    text_value : str
+        temp str
+    fen :
+        The window of the graphic interface
+
+    Methods
+    -------
+    beforeLaunchGame()
+        Init globals variables and fen
+
+    changeText()
+        Change the labels
+
+    chest()
+        Load the visual
+
+    chooseDifficulty()
+        Allow to choose the difficulty (level of the AI)
+
+    displayEndOfTheGame()
+        Display the end game menu
+
+    game()
+        Initializations and load the AI
+
+    launchGame()
+        Launch the graphical interface, last function call
+
+    on_click_event(event)
+        Listener of clicks
+
+    reset()
+        Reset the pawns and the level variables to default
+
+    setDifficultyEasy()
+        Set the difficulty to easy, first found solution
+
+    setDifficultyMedium()
+        Set the difficulty to medium, testPionUnique
+
+    setDifficultyHard()
+        Set the difficulty to hard, testPionUnique and testDeuxPions
+
+    skip()
+        Go to the next level or end game. Score is incremented by 25
+
+    setImg()
+        Initialize the images
+
+    updateGrid(i, j, i2, j2, pawnId)
+        Update the graphical interface
+
+    verifIfPawnIsOnTarget()
+        Check in the graphical interface if the pawn is on target
+    """
+
     __instance = None
     grid = 0
     img1 = 0
@@ -59,41 +129,30 @@ class Visual:
             self.chooseDifficulty()
             self.launchGame()
 
-    def setDifficultyEasy(self):
-        globals.difficulty = 1
-        self.chest()
+    def beforeLaunchGame(self):
 
-    def setDifficultyMedium(self):
-        globals.difficulty = 2
-        self.chest()
+        globals.x1, globals.y1, globals.x2, globals.y2 = 0, 0, 50, 50
+        globals.couleur = 'white'
 
-    def setDifficultyHard(self):
-        globals.difficulty = 3
-        self.chest()
+        self.fen = Tk()
+        self.fen.title("Rasende Roboter")
+        # TODO: remettre en 800 800
+        globals.can = Canvas(self.fen, width=800, heigh=750, bg='ivory')
 
-   
-    def chooseDifficulty(self):
-        #Choisir la difficulté : 
-        globals.bFacile = Button(self.fen, text="Facile", command=self.setDifficultyEasy)
-        globals.bFacile_w = globals.can.create_window(400, 200, window=globals.bFacile)
+    def changeText(self):
+        globals.scoreJoueurTotal = 0
+        for i in globals.nbMovePlayedTotal:
+            print("ué + " + str(i))
+            globals.scoreJoueurTotal += i
 
-        globals.bMoyen = Button(self.fen, text="Moyen", command=self.setDifficultyMedium)
-        globals.bMoyen_w = globals.can.create_window(400, 400, window=globals.bMoyen)
+        self.text_value = "turn : " + str(globals.nbTurn) + "                   move : " + str(
+            globals.nbMovePlayed) + "              total : " + str(globals.scoreJoueurTotal)
+        globals.text1.set(self.text_value)
 
-        globals.bDifficile = Button(self.fen, text="Difficile", command=self.setDifficultyHard)
-        globals.bDifficile_w = globals.can.create_window(400, 600, window=globals.bDifficile)
-        
+        globals.label.pack()
 
-
-        #fin difficulté
-
-
-
-
-
-
-    # affichage graphique
     def chest(self):
+        # affichage graphique
         globals.b2.config(state="active")
         globals.b1.config(state="active")
         globals.can.delete("all")
@@ -168,164 +227,37 @@ class Visual:
         #globals.b1.config(state="disabled")
         self.game()
 
-    def reset(self):
-        if globals.nbMovePlayed == 0:
-            return
-        globals.nbMovePlayed = 0
-        gridbis = []
+    def chooseDifficulty(self):
+        # Choisir la difficulté :
+        globals.bFacile = Button(self.fen, text="Facile", command=self.setDifficultyEasy)
+        globals.bFacile_w = globals.can.create_window(400, 200, window=globals.bFacile)
+
+        globals.bMoyen = Button(self.fen, text="Moyen", command=self.setDifficultyMedium)
+        globals.bMoyen_w = globals.can.create_window(400, 400, window=globals.bMoyen)
+
+        globals.bDifficile = Button(self.fen, text="Difficile", command=self.setDifficultyHard)
+        globals.bDifficile_w = globals.can.create_window(400, 600, window=globals.bDifficile)
+
+        # fin difficulté
+
+    def displayEndOfTheGame(self):
+        globals.can.delete("all")
         self.changeText()
-        for i in range(16):
-            for j in range(16):
-                if self.grid.tabCase[i][j].pawn > -1:
-                    gridbis.append([i, j])
-                    self.grid.tabCase[i][j].pawn = -1
+        globals.can.pack()
+        scoreJoueur = 0
+        for i in globals.nbMovePlayedTotal:
+            scoreJoueur += i
+        endMessage = "Fin de la partie ! Voici votre score : " + str(scoreJoueur)
 
-        for i in range(4):
-            self.grid.tabCase[globals.listPositionPawn[i][0]][globals.listPositionPawn[i][1]].pawn = \
-                globals.listPositionPawn[i][2]
-            self.updateGrid(gridbis[i][0], gridbis[i][1], globals.listPositionPawn[i][0],
-                            globals.listPositionPawn[i][1],
-                            globals.listPositionPawn[i][2])
+        endMessageIa = "Score de l'ia : " + str(globals.scoreIA)
 
-    def verifIfPawnIsOnTarget(self):
-        # on doit recuperer l'emplacement de la cible:
-        globals.targetX, globals.targetY = 0, 0
-        globals.pawnX, globals.pawnY = 0, 0
+        globals.listeCheminGagnant = []
 
-        idColor = -1
-        if globals.targetColor == "blue":
-            idColor = 0
-        if globals.targetColor == "orange":
-            idColor = 1
-        if globals.targetColor == "green":
-            idColor = 2
-        if globals.targetColor == "red":
-            idColor = 3
-
-        for i in range(16):
-            for j in range(16):
-                if self.grid.tabCase[i][j].target == globals.currentTarget:
-                    globals.targetX = i
-                    globals.targetY = j
-                # on doit recuperer l'emplacement du bon pion de la bonne couleur:
-                if self.grid.tabCase[i][j].pawn == idColor:
-                    globals.pawnX = i
-                    globals.pawnY = j
-        if globals.targetX == globals.pawnX and globals.targetY == globals.pawnY:
-            return True
-        return False
-
-    def on_click_event(self, event):
-        i = int(event.x / 50)
-        j = int(event.y / 50)
-        # print("clicked at", event.x, event.y, " / case ", i, j)
-        if globals.click == 1:
-            if self.grid.tabCase[j][i].pawn > -1:
-                globals.lastX = i
-                globals.lastY = j
-                globals.click = 2
-                # print('PAWN')
-        else:
-            if i == globals.lastX:
-                if globals.lastY < j:
-                    self.grid.goDown(globals.lastY, globals.lastX, 1)
-                    globals.nbMovePlayed += 1
-                if globals.lastY > j:
-                    self.grid.goUp(globals.lastY, globals.lastX, 1)
-                    globals.nbMovePlayed += 1
-            if j == globals.lastY:
-                if globals.lastX < i:
-                    self.grid.goRight(globals.lastY, globals.lastX, 1)
-                    globals.nbMovePlayed += 1
-                if globals.lastX > i:
-                    self.grid.goLeft(globals.lastY, globals.lastX, 1)
-                    globals.nbMovePlayed += 1
-            globals.click = 1
-        self.changeText()
-        if self.verifIfPawnIsOnTarget():
-            globals.nbTurn += 1
-            if(not globals.gameOver):
-                globals.nbMovePlayedTotal.append(globals.nbMovePlayed)
-            globals.nbMovePlayed = 0
-            if globals.nbTurn > 0 : 
-                nbCheminGagnant = len(globals.listeCheminGagnant)
-
-                if nbCheminGagnant==0:
-                    globals.scoreIA += 25
-                else :
-                    globals.scoreIA += len(globals.listeCheminGagnant[nbCheminGagnant-1])
-            if globals.nbTurn < globals.nbTurnTotalToFinishTheGame: # nombre de tours totaux
-                # va afficher une nouvelle target
-                self.grid.replacePawns()
-                self.game()
-            else:
-                # print("fin du jeu")
-                print("score : ")
-                print(globals.nbMovePlayedTotal)
-                self.displayEndOfTheGame()
-
-    def updateGrid(self, i, j, i2, j2, pawnId):
-        globals.can.create_rectangle(j * 50 + 2, i * 50 + 2, (j + 1) * 50, (i + 1) * 50, fill="white")  # case
-        globals.couleur = "white"
-        if pawnId == 0:
-            globals.couleur = "blue"
-        if pawnId == 1:
-            globals.couleur = "orange"
-        if pawnId == 2:
-            globals.couleur = "green"
-        if pawnId == 3:
-            globals.couleur = "red"
-        globals.can.create_rectangle(j2 * 50 + 2, i2 * 50 + 2, (j2 + 1) * 50, (i2 + 1) * 50,
-                                     fill=globals.couleur)  # case
-
-        globals.x1 = j * 50
-        globals.x2 = (j + 1) * 50
-        globals.y1 = i * 50
-        globals.y2 = (i + 1) * 50
-
-        if self.grid.tabCase[i][j].target > 0:
-            if self.grid.tabCase[i][j].target == 1:
-                globals.can.create_image(globals.x1 + 2, globals.y1 + 2, image=self.img1, anchor='nw')
-            if self.grid.tabCase[i][j].target == 2:
-                globals.can.create_image(globals.x1 + 2, globals.y1 + 2, image=self.img2, anchor='nw')
-            if self.grid.tabCase[i][j].target == 3:
-                globals.can.create_image(globals.x1 + 2, globals.y1 + 2, image=self.img3, anchor='nw')
-            if self.grid.tabCase[i][j].target == 4:
-                globals.can.create_image(globals.x1 + 2, globals.y1 + 2, image=self.img4, anchor='nw')
-            if self.grid.tabCase[i][j].target == 5:
-                globals.can.create_image(globals.x1 + 2, globals.y1 + 2, image=self.img5, anchor='nw')
-            if self.grid.tabCase[i][j].target == 6:
-                globals.can.create_image(globals.x1 + 2, globals.y1 + 2, image=self.img6, anchor='nw')
-            if self.grid.tabCase[i][j].target == 7:
-                globals.can.create_image(globals.x1 + 2, globals.y1 + 2, image=self.img7, anchor='nw')
-            if self.grid.tabCase[i][j].target == 8:
-                globals.can.create_image(globals.x1 + 2, globals.y1 + 2, image=self.img8, anchor='nw')
-            if self.grid.tabCase[i][j].target == 9:
-                globals.can.create_image(globals.x1 + 2, globals.y1 + 2, image=self.img9, anchor='nw')
-            if self.grid.tabCase[i][j].target == 10:
-                globals.can.create_image(globals.x1 + 2, globals.y1 + 2, image=self.img10, anchor='nw')
-            if self.grid.tabCase[i][j].target == 11:
-                globals.can.create_image(globals.x1 + 2, globals.y1 + 2, image=self.img11, anchor='nw')
-            if self.grid.tabCase[i][j].target == 12:
-                globals.can.create_image(globals.x1 + 2, globals.y1 + 2, image=self.img12, anchor='nw')
-            if self.grid.tabCase[i][j].target == 13:
-                globals.can.create_image(globals.x1 + 2, globals.y1 + 2, image=self.img13, anchor='nw')
-            if self.grid.tabCase[i][j].target == 14:
-                globals.can.create_image(globals.x1 + 2, globals.y1 + 2, image=self.img14, anchor='nw')
-            if self.grid.tabCase[i][j].target == 15:
-                globals.can.create_image(globals.x1 + 2, globals.y1 + 2, image=self.img15, anchor='nw')
-            if self.grid.tabCase[i][j].target == 16:
-                globals.can.create_image(globals.x1 + 2, globals.y1 + 2, image=self.img16, anchor='nw')
-
-        if self.grid.tabCase[i][j].down == 1:
-            globals.can.create_line(globals.x1 + 2, globals.y2, globals.x2, globals.y2, fill="purple", width=5)
-        if self.grid.tabCase[i][j].right == 1:
-            globals.can.create_line(globals.x2, globals.y1, globals.x2, globals.y2, fill="purple", width=5)
-        if self.grid.tabCase[i][j].left == 1:
-            globals.can.create_line(globals.x1 + 2, globals.y1, globals.x1 + 2, globals.y2, fill="purple", width=5)
-        if self.grid.tabCase[i][j].up == 1:
-            globals.can.create_line(globals.x1 + 2, globals.y1 + 2, globals.x2, globals.y1 + 2, fill="purple",
-                                    width=5)
+        globals.can.create_text(400, 400, text=endMessage)
+        globals.can.create_text(400, 500, text=endMessageIa)
+        globals.b2.config(state="disabled")
+        globals.b1.config(state="disabled")
+        globals.can.config(state="disabled")
 
     def game(self):
         # Jeu
@@ -380,15 +312,86 @@ class Visual:
         ia = IA(self.grid)
         print('iterati : ', globals.iterations)
 
-    def beforeLaunchGame(self):
+    def launchGame(self):
+        self.fen.mainloop()
 
-        globals.x1, globals.y1, globals.x2, globals.y2 = 0, 0, 50, 50
-        globals.couleur = 'white'
+    def on_click_event(self, event):
+        i = int(event.x / 50)
+        j = int(event.y / 50)
+        # print("clicked at", event.x, event.y, " / case ", i, j)
+        if globals.click == 1:
+            if self.grid.tabCase[j][i].pawn > -1:
+                globals.lastX = i
+                globals.lastY = j
+                globals.click = 2
+                # print('PAWN')
+        else:
+            if i == globals.lastX:
+                if globals.lastY < j:
+                    self.grid.goDown(globals.lastY, globals.lastX, 1)
+                    globals.nbMovePlayed += 1
+                if globals.lastY > j:
+                    self.grid.goUp(globals.lastY, globals.lastX, 1)
+                    globals.nbMovePlayed += 1
+            if j == globals.lastY:
+                if globals.lastX < i:
+                    self.grid.goRight(globals.lastY, globals.lastX, 1)
+                    globals.nbMovePlayed += 1
+                if globals.lastX > i:
+                    self.grid.goLeft(globals.lastY, globals.lastX, 1)
+                    globals.nbMovePlayed += 1
+            globals.click = 1
+        self.changeText()
+        if self.verifIfPawnIsOnTarget():
+            globals.nbTurn += 1
+            globals.nbMovePlayedTotal.append(globals.nbMovePlayed)
+            if globals.nbTurn > 0 :
+                nbCheminGagnant = len(globals.listeCheminGagnant)
 
-        self.fen = Tk()
-        self.fen.title("Rasende Roboter")
-        # TODO: remettre en 800 800
-        globals.can = Canvas(self.fen, width=800, heigh=750, bg='ivory')
+                if nbCheminGagnant==0:
+                    globals.scoreIA += 25
+                else :
+                    globals.scoreIA += len(globals.listeCheminGagnant[nbCheminGagnant-1])
+            if globals.nbTurn < globals.nbTurnTotalToFinishTheGame: # nombre de tours totaux
+                # va afficher une nouvelle target
+                self.grid.replacePawns()
+                self.game()
+            else:
+                # print("fin du jeu")
+                print("score : ")
+                print(globals.nbMovePlayedTotal)
+                self.displayEndOfTheGame()
+
+    def reset(self):
+        if globals.nbMovePlayed == 0:
+            return
+        globals.nbMovePlayed = 0
+        gridbis = []
+        self.changeText()
+        for i in range(16):
+            for j in range(16):
+                if self.grid.tabCase[i][j].pawn > -1:
+                    gridbis.append([i, j])
+                    self.grid.tabCase[i][j].pawn = -1
+
+        for i in range(4):
+            self.grid.tabCase[globals.listPositionPawn[i][0]][globals.listPositionPawn[i][1]].pawn = \
+                globals.listPositionPawn[i][2]
+            self.updateGrid(gridbis[i][0], gridbis[i][1], globals.listPositionPawn[i][0],
+                            globals.listPositionPawn[i][1],
+                            globals.listPositionPawn[i][2])
+
+    def setDifficultyEasy(self):
+        globals.difficulty = 1
+        self.chest()
+
+    def setDifficultyMedium(self):
+        globals.difficulty = 2
+        self.chest()
+
+    def setDifficultyHard(self):
+        globals.difficulty = 3
+        self.chest()
 
     def skip(self):
         globals.nbMovePlayedTotal.append(25) # ajout d'une pénalité, donc on imagine que la pénalité fait 25 mouvements
@@ -410,7 +413,6 @@ class Visual:
             print("score : ")
             print(globals.nbMovePlayedTotal)
             self.displayEndOfTheGame()
-
 
     def setImg(self):
 
@@ -506,44 +508,93 @@ class Visual:
         globals.label = Label(self.fen, textvariable=globals.text1)
         globals.label.pack()
 
-    # TODO: A COMPLETER
-    def changeText(self):
-        globals.scoreJoueurTotal = 0
-        if globals.nbTurn > globals.nbTurnTotalToFinishTheGame: # pour que l'affichage ne fasse pas n'importe quoi
-            globals.nbTurn -= 1
+    def updateGrid(self, i, j, i2, j2, pawnId):
+        globals.can.create_rectangle(j * 50 + 2, i * 50 + 2, (j + 1) * 50, (i + 1) * 50, fill="white")  # case
+        globals.couleur = "white"
+        if pawnId == 0:
+            globals.couleur = "blue"
+        if pawnId == 1:
+            globals.couleur = "orange"
+        if pawnId == 2:
+            globals.couleur = "green"
+        if pawnId == 3:
+            globals.couleur = "red"
+        globals.can.create_rectangle(j2 * 50 + 2, i2 * 50 + 2, (j2 + 1) * 50, (i2 + 1) * 50,
+                                     fill=globals.couleur)  # case
 
+        globals.x1 = j * 50
+        globals.x2 = (j + 1) * 50
+        globals.y1 = i * 50
+        globals.y2 = (i + 1) * 50
 
+        if self.grid.tabCase[i][j].target > 0:
+            if self.grid.tabCase[i][j].target == 1:
+                globals.can.create_image(globals.x1 + 2, globals.y1 + 2, image=self.img1, anchor='nw')
+            if self.grid.tabCase[i][j].target == 2:
+                globals.can.create_image(globals.x1 + 2, globals.y1 + 2, image=self.img2, anchor='nw')
+            if self.grid.tabCase[i][j].target == 3:
+                globals.can.create_image(globals.x1 + 2, globals.y1 + 2, image=self.img3, anchor='nw')
+            if self.grid.tabCase[i][j].target == 4:
+                globals.can.create_image(globals.x1 + 2, globals.y1 + 2, image=self.img4, anchor='nw')
+            if self.grid.tabCase[i][j].target == 5:
+                globals.can.create_image(globals.x1 + 2, globals.y1 + 2, image=self.img5, anchor='nw')
+            if self.grid.tabCase[i][j].target == 6:
+                globals.can.create_image(globals.x1 + 2, globals.y1 + 2, image=self.img6, anchor='nw')
+            if self.grid.tabCase[i][j].target == 7:
+                globals.can.create_image(globals.x1 + 2, globals.y1 + 2, image=self.img7, anchor='nw')
+            if self.grid.tabCase[i][j].target == 8:
+                globals.can.create_image(globals.x1 + 2, globals.y1 + 2, image=self.img8, anchor='nw')
+            if self.grid.tabCase[i][j].target == 9:
+                globals.can.create_image(globals.x1 + 2, globals.y1 + 2, image=self.img9, anchor='nw')
+            if self.grid.tabCase[i][j].target == 10:
+                globals.can.create_image(globals.x1 + 2, globals.y1 + 2, image=self.img10, anchor='nw')
+            if self.grid.tabCase[i][j].target == 11:
+                globals.can.create_image(globals.x1 + 2, globals.y1 + 2, image=self.img11, anchor='nw')
+            if self.grid.tabCase[i][j].target == 12:
+                globals.can.create_image(globals.x1 + 2, globals.y1 + 2, image=self.img12, anchor='nw')
+            if self.grid.tabCase[i][j].target == 13:
+                globals.can.create_image(globals.x1 + 2, globals.y1 + 2, image=self.img13, anchor='nw')
+            if self.grid.tabCase[i][j].target == 14:
+                globals.can.create_image(globals.x1 + 2, globals.y1 + 2, image=self.img14, anchor='nw')
+            if self.grid.tabCase[i][j].target == 15:
+                globals.can.create_image(globals.x1 + 2, globals.y1 + 2, image=self.img15, anchor='nw')
+            if self.grid.tabCase[i][j].target == 16:
+                globals.can.create_image(globals.x1 + 2, globals.y1 + 2, image=self.img16, anchor='nw')
 
-        for i in globals.nbMovePlayedTotal:
-            globals.scoreJoueurTotal += i 
+        if self.grid.tabCase[i][j].down == 1:
+            globals.can.create_line(globals.x1 + 2, globals.y2, globals.x2, globals.y2, fill="purple", width=5)
+        if self.grid.tabCase[i][j].right == 1:
+            globals.can.create_line(globals.x2, globals.y1, globals.x2, globals.y2, fill="purple", width=5)
+        if self.grid.tabCase[i][j].left == 1:
+            globals.can.create_line(globals.x1 + 2, globals.y1, globals.x1 + 2, globals.y2, fill="purple", width=5)
+        if self.grid.tabCase[i][j].up == 1:
+            globals.can.create_line(globals.x1 + 2, globals.y1 + 2, globals.x2, globals.y1 + 2, fill="purple",
+                                    width=5)
 
-        self.text_value = "turn : " + str(globals.nbTurn) + "/"+ str(globals.nbTurnTotalToFinishTheGame) +"                   move : " + str(globals.nbMovePlayed) + "              total : " + str(globals.scoreJoueurTotal)
-        globals.text1.set(self.text_value)
-        
-        globals.label.pack()
+    def verifIfPawnIsOnTarget(self):
+        # on doit recuperer l'emplacement de la cible:
+        globals.targetX, globals.targetY = 0, 0
+        globals.pawnX, globals.pawnY = 0, 0
 
+        idColor = -1
+        if globals.targetColor == "blue":
+            idColor = 0
+        if globals.targetColor == "orange":
+            idColor = 1
+        if globals.targetColor == "green":
+            idColor = 2
+        if globals.targetColor == "red":
+            idColor = 3
 
-
-
-    def launchGame(self):
-        self.fen.mainloop()
-
-    def displayEndOfTheGame(self):
-        globals.can.delete("all")
-        self.changeText()
-        globals.can.pack()
-        scoreJoueur = 0
-        for i in globals.nbMovePlayedTotal:
-            scoreJoueur += i 
-        endMessage = "Fin de la partie ! Voici votre score : " + str(scoreJoueur)
-        if (not globals.gameOver):
-            globals.endMessageIa = "Score de l'ia : " + str(globals.scoreIA)
-        globals.gameOver = True
-
-        globals.listeCheminGagnant = []
-
-        globals.can.create_text(400, 400, text=endMessage)
-        globals.can.create_text(400, 500, text=globals.endMessageIa)
-        globals.b2.config(state="disabled")
-        globals.b1.config(state="disabled")
-        globals.can.config(state="disabled")
+        for i in range(16):
+            for j in range(16):
+                if self.grid.tabCase[i][j].target == globals.currentTarget:
+                    globals.targetX = i
+                    globals.targetY = j
+                # on doit recuperer l'emplacement du bon pion de la bonne couleur:
+                if self.grid.tabCase[i][j].pawn == idColor:
+                    globals.pawnX = i
+                    globals.pawnY = j
+        if globals.targetX == globals.pawnX and globals.targetY == globals.pawnY:
+            return True
+        return False
