@@ -327,7 +327,7 @@ class Visual:
 
     def game(self):
         # Jeu
-        globals.nbCheminGagnant = []
+        globals.listeCheminGagnant = []
         globals.targetColor = "notDefined"
         globals.currentTarget = -2
         globals.nbMovePlayed = 0
