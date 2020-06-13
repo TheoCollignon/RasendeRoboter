@@ -40,22 +40,21 @@ class IA:
                         listPawnIa.append([i, j, w])
 
         # self.IaBrutForce(4, listPawnIa, 0, 4, listeChemin)
-        #self.testPionUnique(globals.targetColorIa, 10, listPawnIa, 10, listeChemin)
+        self.testPionUnique(globals.targetColorIa, 10, listPawnIa, 10, listeChemin)
 
-        #if len(globals.listeCheminGagnant) == 0:
-        #    print("pas en 1 pion")
+        if len(globals.listeCheminGagnant) == 0:
+            print("pas en 1 pion")
 
-            # pion couleur principal + 3 autres
-        #    pawnColor = globals.targetColorIa
-        #    for i in range(4):
-        #        if i != pawnColor:
-        #            self.testDeuxPions(pawnColor, i, 10, listPawnIa, 10, listeChemin)
+        # pion couleur principal + 3 autres
+            pawnColor = globals.targetColorIa
+            for i in range(4):
+                if i != pawnColor:
+                    self.testDeuxPions(pawnColor, i, 8, listPawnIa, 8, listeChemin)
 
-
-        for i in range(4):
-            if i != globals.targetColorIa:
-                if self.testFirstSolution(globals.targetColorIa, i, 8, listPawnIa, 8, listeChemin):
-                    break
+        #for i in range(4):
+        #    if i != globals.targetColorIa:
+        #        if self.testFirstSolution(globals.targetColorIa, i, 8, listPawnIa, 8, listeChemin):
+        #            break
 
     def goUpIa(self, i, j, listPawnIabis, pawnID):
         iIter = i
@@ -133,6 +132,29 @@ class IA:
                     return 1
         return 0
 
+    def displayChemin(self, listeChemin):
+        color = ''
+        direction = ''
+        for i in listeChemin:
+            if i[0] == 0:
+                color = 'Blue'
+            if i[0] == 1:
+                color = 'Orange'
+            if i[0] == 2:
+                color = 'Green'
+            if i[0] == 3:
+                color = 'Red'
+            if i[1] == 0:
+                direction = 'Up'
+            if i[1] == 1:
+                direction = 'Down'
+            if i[1] == 2:
+                direction = 'Right'
+            if i[1] == 3:
+                direction = 'Left'
+            print(color + ' ' + direction + ' | ', end='')
+        print()
+
     def testFirstSolution(self, pion, pion2, limite, listPawnIa, limite_max, listeChemin):
         nbCoup = limite_max - limite
         p = pion
@@ -156,7 +178,8 @@ class IA:
         for i in range(4):
             if i == p or i == p2:
                 # on regarde si il y'a des murs #0 = up // 1 = bas // 2 = droite // 3 = gauche
-                if self.isUpIa(listPawnIa[i][0], listPawnIa[i][1], listPawnIa) == 0:  # si y'a pas de murs,on déplace et on rappel la fonction
+                if self.isUpIa(listPawnIa[i][0], listPawnIa[i][1],
+                               listPawnIa) == 0:  # si y'a pas de murs,on déplace et on rappel la fonction
                     if nbCoup > 0:
                         if listeChemin[nbCoup - 1][0] == i:
                             if not (listeChemin[nbCoup - 1][1] == 1):
@@ -415,13 +438,12 @@ class IA:
             # print("cc : " + str(pawn_color) + " target : " + str(targetColorIa))
             if i == globals.targetColorIa:
                 # print("cc : " + str(pawn_color) + " target : " + str(targetColorIa))
-                for w in range(4):
-                    print("liste ia quand on a trouvé : " + str(listPawnIa[w][0]) + "  " + str(
-                        listPawnIa[w][1]) + " id : " + str(listPawnIa[w][2]))
+                #for w in range(4):
+                #    print("liste ia quand on a trouvé : " + str(listPawnIa[w][0]) + "  " + str(listPawnIa[w][1]) + " id : " + str(listPawnIa[w][2]))
                 print("tro b1")
                 print("nb de coup : " + str(limite_max - limite))
 
-                print(listeChemin)
+                self.displayChemin(listeChemin)
                 globals.listeCheminGagnant.append(listeChemin)
                 for y in globals.listeCheminGagnant:
                     if globals.shortestWay > len(y):
@@ -431,9 +453,11 @@ class IA:
                         globals.longestWay = len(y)
                         globals.listLongestWay = y
                 print("shortestWay : ", end='')
-                print(globals.listShortestWay)
+                #print(globals.listShortestWay)
+                self.displayChemin(globals.listShortestWay)
                 print(" longestWay : ", end='')
-                print(globals.listLongestWay)
+                #print(globals.listLongestWay)
+                self.displayChemin(globals.listLongestWay)
                 return True
         limite -= 1
 
@@ -481,13 +505,13 @@ class IA:
             if p == globals.targetColorIa:
                 # print("cc : " + str(pawn_color) + " target : " + str(targetColorIa))
 
-                for w in range(4):
-                    print("liste ia quand on a trouvé : " + str(listPawnIa[w][0]) + "  " + str(
-                        listPawnIa[w][1]) + " id : " + str(listPawnIa[w][2]))
+                #for w in range(4):
+                #    print("liste ia quand on a trouvé : " + str(listPawnIa[w][0]) + "  " + str(
+                #        listPawnIa[w][1]) + " id : " + str(listPawnIa[w][2]))
                 print("tro b1")
                 print("nb de coup : " + str(limite_max - limite))
 
-                print(listeChemin)
+                self.displayChemin(listeChemin)
                 globals.listeCheminGagnant.append(listeChemin)
                 for y in globals.listeCheminGagnant:
                     if globals.shortestWay > len(y):
@@ -497,9 +521,11 @@ class IA:
                         globals.longestWay = len(y)
                         globals.listLongestWay = y
                 print("shortestWay : ", end='')
-                print(globals.listShortestWay)
+                #print(globals.listShortestWay)
+                self.displayChemin(globals.listShortestWay)
                 print(" longestWay : ", end='')
-                print(globals.listLongestWay)
+                #print(globals.listLongestWay)
+                self.displayChemin(globals.listLongestWay)
                 return True
         limite -= 1
 
